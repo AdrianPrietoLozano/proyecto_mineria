@@ -1,0 +1,32 @@
+{
+    "descripcion": "Esta es la descripcion de la base de datos",
+    "target": "class",
+    "path_csv": "iris.csv",
+    "atributos": [
+        {
+            "nombre": "sepal length",
+            "tipo": "numerico",
+            "dominio": "(F|M)"
+        },
+        {
+            "nombre": "sepal width",
+            "tipo": "numerico",
+            "dominio": "(F|M)"
+        },
+        {
+            "nombre": "petal length",
+            "tipo": "numerico",
+            "dominio": "(F|M)"
+        },
+        {
+            "nombre": "petal width",
+            "tipo": "numerico",
+            "dominio": "(F|M)"
+        },
+	{
+            "nombre": "class",
+            "tipo": "categorico",
+            "dominio": "(F|M)"
+        }
+    ]
+}
