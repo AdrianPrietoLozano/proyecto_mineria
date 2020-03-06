@@ -14,11 +14,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.conjunto = ConjuntoDatos(self.ruta)
         self.llenar_tabla()
 
-        for atributo in self.conjunto.getNombresAtributos():
-            print(atributo, ", ", self.conjunto.getAtributo(atributo).getDominio())
+        self.llenar_combo_boxes()
+        self.mostrar_atributo_numerico()
+        self.mostrar_atributo_categorico()
 
 
     def llenar_tabla(self):
+        """Muestra los datos del csv en una tabla"""
         self.tabla.setColumnCount(self.conjunto.getNumAtributos())
         self.tabla.setHorizontalHeaderLabels(self.conjunto.getNombresAtributos())
 
@@ -27,6 +29,32 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tabla.insertRow(index)
             for i in range(len(row)):
                 self.tabla.setItem(index, i, QTableWidgetItem(str(row[i])))
+
+    def llenar_combo_boxes(self):
+        """Llena los combo box con los nombres de los atributos separados por tipo"""
+        for atributo in self.conjunto.getAtributos():
+            if atributo.getTipo() == "numerico":
+                self.comboBoxNumericos.addItem(atributo.getNombre())
+            elif atributo.getTipo() == "categorico":
+                self.comboBoxCategoricos.addItem(atributo.getNombre())
+
+    def mostrar_atributo_numerico(self):
+        """"Muestra los datos del atributo numerico actual que esta en el combo box"""
+        nombre_atributo = self.comboBoxNumericos.currentText()
+        atributo = self.conjunto.getAtributo(nombre_atributo)
+        self.nombreAtributoNumerico.setText(atributo.getNombre())
+        self.tipoAtributoNumerico.setText(atributo.getTipo())
+        self.dominioAtributoNumerico.setText(atributo.getDominio())
+
+    def mostrar_atributo_categorico(self):
+        """Muestra los datos del atributo categorico actual que esta en el combo box"""
+        nombre_atributo = self.comboBoxNumericos.currentText()
+        atributo = self.conjunto.getAtributo(nombre_atributo)
+        self.nombreAtributoCate.setText(atributo.getNombre())
+        self.tipoAtributoCate.setText(atributo.getTipo())
+        self.dominioAtributoCate.setText(atributo.getDominio())
+
+        #Categóricos
 
 
         
