@@ -1,0 +1,85 @@
+{
+    "descripcion": "Esta es la descripcion de la base de datos",
+    "target": "class",
+    "path_csv": "adult.csv",
+    "atributos": [
+        {
+			"nombre": "age",
+			"tipo": "categorico",
+			"dominio": "(asdfkl)"
+		},
+		{
+			"nombre": "workclass",
+			"tipo": "categorico",
+			"dominio": "(asdfkl)"
+		},
+		{
+			"nombre": "fnlwgt",
+			"tipo": "categorico",
+			"dominio": "(asdfkl)"
+		},
+		{
+			"nombre": "educations",
+			"tipo": "categorico",
+			"dominio": "(asdfkl)"
+		},
+		{
+			"nombre": "education-num",
+			"tipo": "categorico",
+			"dominio": "(asdfkl)"
+		},
+		{
+			"nombre": "marital-status",
+			"tipo": "categorico",
+			"dominio": "(asdfkl)"
+		},
+		{
+			"nombre": "occupation",
+			"tipo": "categorico",
+			"dominio": "(asdfkl)"
+		},
+		{
+			"nombre": "relationship",
+			"tipo": "categorico",
+			"dominio": "(asdfkl)"
+		},
+		{
+			"nombre": "race",
+			"tipo": "categorico",
+			"dominio": "(asdfkl)"
+		},
+		{
+			"nombre": "sex",
+			"tipo": "categorico",
+			"dominio": "(asdfkl)"
+		},
+		{
+			"nombre": "capital-gain",
+			"tipo": "categorico",
+			"dominio": "(asdfkl)"
+		},
+		{
+			"nombre": "capital-loss",
+			"tipo": "categorico",
+			"dominio": "(asdfkl)"
+		},
+		{
+			"nombre": "hours-per-week",
+			"tipo": "categorico",
+			"dominio": "(asdfkl)"
+		},
+		{
+			"nombre": "native-country",
+			"tipo": "categorico",
+			"dominio": "(asdfkl)"
+		},
+		{
+			"nombre": "class",
+			"tipo": "categorico",
+			"dominio": "(asdfkl)"
+		}
+    ]
+}
+
+
+

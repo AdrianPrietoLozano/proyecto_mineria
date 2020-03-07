@@ -6,7 +6,7 @@
         {
             "nombre": "sepal length",
             "tipo": "numerico",
-            "dominio": "(F|M)"
+            "dominio": "(numerico)"
         },
         {
             "nombre": "sepal width",
@@ -16,7 +16,7 @@
         {
             "nombre": "petal length",
             "tipo": "numerico",
-            "dominio": "(F|M)"
+            "dominio": "(sabe)"
         },
         {
             "nombre": "petal width",
@@ -26,7 +26,7 @@
 	{
             "nombre": "class",
             "tipo": "categorico",
-            "dominio": "(F|M)"
+            "dominio": "(Iris-setos|Iris-versicolor|Iris-virginica)"
         }
     ]
 }

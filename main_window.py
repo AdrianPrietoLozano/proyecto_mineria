@@ -1,6 +1,6 @@
 from main_window_ui import *
 from dialogo_elegir_propiedades import *
-from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem
+from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox
 from PyQt5.QtCore import Qt, QDir
 import pandas as pd
 from conjunto_datos import ConjuntoDatos
@@ -17,6 +17,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.llenar_combo_boxes()
         self.mostrar_atributo_numerico()
         self.mostrar_atributo_categorico()
+
+        #eventos cuando se cambia de elemento en el combo box
+        self.comboBoxNumericos.currentIndexChanged.connect(lambda x: self.mostrar_atributo_numerico())
+        self.comboBoxCategoricos.currentIndexChanged.connect(lambda x: self.mostrar_atributo_categorico())
+
+        #eventos botones actualizar atributo
+        self.btnActualizarNumericos.clicked.connect(self.actualizar_atributo_numerico)
+        self.btnActualizarCategoricos.clicked.connect(self.actualizar_atributo_categorico)
 
 
     def llenar_tabla(self):
@@ -40,21 +48,45 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def mostrar_atributo_numerico(self):
         """"Muestra los datos del atributo numerico actual que esta en el combo box"""
-        nombre_atributo = self.comboBoxNumericos.currentText()
-        atributo = self.conjunto.getAtributo(nombre_atributo)
-        self.nombreAtributoNumerico.setText(atributo.getNombre())
-        self.tipoAtributoNumerico.setText(atributo.getTipo())
-        self.dominioAtributoNumerico.setText(atributo.getDominio())
+        if self.comboBoxNumericos.count() == 0: # si no hay elementos en el combo box se desactiva
+            self.nombreAtributoCate.setText("")
+            self.tipoAtributoCate.setText("")
+            self.dominioAtributoCate.setText("")
+            self.groupBoxNumericos.setEnabled(False)
+        
+        else:
+            nombre_atributo = self.comboBoxNumericos.currentText()
+            atributo = self.conjunto.getAtributo(nombre_atributo)
+            self.nombreAtributoNumerico.setText(atributo.getNombre())
+            self.tipoAtributoNumerico.setText(atributo.getTipo())
+            self.dominioAtributoNumerico.setText(atributo.getDominio())
 
     def mostrar_atributo_categorico(self):
         """Muestra los datos del atributo categorico actual que esta en el combo box"""
-        nombre_atributo = self.comboBoxNumericos.currentText()
-        atributo = self.conjunto.getAtributo(nombre_atributo)
-        self.nombreAtributoCate.setText(atributo.getNombre())
-        self.tipoAtributoCate.setText(atributo.getTipo())
-        self.dominioAtributoCate.setText(atributo.getDominio())
+        if self.comboBoxCategoricos.count() == 0: # si no hay elementos en el combo box se desactiva
+            self.nombreAtributoCate.setText("")
+            self.tipoAtributoCate.setText("")
+            self.dominioAtributoCate.setText("")
+            self.groupBoxCategoricos.setEnabled(False)
 
-        #Categóricos
+        else:
+            nombre_atributo = self.comboBoxCategoricos.currentText()
+            atributo = self.conjunto.getAtributo(nombre_atributo)
+            self.nombreAtributoCate.setText(atributo.getNombre())
+            self.tipoAtributoCate.setText(atributo.getTipo())
+            self.dominioAtributoCate.setText(atributo.getDominio())
+
+
+    def actualizar_atributo_categorico(self):
+        msg = QMessageBox()
+        msg.setText("Esto aún no funciona")
+        res = msg.exec_()
+
+    def actualizar_atributo_numerico(self):
+        msg = QMessageBox()
+        msg.setText("Esto aún no funciona")
+        res = msg.exec_()
+
 
 
         

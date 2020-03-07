@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>766</width>
-    <height>588</height>
+    <width>802</width>
+    <height>608</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -468,7 +468,7 @@
     <property name="title">
      <string>Atributos</string>
     </property>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="groupBoxNumericos">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -559,7 +559,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="btnActualizarNumericos">
       <property name="geometry">
        <rect>
         <x>120</x>
@@ -573,7 +573,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_3">
+    <widget class="QGroupBox" name="groupBoxCategoricos">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -664,7 +664,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="btnActualizarCategoricos">
       <property name="geometry">
        <rect>
         <x>120</x>
@@ -682,10 +682,10 @@
    <widget class="QTableWidget" name="tabla">
     <property name="geometry">
      <rect>
-      <x>235</x>
-      <y>10</y>
-      <width>531</width>
-      <height>531</height>
+      <x>240</x>
+      <y>11</y>
+      <width>551</width>
+      <height>551</height>
      </rect>
     </property>
     <property name="sortingEnabled">
@@ -698,7 +698,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>766</width>
+     <width>802</width>
      <height>21</height>
     </rect>
    </property>
