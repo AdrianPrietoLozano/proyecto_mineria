@@ -13,14 +13,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.ruta = ruta
         self.conjunto = ConjuntoDatos(self.ruta)
-        #self.llenar_tabla()
 
+        # utilizando un modelo los datos en la tabla se cargan muchisimo más rápido
         self.model = TableModelPandas(self.conjunto.panda)
         self.tabla.setModel(self.model)        
 
         self.llenar_combo_boxes()
-        self.mostrar_atributo_numerico()
-        self.mostrar_atributo_categorico()
+        self.mostrar_atributo_numerico() # muestra los datos del atributo numerico seleccionado por defecto
+        self.mostrar_atributo_categorico() # muestra los datos del atributo categorico seleccionado por defecto
 
         #eventos cuando se cambia de elemento en el combo box
         self.comboBoxNumericos.currentIndexChanged.connect(lambda x: self.mostrar_atributo_numerico())
@@ -29,6 +29,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #eventos botones actualizar atributo
         self.btnActualizarNumericos.clicked.connect(self.actualizar_atributo_numerico)
         self.btnActualizarCategoricos.clicked.connect(self.actualizar_atributo_categorico)
+
+        print("\n\n")
+        print(self.conjunto.data)
+        print("\n\n")
 
 
     def llenar_tabla(self):
@@ -80,18 +84,62 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tipoAtributoCate.setText(atributo.getTipo())
             self.dominioAtributoCate.setText(atributo.getDominio())
 
+    def actualizar_atributo_numerico(self):
+        """Evento clic del boton para acualizar un atributo numéricos"""
+        nombre_atributo = self.comboBoxNumericos.currentText()
+        atributo = self.conjunto.getAtributo(nombre_atributo)
+
+        # falta comprobar que los datos no esten vacios
+        nom = self.nombreAtributoNumerico.text()
+        tipo = self.tipoAtributoNumerico.text()
+        dominio = self.dominioAtributoNumerico.text()
+
+        if(nom != atributo.getNombre()):
+            atributo.setNombre(nom)
+            index = self.comboBoxNumericos.currentIndex()
+            self.comboBoxNumericos.setItemText(index, nom)
+
+        if(tipo != atributo.getTipo()):
+            #atributo.setTipo(tipo)
+            print("Cambiar tipo aún no funciona")
+
+        if(dominio != atributo.getDominio()):
+            #atributo.setDominio()
+            print("Cambiar dominio aún no funciona")
+
+        print("\n"*2)
+        print(self.conjunto.data)
+        print("\n"*2)
+
 
     def actualizar_atributo_categorico(self):
-        msg = QMessageBox()
-        msg.setText("Esto aún no funciona")
-        res = msg.exec_()
+        """Evento clic del boton para acualizar un atributo categorico"""
+        nombre_atributo = self.comboBoxCategoricos.currentText()
+        atributo = self.conjunto.getAtributo(nombre_atributo)
 
-        self.tabla.hideColumn(1)
+        # falta comprobar que los datos no esten vacios
+        nom = self.nombreAtributoCate.text()
+        tipo = self.tipoAtributoCate.text()
+        dominio = self.dominioAtributoCate.text()
 
-    def actualizar_atributo_numerico(self):
-        msg = QMessageBox()
-        msg.setText("Esto aún no funciona")
-        res = msg.exec_()
+        if(nom != atributo.getNombre()):
+            atributo.setNombre(nom)
+            index = self.comboBoxCategoricos.currentIndex()
+            self.comboBoxCategoricos.setItemText(index, nom)
+
+        if(tipo != atributo.getTipo()):
+            #atributo.setTipo(tipo)
+            print("Cambiar tipo aún no funciona")
+
+        if(dominio != atributo.getDominio()):
+            #atributo.setDominio()
+            print("Cambiar dominio aún no funciona")
+
+        self.model.removeColumn(3)
+        print("\n"*2)
+        print(self.conjunto.data)
+        print("\n"*2)
+
 
 
 

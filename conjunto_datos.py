@@ -3,31 +3,36 @@ from atributo import Atributo
 import pandas as pd
 
 class ConjuntoDatos:
-    def __init__(self, propiedades):
-        self.propiedades = propiedades
-        self.path = None
-        self.descripcion = None
-        self.target = None
+    def __init__(self, archivo_propiedades):
+        self.archivo_propiedades = archivo_propiedades
         self.panda = None
-        self.num_atributos = 0
+        self.data = {} # aquí se guarda todo el archivo .json como un diccionario
         self.atributos = {}
         self.__cargar_propiedades()
 
     def __cargar_propiedades(self):
-        with open(self.propiedades) as contenido:
-            data = json.load(contenido)
-            self.path = data["path_csv"]
-            self.target = data["target"]
-            self.descripcion = data["descripcion"]
+        with open(self.archivo_propiedades) as contenido:
+            self.data = json.load(contenido) # combierte el .json a un diccionario
 
-            self.panda = pd.read_csv(self.path)
+            self.panda = pd.read_csv(self.getPathCsv())
 
-            for atributo in data["atributos"]:
-                self.atributos[atributo["nombre"]] = Atributo(atributo["nombre"], atributo["tipo"], atributo["dominio"])
-
-            self.num_atributos = len(self.atributos)
+            # crea un diccionario de atributos, la llave es el nombre del atributo
+            # y el valor una instancia de la clase Atributo 
+            for atributo in self.data["atributos"]:
+                self.atributos[atributo["nombre"]] = Atributo(self.panda, self.atributos, atributo)
 
             contenido.close();
+
+            print(self.atributos)
+
+    def getPathCsv(self):
+        return self.data["path_csv"]
+
+    def getTarget(self):
+        return self.data["target"]
+
+    def setDescripcion(self, descripcion):
+        self.data["descripcion"] = descripcion
 
     def getAtributo(self, nombre):
         return self.atributos.get(nombre, None);
@@ -39,4 +44,4 @@ class ConjuntoDatos:
         return self.atributos.keys()
 
     def getNumAtributos(self):
-        return self.num_atributos
+        return len(self.atributos)
