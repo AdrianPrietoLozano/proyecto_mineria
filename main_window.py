@@ -57,12 +57,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def mostrar_atributo_numerico(self):
         """"Muestra los datos del atributo numerico actual que esta en el combo box"""
         if self.comboBoxNumericos.count() == 0: # si no hay elementos en el combo box se desactiva
-            self.nombreAtributoCate.setText("")
-            self.tipoAtributoCate.setText("")
-            self.dominioAtributoCate.setText("")
+            self.nombreAtributoNumerico.setText("")
+            self.tipoAtributoNumerico.setText("")
+            self.dominioAtributoNumerico.setText("")
             self.groupBoxNumericos.setEnabled(False)
         
         else:
+            if not self.groupBoxNumericos.isEnabled():
+                self.groupBoxNumericos.setEnabled(True)
+
             nombre_atributo = self.comboBoxNumericos.currentText()
             atributo = self.conjunto.getAtributo(nombre_atributo)
             self.nombreAtributoNumerico.setText(atributo.getNombre())
@@ -78,6 +81,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.groupBoxCategoricos.setEnabled(False)
 
         else:
+            if not self.groupBoxCategoricos.isEnabled():
+                self.groupBoxCategoricos.setEnabled(True)
+
             nombre_atributo = self.comboBoxCategoricos.currentText()
             atributo = self.conjunto.getAtributo(nombre_atributo)
             self.nombreAtributoCate.setText(atributo.getNombre())
@@ -93,26 +99,25 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         nom = self.nombreAtributoNumerico.text()
         tipo = self.tipoAtributoNumerico.text()
         dominio = self.dominioAtributoNumerico.text()
+        index = self.comboBoxNumericos.currentIndex()
 
-        if(nom != atributo.getNombre()):
+        if nom != atributo.getNombre():
             atributo.setNombre(nom)
-            index = self.comboBoxNumericos.currentIndex()
             self.comboBoxNumericos.setItemText(index, nom)
             #self.tabla.selectColumn(QItemSelectionModel.Deselect) # deselecciona las columnas seleccionadas
             #indexColumna = self.encontrar_index_columna(nom)
             #self.tabla.selectColumn(indexColumna)
 
-        if(tipo != atributo.getTipo()):
-            #atributo.setTipo(tipo)
-            print("Cambiar tipo aún no funciona")
+        if tipo != atributo.getTipo():
+            if tipo == "categorico":
+                atributo.setTipo(tipo)
+                self.comboBoxCategoricos.addItem(atributo.getNombre())
+                self.comboBoxNumericos.removeItem(index)
 
-        if(dominio != atributo.getDominio()):
+        if dominio != atributo.getDominio():
             #atributo.setDominio()
             print("Cambiar dominio aún no funciona")
 
-        print("\n"*2)
-        print(self.conjunto.data)
-        print("\n"*2)
 
 
     def actualizar_atributo_categorico(self):
@@ -124,27 +129,26 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         nom = self.nombreAtributoCate.text()
         tipo = self.tipoAtributoCate.text()
         dominio = self.dominioAtributoCate.text()
+        index = self.comboBoxCategoricos.currentIndex()
 
-        if(nom != atributo.getNombre()):
+        if nom != atributo.getNombre():
             atributo.setNombre(nom)
-            index = self.comboBoxCategoricos.currentIndex()
             self.comboBoxCategoricos.setItemText(index, nom)
             #self.tabla.selectColumn(QItemSelectionModel.Deselect) # deselecciona las columnas seleccionadas
             #indexColumna = self.encontrar_index_columna(nom)
             #self.tabla.selectColumn(indexColumna)
 
 
-        if(tipo != atributo.getTipo()):
-            #atributo.setTipo(tipo)
-            print("Cambiar tipo aún no funciona")
+        if tipo != atributo.getTipo():
+            if tipo == "numerico":
+                atributo.setTipo(tipo)
+                self.comboBoxNumericos.addItem(atributo.getNombre())
+                self.comboBoxCategoricos.removeItem(index)
 
-        if(dominio != atributo.getDominio()):
+        if dominio != atributo.getDominio():
             #atributo.setDominio()
             print("Cambiar dominio aún no funciona")
 
-        print("\n"*2)
-        print(self.conjunto.data)
-        print("\n"*2)
 
 
     def encontrar_index_columna(self, columna):
