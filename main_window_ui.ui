@@ -679,17 +679,14 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QTableWidget" name="tabla">
+   <widget class="QTableView" name="tabla">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>11</y>
+      <x>235</x>
+      <y>21</y>
       <width>551</width>
-      <height>551</height>
+      <height>541</height>
      </rect>
-    </property>
-    <property name="sortingEnabled">
-     <bool>false</bool>
     </property>
    </widget>
   </widget>

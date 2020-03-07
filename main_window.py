@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox
 from PyQt5.QtCore import Qt, QDir
 import pandas as pd
 from conjunto_datos import ConjuntoDatos
+from table_model_pandas import TableModelPandas
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, ruta, *args, **kwargs):
@@ -12,7 +13,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.ruta = ruta
         self.conjunto = ConjuntoDatos(self.ruta)
-        self.llenar_tabla()
+        #self.llenar_tabla()
+
+        self.model = TableModelPandas(self.conjunto.panda)
+        self.tabla.setModel(self.model)        
 
         self.llenar_combo_boxes()
         self.mostrar_atributo_numerico()
@@ -82,10 +86,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         msg.setText("Esto aún no funciona")
         res = msg.exec_()
 
+        self.tabla.hideColumn(1)
+
     def actualizar_atributo_numerico(self):
         msg = QMessageBox()
         msg.setText("Esto aún no funciona")
         res = msg.exec_()
+
+
 
 
 

@@ -219,11 +219,9 @@ class Ui_MainWindow(object):
         self.btnActualizarCategoricos = QtWidgets.QPushButton(self.groupBoxCategoricos)
         self.btnActualizarCategoricos.setGeometry(QtCore.QRect(120, 150, 75, 23))
         self.btnActualizarCategoricos.setObjectName("btnActualizarCategoricos")
-        self.tabla = QtWidgets.QTableWidget(self.centralwidget)
-        self.tabla.setGeometry(QtCore.QRect(240, 11, 551, 551))
+        self.tabla = QtWidgets.QTableView(self.centralwidget)
+        self.tabla.setGeometry(QtCore.QRect(235, 21, 551, 541))
         self.tabla.setObjectName("tabla")
-        self.tabla.setColumnCount(0)
-        self.tabla.setRowCount(0)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 802, 21))
@@ -250,7 +248,6 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "Tipo"))
         self.label_6.setText(_translate("MainWindow", "Dominio"))
         self.btnActualizarCategoricos.setText(_translate("MainWindow", "Actualizar"))
-        self.tabla.setSortingEnabled(False)
 
 
 if __name__ == "__main__":
