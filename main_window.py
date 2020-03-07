@@ -1,7 +1,7 @@
 from main_window_ui import *
 from dialogo_elegir_propiedades import *
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox
-from PyQt5.QtCore import Qt, QDir
+from PyQt5.QtCore import Qt, QDir, QItemSelectionModel
 import pandas as pd
 from conjunto_datos import ConjuntoDatos
 from table_model_pandas import TableModelPandas
@@ -98,6 +98,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             atributo.setNombre(nom)
             index = self.comboBoxNumericos.currentIndex()
             self.comboBoxNumericos.setItemText(index, nom)
+            #self.tabla.selectColumn(QItemSelectionModel.Deselect) # deselecciona las columnas seleccionadas
+            #indexColumna = self.encontrar_index_columna(nom)
+            #self.tabla.selectColumn(indexColumna)
 
         if(tipo != atributo.getTipo()):
             #atributo.setTipo(tipo)
@@ -126,6 +129,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             atributo.setNombre(nom)
             index = self.comboBoxCategoricos.currentIndex()
             self.comboBoxCategoricos.setItemText(index, nom)
+            #self.tabla.selectColumn(QItemSelectionModel.Deselect) # deselecciona las columnas seleccionadas
+            #indexColumna = self.encontrar_index_columna(nom)
+            #self.tabla.selectColumn(indexColumna)
+
 
         if(tipo != atributo.getTipo()):
             #atributo.setTipo(tipo)
@@ -135,10 +142,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             #atributo.setDominio()
             print("Cambiar dominio aún no funciona")
 
-        self.model.removeColumn(3)
         print("\n"*2)
         print(self.conjunto.data)
         print("\n"*2)
+
+
+    def encontrar_index_columna(self, columna):
+        for index, nom_columna in enumerate(self.conjunto.panda.columns):
+            if nom_columna == columna:
+                print("\n index=", index)
+                return index
+        return 0
+            
 
 
 

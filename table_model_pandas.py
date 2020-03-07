@@ -7,15 +7,9 @@ class TableModelPandas(QAbstractTableModel):
         self._data = data
 
     def data(self, index, role):
-    	value = str(self._data.iloc[index.row(), index.column()])
+        value = str(self._data.iloc[index.row(), index.column()])
 
-    	if role == Qt.BackgroundRole and value == '?': # no funciona
-    		return QtGui.QColor('red')
-
-    	if role == Qt.DisplayRole:
-            # See below for the nested-list data structure.
-            # .row() indexes into the outer list,
-            # .column() indexes into the sub-list
+        if role == Qt.DisplayRole:
             return value
 
     def rowCount(self, index):
