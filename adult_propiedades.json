@@ -1,6 +1,7 @@
 {
     "descripcion": "Esta es la descripcion de la base de datos",
     "target": "class",
+    "simbolo_faltante": " ?",
     "path_csv": "adult.csv",
     "atributos": [
 		{

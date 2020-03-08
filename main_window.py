@@ -55,11 +55,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.comboBoxCategoricos.addItem(atributo.getNombre())
 
     def actualizar_label_fuera_dominio(self, label, atributo):
-        fuera_dominio = (len(atributo.getValoresFueraDominio()))
+        fuera_dominio = len(atributo.getValoresFueraDominio())
         total = self.conjunto.getNumInstancias()
-        procentaje = (fuera_dominio * 100) / total
-        texto = str(fuera_dominio) + " (" + str(round(procentaje, 2)) +"%)"
+        porcentaje = (fuera_dominio * 100) / total
+        texto = str(fuera_dominio) + " (" + str(round(porcentaje, 2)) +"%)"
+        label.setText(texto)
 
+    def actualizar_label_valores_faltantes(self, label, atributo):
+        faltantes = len(atributo.getValoresFaltantes())
+        total = self.conjunto.getNumInstancias()
+        porcentaje = (faltantes * 100) / total
+        texto = str(faltantes) + " (" + str(round(porcentaje, 2)) +"%)"
         label.setText(texto)
 
     def mostrar_atributo_numerico(self):
@@ -69,6 +75,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tipoAtributoNumerico.setText("")
             self.dominioAtributoNumerico.setText("")
             self.groupBoxNumericos.setEnabled(False)
+            #falta limpiar mas etiquetas
         
         else:
             if not self.groupBoxNumericos.isEnabled():
@@ -81,6 +88,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.dominioAtributoNumerico.setText(atributo.getDominio())
 
             self.actualizar_label_fuera_dominio(self.labelFueraDominioNumerico, atributo)
+            self.actualizar_label_valores_faltantes(self.labelValoresFaltantesNumericos, atributo)
 
     
 
@@ -91,6 +99,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tipoAtributoCate.setText("")
             self.dominioAtributoCate.setText("")
             self.groupBoxCategoricos.setEnabled(False)
+            #falta limpiar mas etiquetas
 
         else:
             if not self.groupBoxCategoricos.isEnabled():
@@ -103,6 +112,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.dominioAtributoCate.setText(atributo.getDominio())
 
             self.actualizar_label_fuera_dominio(self.labelFueraDominioCategorico, atributo)
+            self.actualizar_label_valores_faltantes(self.labelValoresFaltantesCategoricos, atributo)
+            
 
     def actualizar_atributo_numerico(self):
         """Evento clic del boton para acualizar un atributo numéricos"""

@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>760</width>
-    <height>622</height>
+    <width>804</width>
+    <height>659</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -507,7 +513,7 @@
             <x>10</x>
             <y>23</y>
             <width>211</width>
-            <height>191</height>
+            <height>211</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -637,14 +643,40 @@
             <string>N/A</string>
            </property>
           </widget>
+          <widget class="QLabel" name="labelValoresFaltantesNumericos">
+           <property name="geometry">
+            <rect>
+             <x>100</x>
+             <y>180</y>
+             <width>91</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>N/A</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_14">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>180</y>
+             <width>91</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Valores faltantes:</string>
+           </property>
+          </widget>
          </widget>
          <widget class="QGroupBox" name="groupBoxCategoricos">
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>229</y>
+            <y>240</y>
             <width>211</width>
-            <height>191</height>
+            <height>211</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -767,6 +799,32 @@
              <x>100</x>
              <y>160</y>
              <width>101</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>N/A</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_15">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>180</y>
+             <width>91</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Valores faltantes:</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="labelValoresFaltantesCategoricos">
+           <property name="geometry">
+            <rect>
+             <x>100</x>
+             <y>180</y>
+             <width>91</width>
              <height>16</height>
             </rect>
            </property>
@@ -951,7 +1009,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>760</width>
+     <width>804</width>
      <height>21</height>
     </rect>
    </property>

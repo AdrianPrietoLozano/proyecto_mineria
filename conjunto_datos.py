@@ -2,13 +2,21 @@ import json
 from atributo import Atributo
 import pandas as pd
 
+simbolo = "hola"
+
 class ConjuntoDatos:
+    _simbolo_faltante = "?" # por default será ?
+    _target = None
+
     def __init__(self, archivo_propiedades):
         self.archivo_propiedades = archivo_propiedades
         self.panda = None
         self.data = {} # aquí se guarda todo el archivo .json como un diccionario
         self.atributos = {}
         self.__cargar_propiedades()
+
+        ConjuntoDatos._simbolo_faltante = self.data["simbolo_faltante"]
+        ConjuntoDatos._target = self.data["target"]
 
     def __cargar_propiedades(self):
         with open(self.archivo_propiedades) as contenido:
@@ -22,8 +30,7 @@ class ConjuntoDatos:
                 self.atributos[atributo["nombre"]] = Atributo(self.panda, self.atributos, atributo)
 
             contenido.close();
-
-            print(self.atributos)
+            
 
     def getPathCsv(self):
         return self.data["path_csv"]
