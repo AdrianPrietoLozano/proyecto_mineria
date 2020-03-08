@@ -30,9 +30,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnActualizarNumericos.clicked.connect(self.actualizar_atributo_numerico)
         self.btnActualizarCategoricos.clicked.connect(self.actualizar_atributo_categorico)
 
-        print("\n\n")
-        print(self.conjunto.data)
-        print("\n\n")
+        # muestrar la información general del conjunto de datos
+        self.labelNumInstancias.setText(str(self.conjunto.getNumInstancias()))
+        self.labelNumAtributos.setText(str(self.conjunto.getNumAtributos()))
 
 
     def llenar_tabla(self):
@@ -54,6 +54,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             elif atributo.getTipo() == "categorico":
                 self.comboBoxCategoricos.addItem(atributo.getNombre())
 
+    def actualizar_label_fuera_dominio(self, label, atributo):
+        fuera_dominio = (len(atributo.getValoresFueraDominio()))
+        total = self.conjunto.getNumInstancias()
+        procentaje = (fuera_dominio * 100) / total
+        texto = str(fuera_dominio) + " (" + str(round(procentaje, 2)) +"%)"
+
+        label.setText(texto)
+
     def mostrar_atributo_numerico(self):
         """"Muestra los datos del atributo numerico actual que esta en el combo box"""
         if self.comboBoxNumericos.count() == 0: # si no hay elementos en el combo box se desactiva
@@ -72,6 +80,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tipoAtributoNumerico.setText(atributo.getTipo())
             self.dominioAtributoNumerico.setText(atributo.getDominio())
 
+            self.actualizar_label_fuera_dominio(self.labelFueraDominioNumerico, atributo)
+
+    
+
     def mostrar_atributo_categorico(self):
         """Muestra los datos del atributo categorico actual que esta en el combo box"""
         if self.comboBoxCategoricos.count() == 0: # si no hay elementos en el combo box se desactiva
@@ -89,6 +101,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.nombreAtributoCate.setText(atributo.getNombre())
             self.tipoAtributoCate.setText(atributo.getTipo())
             self.dominioAtributoCate.setText(atributo.getDominio())
+
+            self.actualizar_label_fuera_dominio(self.labelFueraDominioCategorico, atributo)
 
     def actualizar_atributo_numerico(self):
         """Evento clic del boton para acualizar un atributo numéricos"""
@@ -115,8 +129,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.comboBoxNumericos.removeItem(index)
 
         if dominio != atributo.getDominio():
-            #atributo.setDominio()
-            print("Cambiar dominio aún no funciona")
+            atributo.setDominio(dominio)
+            self.actualizar_label_fuera_dominio(self.labelFueraDominioNumerico, atributo)
 
 
 
@@ -146,8 +160,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.comboBoxCategoricos.removeItem(index)
 
         if dominio != atributo.getDominio():
-            #atributo.setDominio()
-            print("Cambiar dominio aún no funciona")
+            atributo.setDominio(dominio)
+            self.actualizar_label_fuera_dominio(self.labelFueraDominioCategorico, atributo)
 
 
 

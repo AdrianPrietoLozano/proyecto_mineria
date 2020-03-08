@@ -45,3 +45,6 @@ class ConjuntoDatos:
 
     def getNumAtributos(self):
         return len(self.atributos)
+
+    def getNumInstancias(self):
+        return len(self.panda)

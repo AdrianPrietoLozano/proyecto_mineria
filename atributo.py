@@ -13,6 +13,7 @@ class Atributo:
         self.dic_datos["tipo"] = tipo
 
     # aqui debe verificarse que toda la columna cumpla con el nuevo dominio
+    # y que el dominio sea una expresion regular
     def setDominio(self, dominio):
         self.dic_datos["dominio"] = dominio
 
@@ -24,3 +25,9 @@ class Atributo:
 
     def getDominio(self):
     	return self.dic_datos["dominio"]
+
+    def getValoresFueraDominio(self):
+        """Retorna una lista con los ids de las instancias fuera de domino para este atributo"""
+        # falta validar
+        return list(self.panda[self.panda[self.getNombre()].astype(str).str.match(self.getDominio()) == False].index)
+       
