@@ -1,12 +1,13 @@
 import json
-from atributo import Atributo
+from atributo_numerico import AtributoNumerico
+from atributo_categorico import AtributoCategorico
 import pandas as pd
 
-simbolo = "hola"
 
 class ConjuntoDatos:
-    _simbolo_faltante = "?" # por default será ?
-    _target = None
+
+    SIMBOLO_FALTANTE = "?"  # por default será ?
+    TARGET = None
 
     def __init__(self, archivo_propiedades):
         self.archivo_propiedades = archivo_propiedades
@@ -15,8 +16,8 @@ class ConjuntoDatos:
         self.atributos = {}
         self.__cargar_propiedades()
 
-        ConjuntoDatos._simbolo_faltante = self.data["simbolo_faltante"]
-        ConjuntoDatos._target = self.data["target"]
+        ConjuntoDatos.SIMBOLO_FALTANTE = self.data["simbolo_faltante"]
+        ConjuntoDatos.TARGET = self.data["target"]
 
     def __cargar_propiedades(self):
         with open(self.archivo_propiedades) as contenido:
@@ -25,24 +26,26 @@ class ConjuntoDatos:
             self.panda = pd.read_csv(self.getPathCsv(), names=[c["nombre"] for c in self.data["atributos"]])
 
             # crea un diccionario de atributos, la llave es el nombre del atributo
-            # y el valor una instancia de la clase Atributo 
+            # y el valor una instancia de la clase AtributoNumerico o AtributCategorico 
             for atributo in self.data["atributos"]:
-                self.atributos[atributo["nombre"]] = Atributo(self.panda, self.atributos, atributo)
+                if atributo["tipo"] == "numerico":
+                    self.atributos[atributo["nombre"]] = AtributoNumerico(self.panda, self.atributos, atributo)
+                else:
+                    self.atributos[atributo["nombre"]] = AtributoCategorico(self.panda, self.atributos, atributo)
 
-            contenido.close();
-            
+            contenido.close()
 
     def getPathCsv(self):
-        return self.data["path_csv"]
+        return self.data.get("path_csv", None)
 
     def getTarget(self):
-        return self.data["target"]
+        return self.data.get("target", None)
 
     def setDescripcion(self, descripcion):
         self.data["descripcion"] = descripcion
 
     def getAtributo(self, nombre):
-        return self.atributos.get(nombre, None);
+        return self.atributos.get(nombre, None)
 
     def getAtributos(self):
         return self.atributos.values()

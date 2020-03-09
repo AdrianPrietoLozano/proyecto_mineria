@@ -550,7 +550,7 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>170</y>
+            <y>190</y>
             <width>91</width>
             <height>16</height>
            </rect>
@@ -563,7 +563,7 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>190</y>
+            <y>210</y>
             <width>91</width>
             <height>16</height>
            </rect>
@@ -572,7 +572,7 @@
            <string>Valores faltantes:</string>
           </property>
          </widget>
-         <widget class="QLineEdit" name="dominioAtributo">
+         <widget class="QLineEdit" name="editDominioAtributo">
           <property name="geometry">
            <rect>
             <x>50</x>
@@ -582,7 +582,7 @@
            </rect>
           </property>
          </widget>
-         <widget class="QLineEdit" name="nombreAtributo">
+         <widget class="QLineEdit" name="editNombreAtributo">
           <property name="geometry">
            <rect>
             <x>50</x>
@@ -618,7 +618,7 @@
            <string>Tipo</string>
           </property>
          </widget>
-         <widget class="QLineEdit" name="tipoAtributo">
+         <widget class="QLineEdit" name="editTipoAtributo">
           <property name="geometry">
            <rect>
             <x>50</x>
@@ -632,7 +632,7 @@
           <property name="geometry">
            <rect>
             <x>100</x>
-            <y>170</y>
+            <y>190</y>
             <width>91</width>
             <height>16</height>
            </rect>
@@ -645,7 +645,7 @@
           <property name="geometry">
            <rect>
             <x>100</x>
-            <y>190</y>
+            <y>210</y>
             <width>91</width>
             <height>16</height>
            </rect>
@@ -653,6 +653,131 @@
           <property name="text">
            <string>N/A</string>
           </property>
+         </widget>
+         <widget class="Line" name="line">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>170</y>
+            <width>230</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+         <widget class="QFrame" name="contenedorMetricas">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>230</y>
+            <width>231</width>
+            <height>111</height>
+           </rect>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <widget class="QLabel" name="label_17">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>50</y>
+             <width>91</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Mediana:</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="labelModa">
+           <property name="geometry">
+            <rect>
+             <x>100</x>
+             <y>10</y>
+             <width>91</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>N/A</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="labelMedia">
+           <property name="geometry">
+            <rect>
+             <x>100</x>
+             <y>30</y>
+             <width>91</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>N/A</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_16">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>30</y>
+             <width>91</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Media:</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="labelMediana">
+           <property name="geometry">
+            <rect>
+             <x>100</x>
+             <y>50</y>
+             <width>91</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>N/A</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_15">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>10</y>
+             <width>91</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Moda:</string>
+           </property>
+          </widget>
          </widget>
         </widget>
        </item>

@@ -10,7 +10,15 @@ class Atributo:
         self.dic_datos["nombre"] = nombre
 
     def setTipo(self, tipo):
-        self.dic_datos["tipo"] = tipo
+        from atributo_numerico import AtributoNumerico
+        from atributo_categorico import AtributoCategorico
+
+        if tipo != self.getTipo():
+            self.dic_datos["tipo"] = tipo
+            if tipo == "categorico":
+                self.atributos[self.getNombre()] = AtributoCategorico(self.panda, self.atributos, self.dic_datos)
+            else:
+                self.atributos[self.getNombre()] = AtributoNumerico(self.panda, self.atributos, self.dic_datos)
 
     # aqui debe verificarse que toda la columna cumpla con el nuevo dominio
     # y que el dominio sea una expresion regular
@@ -21,10 +29,10 @@ class Atributo:
         return self.dic_datos["nombre"]
 
     def getTipo(self):
-    	return self.dic_datos["tipo"]
+        return self.dic_datos["tipo"]
 
     def getDominio(self):
-    	return self.dic_datos["dominio"]
+        return self.dic_datos["dominio"]
 
     def getValoresFueraDominio(self):
         """Retorna una lista con los ids de las instancias fuera de domino para este atributo"""
@@ -35,5 +43,5 @@ class Atributo:
     def getValoresFaltantes(self):
         """Retorna una lista con los ids de las instancias con valores faltantes para este atributo"""
         from conjunto_datos import ConjuntoDatos
-        return list(self.panda.loc[self.panda[self.getNombre()] == ConjuntoDatos._simbolo_faltante].index)        
+        return list(self.panda.loc[self.panda[self.getNombre()] == ConjuntoDatos.SIMBOLO_FALTANTE].index)
        
