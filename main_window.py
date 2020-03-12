@@ -1,6 +1,6 @@
 from main_window_ui import *
 from dialogo_elegir_propiedades import *
-from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox
+from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize
 from PyQt5.QtGui import QIcon
 import pandas as pd
@@ -36,8 +36,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # muestrar la información general del conjunto de datos
         self.labelNumInstancias.setText(str(self.conjunto.getNumInstancias()))
         self.labelNumAtributos.setText(str(self.conjunto.getNumAtributos()))
-        self.labelTarget.setText(str(self.conjunto.getTarget()))
+        
+        self.lineEditTarget.setText(str(self.conjunto.getTarget()))
+        self.lineEditValorFaltante.setText(str(self.conjunto.getSimboloFaltante()))
+        self.lineEditRuta.setText(str(self.conjunto.getRuta()))
 
+        # toolbar
+        self.agregar_actions_toolbar()
+        
+
+    def agregar_actions_toolbar(self):
+        self.eliminar_instancia_action = QAction(QtGui.QIcon('iconos/remove.ico'), "Eliminar instancias")
+        self.toolBar.addAction(self.eliminar_instancia_action)
+
+        self.agregar_instancia_action = QAction(QtGui.QIcon('iconos/add.ico'), "Agregar instancias")
+        self.toolBar.addAction(self.agregar_instancia_action)
 
     def llenar_tabla(self):
         """Muestra los datos del csv en una tabla"""
@@ -112,8 +125,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # si el atributo es numerico muestra su moda, media, mediana, etc..
             if self.comboBoxAtributos.currentData() == self.NUMERICO:
                 self.actualizarMetricas(atributo)
+                self.btnHistograma.setVisible(False)
+                self.btnBoxPlot.setVisible(True)
             else: # si es categorico esconde la moda, media, mediana, etc.
                 self.contenedorMetricas.setVisible(False)
+                self.btnHistograma.setVisible(True)
+                self.btnBoxPlot.setVisible(False)
 
 
     def actualizarMetricas(self, atributo):

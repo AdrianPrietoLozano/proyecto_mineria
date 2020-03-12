@@ -3,7 +3,7 @@ from main_window import *
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import Qt, QDir
 
-class DialgoElegirPropiedades(QtWidgets.QDialog, Ui_Dialog):
+class DialogoElegirPropiedades(QtWidgets.QDialog, Ui_Dialog):
     def __init__(self, *args, **kwargs):
         QtWidgets.QDialog.__init__(self, *args, **kwargs)
         self.setupUi(self)

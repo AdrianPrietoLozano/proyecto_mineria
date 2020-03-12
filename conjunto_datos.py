@@ -23,7 +23,8 @@ class ConjuntoDatos:
         with open(self.archivo_propiedades) as contenido:
             self.data = json.load(contenido) # combierte el .json a un diccionario
 
-            self.panda = pd.read_csv(self.getPathCsv(), names=[c["nombre"] for c in self.data["atributos"]])
+            self.panda = pd.read_csv(self.getPathCsv(), skipinitialspace=True,
+                names=[c["nombre"] for c in self.data["atributos"]])
 
             # crea un diccionario de atributos, la llave es el nombre del atributo
             # y el valor una instancia de la clase AtributoNumerico o AtributCategorico 
@@ -40,6 +41,12 @@ class ConjuntoDatos:
 
     def getTarget(self):
         return self.data.get("target", None)
+
+    def getSimboloFaltante(self):
+        return self.data.get("simbolo_faltante", None)
+
+    def getRuta(self):
+        return self.data.get("ruta", None)
 
     def setDescripcion(self, descripcion):
         self.data["descripcion"] = descripcion
