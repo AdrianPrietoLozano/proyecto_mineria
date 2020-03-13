@@ -805,7 +805,7 @@
            </property>
           </widget>
          </widget>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="btnEliminarAtributo">
           <property name="geometry">
            <rect>
             <x>50</x>

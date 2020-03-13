@@ -1,6 +1,6 @@
 from main_window_ui import *
 from dialogo_elegir_propiedades import *
-from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction
+from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize
 from PyQt5.QtGui import QIcon
 import pandas as pd
@@ -43,6 +43,34 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # toolbar
         self.agregar_actions_toolbar()
+
+        # evento boton eliminar atributo
+        self.btnEliminarAtributo.clicked.connect(self.eliminar_atributo)
+
+        self.tabla.setSelectionMode(QAbstractItemView.SingleSelection)
+
+        self.tabla.selectionModel().selectionChanged.connect(self.selecciono)
+
+    def eliminar_atributo(self):
+        nombre_atributo = self.comboBoxAtributos.currentText()
+        index_combo_box = self.comboBoxAtributos.currentIndex()
+
+        # obtiene el index de una columna por nombre
+        actual_index = self.conjunto.getIndiceAtributo(nombre_atributo)
+        if self.model.removeColumns(actual_index, actual_index + 1): # si se eliminó la columan correctamente
+            self.conjunto.eliminarAtributoDeDiccionario(nombre_atributo)
+            self.comboBoxAtributos.removeItem(index_combo_box)
+            if nombre_atributo == self.conjunto.getTarget(): # si se eliminó el atributo targe
+                pass # aquí debe establecer el target a None
+                
+            # actualiza la etiqueta de numero de atributos
+            self.labelNumAtributos.setText(str(self.conjunto.getNumAtributos()))
+        else:
+            print("Ocurrio un error")
+
+
+    def selecciono(self, a, b):
+        print("entro a selecciono")
         
 
     def agregar_actions_toolbar(self):

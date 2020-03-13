@@ -65,3 +65,13 @@ class ConjuntoDatos:
 
     def getNumInstancias(self):
         return len(self.panda)
+
+    def getIndiceAtributo(self, atributo):
+        return self.panda.columns.get_loc(atributo)
+
+    def eliminarAtributoDeDiccionario(self, atributo):
+        try:
+            del self.atributos[atributo]
+            return True
+        except KeyError:
+            return False
