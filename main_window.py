@@ -12,6 +12,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     NUMERICO = 1
     CATEGORICO = 2
 
+    # posiciones de las opciones del combo box donde se elige el tipo de atributo
+    POS_NUMERICO_COMBO = 0
+    POS_CATEGORICO_COMBO = 1
+
     signal_agregar_instancia = pyqtSignal()
 
     def __init__(self, ruta, *args, **kwargs):
@@ -33,9 +37,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         #evento boton actualizar atributo
         self.btnActualizar.clicked.connect(self.actualizar_atributo)
-
-        self.comboBoxAtributos.setIconSize(QSize(12, 12))
-        self.comboBoxTarget.setIconSize(QSize(12, 12))
 
         # muestrar la información general del conjunto de datos
         self.labelNumInstancias.setText(str(self.conjunto.getNumInstancias()))
@@ -112,6 +113,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def actualizar_etiquetas(self):
         """Actualiza las etiquetas despues de insertar una instancia"""
+        if self.comboBoxAtributos.count() == 0: # si no hay atributos termina
+            return
+
         nombre_atributo = self.comboBoxAtributos.currentText()
         tipo_atributo = self.comboBoxAtributos.currentData()
         atributo = self.conjunto.getAtributo(nombre_atributo)
@@ -166,7 +170,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """"Muestra los datos del atributo actual que esta en el combo box"""
         if self.comboBoxAtributos.count() == 0: # si no hay elementos en el combo box se desactiva
             self.editNombreAtributo.setText("")
-            self.editTipoAtributo.setText("")
+            self.comboBoxTipoAtributo.setEnabled(False)
             self.editDominioAtributo.setText("")
             self.groupBoxAtributos.setEnabled(False)
             #falta limpiar mas etiquetas
@@ -178,7 +182,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             nombre_atributo = self.comboBoxAtributos.currentText()
             atributo = self.conjunto.getAtributo(nombre_atributo)
             self.editNombreAtributo.setText(atributo.getNombre())
-            self.editTipoAtributo.setText(atributo.getTipo())
             self.editDominioAtributo.setText(atributo.getDominio())
 
             self.actualizar_label_fuera_dominio(atributo)
@@ -189,10 +192,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.actualizarMetricas(atributo)
                 self.btnHistograma.setVisible(False)
                 self.btnBoxPlot.setVisible(True)
+                self.comboBoxTipoAtributo.setCurrentIndex(self.POS_NUMERICO_COMBO)
             else: # si es categorico esconde la moda, media, mediana, etc.
                 self.contenedorMetricas.setVisible(False)
                 self.btnHistograma.setVisible(True)
                 self.btnBoxPlot.setVisible(False)
+                self.comboBoxTipoAtributo.setCurrentIndex(self.POS_CATEGORICO_COMBO)
 
 
     def actualizarMetricas(self, atributo):
@@ -205,39 +210,53 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     
     def actualizar_atributo(self):
-        """Evento clic del boton para acualizar un atributo"""
+        """Evento clic del boton para actualizar un atributo"""
+        dominio = self.editDominioAtributo.text()
+        nom = self.editNombreAtributo.text()
+
+        if dominio == "" or nom == "":
+            print("vacios")
+            return
+
         nombre_atributo = self.comboBoxAtributos.currentText()
         atributo = self.conjunto.getAtributo(nombre_atributo)
 
         # falta comprobar que los datos no esten vacios
-        nom = self.editNombreAtributo.text()
-        tipo = self.editTipoAtributo.text()
-        dominio = self.editDominioAtributo.text()
+        if self.comboBoxTipoAtributo.currentIndex() == self.POS_NUMERICO_COMBO:
+            tipo = "numerico"
+        else:
+            tipo = "categorico"
+        
         index = self.comboBoxAtributos.currentIndex()
 
+        # actualizar nombre
         if nom != atributo.getNombre(): # solo cambia el nombre si es diferente al anterior
             atributo.setNombre(nom)
             self.comboBoxAtributos.setItemText(index, nom)
-            #self.tabla.selectColumn(QItemSelectionModel.Deselect) # deselecciona las columnas seleccionadas
-            #indexColumna = self.encontrar_index_columna(nom)
-            #self.tabla.selectColumn(indexColumna)
 
+        # actualizar tipo
         if tipo != atributo.getTipo(): # solo cambia el tipo si es diferente al anterior
             atributo.setTipo(tipo) # al cambiar el tipo es necesario actualizar la instancia atributo
             atributo = self.conjunto.getAtributo(atributo.getNombre()) # actualiza el atributo ya que al cambiar de tipo se cambia el tipo de instancias
-            if tipo == "categorico":
+            if tipo == "categorico": # si el nuevo tipo es categorico entonces debe agregarlo a las opciones del combo box target
                 nuevo_tipo = self.CATEGORICO
                 icono = QIcon("iconos/categorico.ico")
                 self.contenedorMetricas.setVisible(False) # oculta la moda, media, mediana, ...
+                self.comboBoxTarget.addItem(QIcon("iconos/categorico.ico"), atributo.getNombre())
             else:
                 nuevo_tipo = self.NUMERICO
                 icono = QIcon("iconos/numerico.ico")
                 self.actualizarMetricas(atributo) # muestra la moda, media, mediana, ...
+                index_target = self.comboBoxTarget.findText(atributo.getNombre())
+                self.comboBoxTarget.removeItem(index_target)
+                if atributo.getNombre() == self.conjunto.getTarget(): # si se cambio el tipo del atributo target
+                    self.conjunto.setTarget("")
+                    self.comboBoxTarget.setCurrentIndex(0)
 
             self.comboBoxAtributos.setItemData(index, nuevo_tipo)
             self.comboBoxAtributos.setItemIcon(index, icono)
                 
-
+        # actualizar dominio
         if dominio != atributo.getDominio(): # solo cambia el dominio si es diferente
             atributo.setDominio(dominio)
             self.actualizar_label_fuera_dominio(atributo)

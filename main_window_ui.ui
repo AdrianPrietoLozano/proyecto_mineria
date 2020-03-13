@@ -519,6 +519,12 @@
           <property name="styleSheet">
            <string notr="true">QComboBox QAbstractItemView::item { margin: 10px; padding: 10px; }</string>
           </property>
+          <property name="iconSize">
+           <size>
+            <width>12</width>
+            <height>12</height>
+           </size>
+          </property>
          </widget>
          <widget class="QLabel" name="label">
           <property name="geometry">
@@ -616,16 +622,6 @@
           </property>
           <property name="text">
            <string>Tipo</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="editTipoAtributo">
-          <property name="geometry">
-           <rect>
-            <x>50</x>
-            <y>85</y>
-            <width>171</width>
-            <height>20</height>
-           </rect>
           </property>
          </widget>
          <widget class="QLabel" name="labelFueraDominio">
@@ -795,7 +791,7 @@
            <property name="geometry">
             <rect>
              <x>120</x>
-             <y>70</y>
+             <y>68</y>
              <width>61</width>
              <height>20</height>
             </rect>
@@ -869,6 +865,40 @@
           <property name="text">
            <string>Histograma</string>
           </property>
+         </widget>
+         <widget class="QComboBox" name="comboBoxTipoAtributo">
+          <property name="geometry">
+           <rect>
+            <x>50</x>
+            <y>85</y>
+            <width>171</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>12</width>
+            <height>12</height>
+           </size>
+          </property>
+          <item>
+           <property name="text">
+            <string>Numérico</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>iconos/numerico.ico</normaloff>iconos/numerico.ico</iconset>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Categórico</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>iconos/categorico.ico</normaloff>iconos/categorico.ico</iconset>
+           </property>
+          </item>
          </widget>
         </widget>
        </item>
@@ -1054,10 +1084,16 @@
           <property name="geometry">
            <rect>
             <x>60</x>
-            <y>60</y>
+            <y>65</y>
             <width>161</width>
-            <height>22</height>
+            <height>21</height>
            </rect>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>12</width>
+            <height>12</height>
+           </size>
           </property>
           <item>
            <property name="text">
