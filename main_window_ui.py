@@ -323,9 +323,6 @@ class Ui_MainWindow(object):
         self.lineEditValorFaltante = QtWidgets.QLineEdit(self.groupBox_2)
         self.lineEditValorFaltante.setGeometry(QtCore.QRect(60, 90, 161, 20))
         self.lineEditValorFaltante.setObjectName("lineEditValorFaltante")
-        self.lineEditTarget = QtWidgets.QLineEdit(self.groupBox_2)
-        self.lineEditTarget.setGeometry(QtCore.QRect(60, 65, 161, 20))
-        self.lineEditTarget.setObjectName("lineEditTarget")
         self.lineEditRuta = QtWidgets.QLineEdit(self.groupBox_2)
         self.lineEditRuta.setGeometry(QtCore.QRect(60, 116, 161, 20))
         self.lineEditRuta.setObjectName("lineEditRuta")
@@ -338,6 +335,10 @@ class Ui_MainWindow(object):
         self.label_6 = QtWidgets.QLabel(self.groupBox_2)
         self.label_6.setGeometry(QtCore.QRect(10, 90, 41, 16))
         self.label_6.setObjectName("label_6")
+        self.comboBoxTarget = QtWidgets.QComboBox(self.groupBox_2)
+        self.comboBoxTarget.setGeometry(QtCore.QRect(60, 60, 161, 22))
+        self.comboBoxTarget.setObjectName("comboBoxTarget")
+        self.comboBoxTarget.addItem("")
         self.verticalLayout.addWidget(self.groupBox_2)
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
         self.pushButton_5.setObjectName("pushButton_5")
@@ -396,6 +397,7 @@ class Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "Target"))
         self.label_5.setText(_translate("MainWindow", "Ruta"))
         self.label_6.setText(_translate("MainWindow", "Faltante"))
+        self.comboBoxTarget.setItemText(0, _translate("MainWindow", "--Ninguno"))
         self.pushButton_5.setText(_translate("MainWindow", "Descripción del dataset"))
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
 
@@ -408,37 +410,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
-
-"""
-for i in range(20):
-            boton = QtWidgets.QPushButton("boton boton")
-            edit = QtWidgets.QLineEdit()
-            self.formLayout.addWidget(boton)
-            self.formLayout.addWidget(edit)
-
-        self.scrollAreaWidgetContents.setLayout(self.formLayout)
-
-
-
-self.formLayoutWidget = QtWidgets.QWidget(self.scrollAreaWidgetContents)
-        self.formLayoutWidget.setGeometry(QtCore.QRect(-1, -1, 291, 331))
-        self.formLayoutWidget.setObjectName("formLayoutWidget")
-        self.formLayout = QtWidgets.QFormLayout(self.formLayoutWidget)
-        self.formLayout.setContentsMargins(0, 0, 0, 0)
-        self.formLayout.setObjectName("formLayout")
-        self.lineEdit = QtWidgets.QLineEdit(self.formLayoutWidget)
-        self.lineEdit.setObjectName("lineEdit")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.lineEdit)
-        self.label_2 = QtWidgets.QLabel(self.formLayoutWidget)
-        self.label_2.setObjectName("label_2")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_2)
-        self.label_3 = QtWidgets.QLabel(self.formLayoutWidget)
-        self.label_3.setObjectName("label_3")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_3)
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.formLayoutWidget)
-        self.lineEdit_2.setObjectName("lineEdit_2")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.lineEdit_2)
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.verticalLayout.addWidget(self.scrollArea)
-"""

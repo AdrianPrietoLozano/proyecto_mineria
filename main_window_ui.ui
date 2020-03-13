@@ -1001,16 +1001,6 @@
            </rect>
           </property>
          </widget>
-         <widget class="QLineEdit" name="lineEditTarget">
-          <property name="geometry">
-           <rect>
-            <x>60</x>
-            <y>65</y>
-            <width>161</width>
-            <height>20</height>
-           </rect>
-          </property>
-         </widget>
          <widget class="QLineEdit" name="lineEditRuta">
           <property name="geometry">
            <rect>
@@ -1059,6 +1049,21 @@
           <property name="text">
            <string>Faltante</string>
           </property>
+         </widget>
+         <widget class="QComboBox" name="comboBoxTarget">
+          <property name="geometry">
+           <rect>
+            <x>60</x>
+            <y>60</y>
+            <width>161</width>
+            <height>22</height>
+           </rect>
+          </property>
+          <item>
+           <property name="text">
+            <string>--Ninguno</string>
+           </property>
+          </item>
          </widget>
         </widget>
        </item>

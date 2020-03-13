@@ -25,7 +25,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.model = TableModelPandas(self.conjunto.panda)
         self.tabla.setModel(self.model)        
 
-        self.llenar_combo_box()
+        self.llenar_combo_boxes()
         self.mostrar_atributo() # muestra los datos del atributo seleccionado por defecto en el combo box
 
         #evento cuando se cambia de elemento en el combo box
@@ -35,12 +35,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnActualizar.clicked.connect(self.actualizar_atributo)
 
         self.comboBoxAtributos.setIconSize(QSize(12, 12))
+        self.comboBoxTarget.setIconSize(QSize(12, 12))
 
         # muestrar la información general del conjunto de datos
         self.labelNumInstancias.setText(str(self.conjunto.getNumInstancias()))
         self.labelNumAtributos.setText(str(self.conjunto.getNumAtributos()))
         
-        self.lineEditTarget.setText(str(self.conjunto.getTarget()))
+        self.iniciar_target()
         self.lineEditValorFaltante.setText(str(self.conjunto.getSimboloFaltante()))
         self.lineEditRuta.setText(str(self.conjunto.getRuta()))
 
@@ -65,8 +66,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.model.removeColumns(actual_index, actual_index): # si se eliminó la columan correctamente
             self.conjunto.eliminarAtributoDeDiccionario(nombre_atributo)
             self.comboBoxAtributos.removeItem(index_combo_box)
-            if nombre_atributo == self.conjunto.getTarget(): # si se eliminó el atributo targe
-                pass # aquí debe establecer el target a None
+
+            # del combo box que tiene las opciones para el target se quita el atributo eliminado
+            index_target = self.comboBoxTarget.findText(nombre_atributo)
+            if index_target != -1:
+                self.comboBoxTarget.removeItem(index_target)
+                if nombre_atributo == self.conjunto.getTarget(): # si se eliminó el atributo target
+                    self.conjunto.setTarget("")
+                    self.comboBoxTarget.setCurrentIndex(0)
 
             # actualiza la etiqueta de numero de atributos
             self.labelNumAtributos.setText(str(self.conjunto.getNumAtributos()))
@@ -76,6 +83,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def selecciono(self, a, b):
         print("entro a selecciono")
+
+    def iniciar_target(self):
+        """Inicializa el combo box del target con el atributo correcto"""
+        target = self.conjunto.getTarget()
+        if target != None and target != "" and target in self.conjunto.getNombresAtributos():
+            if self.conjunto.getAtributo(target).getTipo() == "categorico":
+                self.comboBoxTarget.setCurrentText(target)
+            else:
+                print("el target debe ser categorico")
+        else:
+            print("target no valido")
         
 
     def agregar_actions_toolbar(self):
@@ -105,13 +123,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actualizar_label_valores_faltantes(atributo)
         self.labelNumInstancias.setText(str(self.conjunto.getNumInstancias()))
 
-    def llenar_combo_box(self):
-        """Llena los combo box con los nombres de los atributos separados por tipo"""
+    def llenar_combo_boxes(self):
+        """Llena los combo box con los nombres de los atributos separados por tipo.
+        También llena las opciones para elegir el target"""
         for atributo in self.conjunto.getAtributos():
             if atributo.getTipo() == "numerico":
                 self.comboBoxAtributos.addItem(QIcon("iconos/numerico.ico"), atributo.getNombre(), userData=self.NUMERICO)
             elif atributo.getTipo() == "categorico":
                 self.comboBoxAtributos.addItem(QIcon("iconos/categorico.ico"), atributo.getNombre(), userData=self.CATEGORICO)
+                self.comboBoxTarget.addItem(QIcon("iconos/categorico.ico"), atributo.getNombre())
 
     def actualizar_label_fuera_dominio(self, atributo):
         fuera_dominio = len(atributo.getValoresFueraDominio())

@@ -11,7 +11,10 @@ class AgregarInstancia(QWidget, Ui_Form):
 		self.conjunto = conjunto
 		self.modelo_tabla = modelo_tabla
 		self.signal_instancia_agregada = signal
+		self.num_instancias_agregadas = 0
+		self.labelInstanciasAgregadas.setText(str(self.num_instancias_agregadas))
 
+		self.btnCompletado.clicked.connect(lambda x: self.close())
 		self.btnAgregar.clicked.connect(self.agregar_instancia)
 
 		self.agregar_campos()
@@ -37,6 +40,8 @@ class AgregarInstancia(QWidget, Ui_Form):
 
 		num = self.conjunto.getNumInstancias()
 		self.modelo_tabla.insertRows(num, num, nueva_instancia) # agregar instancia al pandas y al modelo
+		self.num_instancias_agregadas += 1
+		self.labelInstanciasAgregadas.setText(str(self.num_instancias_agregadas))
 		self.signal_instancia_agregada.emit() # emitir señal para actualizar etiquetas
 
 	def agregar_campos(self):

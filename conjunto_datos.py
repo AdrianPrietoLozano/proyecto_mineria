@@ -42,6 +42,9 @@ class ConjuntoDatos:
     def getTarget(self):
         return self.data.get("target", None)
 
+    def setTarget(self, target):
+        self.data["target"] = target
+
     def getSimboloFaltante(self):
         return self.data.get("simbolo_faltante", None)
 
