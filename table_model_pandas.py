@@ -31,7 +31,7 @@ class TableModelPandas(QAbstractTableModel):
 
     def removeColumns(self, column, count, parent=QModelIndex()):
         try:
-            self.beginRemoveColumns(parent, column, column)
+            self.beginRemoveColumns(parent, column, count)
             self.panda.drop([self.panda.columns[column]], axis='columns', inplace=True)
             self.endRemoveColumns()
             return True

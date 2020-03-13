@@ -57,12 +57,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # obtiene el index de una columna por nombre
         actual_index = self.conjunto.getIndiceAtributo(nombre_atributo)
-        if self.model.removeColumns(actual_index, actual_index + 1): # si se eliminó la columan correctamente
+        if self.model.removeColumns(actual_index, actual_index): # si se eliminó la columan correctamente
             self.conjunto.eliminarAtributoDeDiccionario(nombre_atributo)
             self.comboBoxAtributos.removeItem(index_combo_box)
             if nombre_atributo == self.conjunto.getTarget(): # si se eliminó el atributo targe
                 pass # aquí debe establecer el target a None
-                
+
             # actualiza la etiqueta de numero de atributos
             self.labelNumAtributos.setText(str(self.conjunto.getNumAtributos()))
         else:
