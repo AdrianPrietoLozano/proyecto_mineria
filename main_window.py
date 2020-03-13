@@ -1,7 +1,8 @@
 from main_window_ui import *
 from dialogo_elegir_propiedades import *
+from agregar_instancia import *
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView
-from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize
+from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon
 import pandas as pd
 from conjunto_datos import ConjuntoDatos
@@ -10,6 +11,8 @@ from table_model_pandas import TableModelPandas
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     NUMERICO = 1
     CATEGORICO = 2
+
+    signal_agregar_instancia = pyqtSignal()
 
     def __init__(self, ruta, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
@@ -48,8 +51,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnEliminarAtributo.clicked.connect(self.eliminar_atributo)
 
         self.tabla.setSelectionMode(QAbstractItemView.SingleSelection)
-
         self.tabla.selectionModel().selectionChanged.connect(self.selecciono)
+
+        # conectar evento
+        self.signal_agregar_instancia.connect(self.actualizar_etiquetas)
 
     def eliminar_atributo(self):
         nombre_atributo = self.comboBoxAtributos.currentText()
@@ -74,22 +79,31 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
 
     def agregar_actions_toolbar(self):
+        """Agrega las acciones (nueva instancia, nuevo atributo, etc) al toolbar"""
         self.eliminar_instancia_action = QAction(QtGui.QIcon('iconos/remove.ico'), "Eliminar instancias")
         self.toolBar.addAction(self.eliminar_instancia_action)
 
         self.agregar_instancia_action = QAction(QtGui.QIcon('iconos/add.ico'), "Agregar instancias")
+        self.agregar_instancia_action.triggered.connect(self.mostrar_agregar_instancia)
         self.toolBar.addAction(self.agregar_instancia_action)
 
-    def llenar_tabla(self):
-        """Muestra los datos del csv en una tabla"""
-        self.tabla.setColumnCount(self.conjunto.getNumAtributos())
-        self.tabla.setHorizontalHeaderLabels(self.conjunto.getNombresAtributos())
+    def mostrar_agregar_instancia(self):
+        """Muestra la ventana para agregar un nueva instancia"""
+        self.ventana = AgregarInstancia(self.conjunto, self.model, self.signal_agregar_instancia)
+        self.ventana.show()
 
-        self.tabla.setRowCount(0)
-        for index, row in self.conjunto.panda.iterrows():
-            self.tabla.insertRow(index)
-            for i in range(len(row)):
-                self.tabla.setItem(index, i, QTableWidgetItem(str(row[i])))
+    def actualizar_etiquetas(self):
+        """Actualiza las etiquetas despues de insertar una instancia"""
+        nombre_atributo = self.comboBoxAtributos.currentText()
+        tipo_atributo = self.comboBoxAtributos.currentData()
+        atributo = self.conjunto.getAtributo(nombre_atributo)
+
+        if tipo_atributo == self.NUMERICO:
+            self.actualizarMetricas(atributo)
+
+        self.actualizar_label_fuera_dominio(atributo)
+        self.actualizar_label_valores_faltantes(atributo)
+        self.labelNumInstancias.setText(str(self.conjunto.getNumInstancias()))
 
     def llenar_combo_box(self):
         """Llena los combo box con los nombres de los atributos separados por tipo"""

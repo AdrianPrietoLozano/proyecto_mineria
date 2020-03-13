@@ -58,7 +58,7 @@ class ConjuntoDatos:
         return self.atributos.values()
 
     def getNombresAtributos(self):
-        return self.atributos.keys()
+        return list(self.atributos.keys())
 
     def getNumAtributos(self):
         return len(self.atributos)

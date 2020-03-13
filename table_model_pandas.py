@@ -37,3 +37,13 @@ class TableModelPandas(QAbstractTableModel):
             return True
         except:
             return False
+
+    def insertRows(self, row, count, new_row, parent=QModelIndex()):
+        try:
+            self.beginInsertRows(parent, row, count)
+            num = len(self.panda)
+            self.panda.loc[num] = new_row
+            self.endInsertRows()
+            return True
+        except:
+            return False
