@@ -54,6 +54,9 @@ class ConjuntoDatos:
     def setDescripcion(self, descripcion):
         self.data["descripcion"] = descripcion
 
+    def getDescripcion(self):
+        return self.data.get("descripcion", None)
+
     def getAtributo(self, nombre):
         return self.atributos.get(nombre, None)
 

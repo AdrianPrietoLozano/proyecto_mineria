@@ -1,5 +1,6 @@
 from main_window_ui import *
 from dialogo_elegir_propiedades import *
+from ventana_descripcion import *
 from agregar_instancia import *
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
@@ -52,11 +53,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # evento boton eliminar atributo
         self.btnEliminarAtributo.clicked.connect(self.eliminar_atributo)
 
+        # evento boton descripcion
+        self.btnDescripcion.clicked.connect(self.mostrar_descripcion)
+
         self.tabla.setSelectionMode(QAbstractItemView.SingleSelection)
         self.tabla.selectionModel().selectionChanged.connect(self.selecciono)
 
-        # conectar evento
+        # conectar evento agregar instancia
         self.signal_agregar_instancia.connect(self.actualizar_etiquetas)
+
+    def mostrar_descripcion(self):
+        self.ventana_descripcion = VentanaDescripcion(self.conjunto)
+        self.ventana_descripcion.show()
 
     def eliminar_atributo(self):
         nombre_atributo = self.comboBoxAtributos.currentText()
@@ -221,7 +229,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         nombre_atributo = self.comboBoxAtributos.currentText()
         atributo = self.conjunto.getAtributo(nombre_atributo)
 
-        # falta comprobar que los datos no esten vacios
         if self.comboBoxTipoAtributo.currentIndex() == self.POS_NUMERICO_COMBO:
             tipo = "numerico"
         else:
@@ -260,20 +267,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if dominio != atributo.getDominio(): # solo cambia el dominio si es diferente
             atributo.setDominio(dominio)
             self.actualizar_label_fuera_dominio(atributo)
-
-
-
-    def encontrar_index_columna(self, columna):
-        for index, nom_columna in enumerate(self.conjunto.panda.columns):
-            if nom_columna == columna:
-                print("\n index=", index)
-                return index
-        return 0
-            
-
-
-
-
 
 
         

@@ -349,9 +349,9 @@ class Ui_MainWindow(object):
         self.comboBoxTarget.setObjectName("comboBoxTarget")
         self.comboBoxTarget.addItem("")
         self.verticalLayout.addWidget(self.groupBox_2)
-        self.pushButton_5 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_5.setObjectName("pushButton_5")
-        self.verticalLayout.addWidget(self.pushButton_5)
+        self.btnDescripcion = QtWidgets.QPushButton(self.frame)
+        self.btnDescripcion.setObjectName("btnDescripcion")
+        self.verticalLayout.addWidget(self.btnDescripcion)
         self.horizontalLayout.addWidget(self.frame)
         self.tabla = QtWidgets.QTableView(self.centralwidget)
         self.tabla.setSortingEnabled(True)
@@ -409,7 +409,7 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "Ruta"))
         self.label_6.setText(_translate("MainWindow", "Faltante"))
         self.comboBoxTarget.setItemText(0, _translate("MainWindow", "--Ninguno"))
-        self.pushButton_5.setText(_translate("MainWindow", "Descripción del dataset"))
+        self.btnDescripcion.setText(_translate("MainWindow", "Descripción del dataset"))
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
 
 
