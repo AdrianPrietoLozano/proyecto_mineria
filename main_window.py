@@ -1,6 +1,7 @@
 from main_window_ui import *
 from dialogo_elegir_propiedades import *
 from ventana_descripcion import *
+from ventana_valores_faltantes import *
 from agregar_instancia import *
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
@@ -56,6 +57,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # evento boton descripcion
         self.btnDescripcion.clicked.connect(self.mostrar_descripcion)
 
+        # evento boton valores faltantes
+        self.btnFaltantes.clicked.connect(self.mostrar_val_faltantes)
+
         self.tabla.setSelectionMode(QAbstractItemView.SingleSelection)
         self.tabla.selectionModel().selectionChanged.connect(self.selecciono)
 
@@ -65,6 +69,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def mostrar_descripcion(self):
         self.ventana_descripcion = VentanaDescripcion(self.conjunto)
         self.ventana_descripcion.show()
+
+    def mostrar_val_faltantes(self):
+        atributo = self.conjunto.getAtributo(self.comboBoxAtributos.currentText())
+        valores_faltantes = atributo.getValoresFaltantes()
+        self.ventana_faltantes = VentanaFaltantes(valores_faltantes)
+        self.ventana_faltantes.show()
 
     def eliminar_atributo(self):
         nombre_atributo = self.comboBoxAtributos.currentText()

@@ -827,7 +827,7 @@
            <string>Ver</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="btnFaltantes">
           <property name="geometry">
            <rect>
             <x>190</x>
