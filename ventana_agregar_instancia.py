@@ -1,9 +1,9 @@
-from agregar_instancia_ui import *
+from ventana_agregar_instancia_ui import *
 from PyQt5.QtWidgets import QWidget
 from conjunto_datos import ConjuntoDatos
 
 
-class AgregarInstancia(QWidget, Ui_Form):
+class VentanaAgregarInstancia(QWidget, Ui_Form):
 	def __init__(self, conjunto, modelo_tabla, signal, *args, **kwargs):
 		QtWidgets.QWidget.__init__(self, *args, **kwargs)
 		self.setupUi(self)

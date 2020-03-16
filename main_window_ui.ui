@@ -787,7 +787,7 @@
             <string>Desviación estándar:</string>
            </property>
           </widget>
-          <widget class="QLabel" name="labelMediana_2">
+          <widget class="QLabel" name="labelDesviacionEstandar">
            <property name="geometry">
             <rect>
              <x>120</x>
@@ -814,7 +814,7 @@
            <string>Eliminar atributo</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="btnFueraDominio">
           <property name="geometry">
            <rect>
             <x>190</x>

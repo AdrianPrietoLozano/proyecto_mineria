@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>383</width>
+    <width>468</width>
     <height>250</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Valores faltantes</string>
+   <string>Valores fuera de dominio</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -24,19 +24,19 @@
       </font>
      </property>
      <property name="text">
-      <string>Instancias con valores faltantes</string>
+      <string>Instancias fuera de dominio</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QLabel" name="labelDescripcion">
      <property name="text">
-      <string>Identificadores de las instancias que tiene valores faltantes para el atributo </string>
+      <string>Identificadores de las instancias que tiene valores fuera de dominio para el atributo </string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="textFaltantes">
+    <widget class="QPlainTextEdit" name="textEdit">
      <property name="enabled">
       <bool>true</bool>
      </property>

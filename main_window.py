@@ -2,7 +2,9 @@ from main_window_ui import *
 from dialogo_elegir_propiedades import *
 from ventana_descripcion import *
 from ventana_valores_faltantes import *
-from agregar_instancia import *
+from ventana_fuera_dominio import *
+from ventana_agregar_instancia import *
+from ventana_eliminar_instancias import *
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon
@@ -19,6 +21,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     POS_CATEGORICO_COMBO = 1
 
     signal_agregar_instancia = pyqtSignal()
+    signal_eliminar_instancias = pyqtSignal()
 
     def __init__(self, ruta, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
@@ -57,6 +60,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # evento boton descripcion
         self.btnDescripcion.clicked.connect(self.mostrar_descripcion)
 
+        # evento boton valores fuera de dominio
+        self.btnFueraDominio.clicked.connect(self.mostrar_fuera_dominio)
         # evento boton valores faltantes
         self.btnFaltantes.clicked.connect(self.mostrar_val_faltantes)
 
@@ -65,15 +70,24 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # conectar evento agregar instancia
         self.signal_agregar_instancia.connect(self.actualizar_etiquetas)
+        self.signal_eliminar_instancias.connect(self.actualizar_etiquetas)
+
+    def mostrar_fuera_dominio(self):
+        nombre_atributo = self.comboBoxAtributos.currentText()
+        atributo = self.conjunto.getAtributo(nombre_atributo)
+        val_fuera_dominio = atributo.getValoresFueraDominio()
+        self.ventana_fuera_dominio = VentanaFueraDominio(val_fuera_dominio, nombre_atributo)
+        self.ventana_fuera_dominio.show()
 
     def mostrar_descripcion(self):
         self.ventana_descripcion = VentanaDescripcion(self.conjunto)
         self.ventana_descripcion.show()
 
     def mostrar_val_faltantes(self):
-        atributo = self.conjunto.getAtributo(self.comboBoxAtributos.currentText())
+        nombre_atributo = self.comboBoxAtributos.currentText()
+        atributo = self.conjunto.getAtributo(nombre_atributo)
         valores_faltantes = atributo.getValoresFaltantes()
-        self.ventana_faltantes = VentanaFaltantes(valores_faltantes)
+        self.ventana_faltantes = VentanaFaltantes(valores_faltantes, nombre_atributo)
         self.ventana_faltantes.show()
 
     def eliminar_atributo(self):
@@ -118,15 +132,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def agregar_actions_toolbar(self):
         """Agrega las acciones (nueva instancia, nuevo atributo, etc) al toolbar"""
         self.eliminar_instancia_action = QAction(QtGui.QIcon('iconos/remove.ico'), "Eliminar instancias")
+        self.eliminar_instancia_action.triggered.connect(self.mostrar_eliminar_instancias)
         self.toolBar.addAction(self.eliminar_instancia_action)
 
         self.agregar_instancia_action = QAction(QtGui.QIcon('iconos/add.ico'), "Agregar instancias")
         self.agregar_instancia_action.triggered.connect(self.mostrar_agregar_instancia)
         self.toolBar.addAction(self.agregar_instancia_action)
 
+    def mostrar_eliminar_instancias(self):
+        """Muestra la ventana para eliminar instancias"""
+        self.ventana = VentanaEliminarInstancias(self.model, self.signal_eliminar_instancias)
+        self.ventana.show()
+
     def mostrar_agregar_instancia(self):
         """Muestra la ventana para agregar un nueva instancia"""
-        self.ventana = AgregarInstancia(self.conjunto, self.model, self.signal_agregar_instancia)
+        self.ventana = VentanaAgregarInstancia(self.conjunto, self.model, self.signal_agregar_instancia)
         self.ventana.show()
 
     def actualizar_etiquetas(self):
@@ -184,6 +204,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         mediana = str(atributo.getMediana())
         self.labelMediana.setText(mediana)
 
+    def actualizar_label_desviacion(self, atributo):
+        desviacion = str(atributo.getDesviacionEstandar())
+        self.labelDesviacionEstandar.setText(desviacion)
+
     def mostrar_atributo(self):
         """"Muestra los datos del atributo actual que esta en el combo box"""
         if self.comboBoxAtributos.count() == 0: # si no hay elementos en el combo box se desactiva
@@ -225,6 +249,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actualizar_label_moda(atributo)
         self.actualizar_label_mediana(atributo)
         self.actualizar_label_media(atributo)
+        self.actualizar_label_desviacion(atributo)
 
     
     def actualizar_atributo(self):

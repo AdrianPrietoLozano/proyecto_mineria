@@ -1,8 +1,8 @@
-from ventana_valores_faltantes_ui import *
+from ventana_fuera_dominio_ui import *
 from PyQt5.QtWidgets import QWidget
 
 
-class VentanaFaltantes(QWidget, Ui_Form):
+class VentanaFueraDominio(QWidget, Ui_Form):
 	def __init__(self, val_faltantes, nom_atributo, *args, **kwargs):
 		QtWidgets.QWidget.__init__(self, *args, **kwargs)
 		self.setupUi(self)
@@ -14,7 +14,7 @@ class VentanaFaltantes(QWidget, Ui_Form):
 			texto_faltantes += str(val) + ", "
 		texto_faltantes = texto_faltantes[:-2] # quita la última coma
 		
-		self.textFaltantes.setPlainText(texto_faltantes)
+		self.textEdit.setPlainText(texto_faltantes)
 
 		# copia al portapapeles al dar clic en el boton
 		self.btnCopiar.clicked.connect(self.copiar_texto)
@@ -24,5 +24,5 @@ class VentanaFaltantes(QWidget, Ui_Form):
 
 	def copiar_texto(self):
 		"""Copia el texto del QPlanTextEdit al portapapeles"""
-		self.textFaltantes.selectAll()
-		self.textFaltantes.copy()
+		self.textEdit.selectAll()
+		self.textEdit.copy()

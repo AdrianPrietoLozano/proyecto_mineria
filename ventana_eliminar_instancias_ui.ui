@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>383</width>
-    <height>250</height>
+    <width>421</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Valores faltantes</string>
+   <string>Eliminar instancias</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -24,31 +24,34 @@
       </font>
      </property>
      <property name="text">
-      <string>Instancias con valores faltantes</string>
+      <string>Eliminar instancias</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="labelDescripcion">
+    <widget class="QLabel" name="label_2">
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="midLineWidth">
+      <number>2</number>
+     </property>
      <property name="text">
-      <string>Identificadores de las instancias que tiene valores faltantes para el atributo </string>
+      <string>Ingresa los identificadores de las instancias a eliminar separadas por coma y espacio</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="textFaltantes">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
+    <widget class="QPlainTextEdit" name="textEdit">
+     <property name="midLineWidth">
+      <number>0</number>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QFrame" name="frame">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -73,9 +76,12 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QPushButton" name="btnCopiar">
+       <widget class="QPushButton" name="btnEliminar">
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
         <property name="text">
-         <string>Copiar</string>
+         <string>Eliminar</string>
         </property>
        </widget>
       </item>

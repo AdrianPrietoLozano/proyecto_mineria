@@ -47,3 +47,31 @@ class TableModelPandas(QAbstractTableModel):
             return True
         except:
             return False
+
+    def eliminarMultiplesFilas(self, rows, parent=QModelIndex()):
+        total_eliminadas = 0
+        for row in rows:
+            fila_en_tabla = self.encontrarFilaEnTabla(row)
+            if fila_en_tabla != -1:
+                if self.removeRows(fila_en_tabla, fila_en_tabla, parent):
+                    total_eliminadas += 1
+
+        return total_eliminadas
+
+    def encontrarFilaEnTabla(self, row):
+        try:
+            return self.panda.index.get_loc(row)
+        except:
+            return -1
+
+    def removeRows(self, row, count, parent=QModelIndex()):
+        try:
+            self.beginRemoveRows(parent, row, count)
+            self.panda.drop(self.panda.index[row], inplace=True)
+            self.endRemoveRows()
+            return True
+        except:
+            return False
+        
+
+

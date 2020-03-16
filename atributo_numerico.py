@@ -25,7 +25,10 @@ class AtributoNumerico(Atributo):
     		return None
 
     def getDesviacionEstandar(self):
-    	pass
+        try:
+            return round(self.panda[self.getNombre()].std(), 2)
+        except:
+            return None
 
     def boxPlot(self):
     	pass

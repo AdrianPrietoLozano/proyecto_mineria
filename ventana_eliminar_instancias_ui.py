@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ventana_valores_faltantes_ui.ui'
+# Form implementation generated from reading ui file 'ventana_eliminar_instancias_ui.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.0
 #
@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(383, 250)
+        Form.resize(421, 300)
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(Form)
@@ -24,16 +24,17 @@ class Ui_Form(object):
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
-        self.labelDescripcion = QtWidgets.QLabel(Form)
-        self.labelDescripcion.setObjectName("labelDescripcion")
-        self.verticalLayout.addWidget(self.labelDescripcion)
-        self.textFaltantes = QtWidgets.QPlainTextEdit(Form)
-        self.textFaltantes.setEnabled(True)
-        self.textFaltantes.setReadOnly(True)
-        self.textFaltantes.setObjectName("textFaltantes")
-        self.verticalLayout.addWidget(self.textFaltantes)
+        self.label_2 = QtWidgets.QLabel(Form)
+        self.label_2.setLineWidth(1)
+        self.label_2.setMidLineWidth(2)
+        self.label_2.setObjectName("label_2")
+        self.verticalLayout.addWidget(self.label_2)
+        self.textEdit = QtWidgets.QPlainTextEdit(Form)
+        self.textEdit.setMidLineWidth(0)
+        self.textEdit.setObjectName("textEdit")
+        self.verticalLayout.addWidget(self.textEdit)
         self.frame = QtWidgets.QFrame(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
@@ -44,9 +45,10 @@ class Ui_Form(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.frame)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.btnCopiar = QtWidgets.QPushButton(self.frame)
-        self.btnCopiar.setObjectName("btnCopiar")
-        self.horizontalLayout.addWidget(self.btnCopiar)
+        self.btnEliminar = QtWidgets.QPushButton(self.frame)
+        self.btnEliminar.setStyleSheet("")
+        self.btnEliminar.setObjectName("btnEliminar")
+        self.horizontalLayout.addWidget(self.btnEliminar)
         self.btnCerrar = QtWidgets.QPushButton(self.frame)
         self.btnCerrar.setObjectName("btnCerrar")
         self.horizontalLayout.addWidget(self.btnCerrar)
@@ -57,10 +59,10 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Valores faltantes"))
-        self.label.setText(_translate("Form", "Instancias con valores faltantes"))
-        self.labelDescripcion.setText(_translate("Form", "Identificadores de las instancias que tiene valores faltantes para el atributo "))
-        self.btnCopiar.setText(_translate("Form", "Copiar"))
+        Form.setWindowTitle(_translate("Form", "Eliminar instancias"))
+        self.label.setText(_translate("Form", "Eliminar instancias"))
+        self.label_2.setText(_translate("Form", "Ingresa los identificadores de las instancias a eliminar separadas por coma y espacio"))
+        self.btnEliminar.setText(_translate("Form", "Eliminar"))
         self.btnCerrar.setText(_translate("Form", "Cerrar"))
 
 
