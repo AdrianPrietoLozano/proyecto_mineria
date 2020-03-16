@@ -6,10 +6,12 @@ from ventana_fuera_dominio import *
 from ventana_agregar_instancia import *
 from ventana_eliminar_instancias import *
 from ventana_correlacion_pearson import *
+from ventana_coeficiente_tschuprow import *
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon
 import pandas as pd
+import re
 from conjunto_datos import ConjuntoDatos
 from table_model_pandas import TableModelPandas
 
@@ -146,8 +148,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnCorrelacion.clicked.connect(self.mostrar_ventana_correlacion)
         self.toolBar.addWidget(self.btnCorrelacion)
 
+        self.btnTschuprow = QtWidgets.QPushButton(self.toolBar)
+        self.btnTschuprow.setText("Coeficiente de contingencia de Tschuprow")
+        self.btnTschuprow.clicked.connect(self.mostrar_ventana_tschuprow)
+        self.toolBar.addWidget(self.btnTschuprow)
+
     def mostrar_ventana_correlacion(self):
         self.ventana = VentanaCorrelacionPearson(self.conjunto)
+        self.ventana.show()
+
+    def mostrar_ventana_tschuprow(self):
+        self.ventana = VentanaCoeficienteTschuprow(self.conjunto)
         self.ventana.show()
 
     def mostrar_eliminar_instancias(self):
@@ -187,11 +198,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.comboBoxTarget.addItem(QIcon("iconos/categorico.ico"), atributo.getNombre())
 
     def actualizar_label_fuera_dominio(self, atributo):
-        fuera_dominio = len(atributo.getValoresFueraDominio())
-        total = self.conjunto.getNumInstancias()
-        porcentaje = (fuera_dominio * 100) / total
-        texto = str(fuera_dominio) + " (" + str(round(porcentaje, 2)) +"%)"
-        self.labelFueraDominio.setText(texto)
+        try:
+            fuera_dominio = len(atributo.getValoresFueraDominio())
+            total = self.conjunto.getNumInstancias()
+            porcentaje = (fuera_dominio * 100) / total
+            texto = str(fuera_dominio) + " (" + str(round(porcentaje, 2)) +"%)"
+            self.labelFueraDominio.setText(texto)
+            self.btnFueraDominio.setEnabled(True)
+        except re.error: # si la expresión regular es inválida
+            QMessageBox.warning(self, "Dominio incorrecto",
+                "El dominio no es una expresión regular válida")
+            self.labelFueraDominio.clear()
+            self.btnFueraDominio.setEnabled(False)
+
 
     def actualizar_label_valores_faltantes(self, atributo):
         faltantes = len(atributo.getValoresFaltantes())

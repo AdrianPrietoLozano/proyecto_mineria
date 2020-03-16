@@ -83,22 +83,7 @@ class ConjuntoDatos:
             return False
 
     def correlacionPearson(self, nom_atributo1, nom_atributo2):
-        """
-        x = pd.read_csv("actividad7.csv", skipinitialspace=True)
-        media1 = x["Temperatura"].mean()
-        media2 = x["Temperatura"].mean()
-        desviacion1 = x["Temperatura"].std(ddof=0)
-        desviacion2 = x["Temperatura"].std(ddof=0)
-        n = len(x)
-
-        print("media1:", media1)
-        print("media2:", media2)
-        print("des1:", desviacion1)
-        print("des2:", desviacion2)
-        print("n:", n)
-        """
-
-        
+        """Calcula la correlacion de pearson de dos atributos numéricos"""
         atributo1 = self.getAtributo(nom_atributo1)
         atributo2 = self.getAtributo(nom_atributo2)
 
@@ -115,10 +100,19 @@ class ConjuntoDatos:
 
         total = 0.0
         for i in range(n):
-            val_1 = self.panda[nom_atributo1][i]
-            val_2 = self.panda[nom_atributo2][i]
+            val_1 = self.panda[nom_atributo1].iloc[i]
+            val_2 = self.panda[nom_atributo2].iloc[i]
             total += val_1 * val_2
 
         total -= (n * media1 * media2)
         resultado = total / (n * desviacion1 * desviacion2)
         return round(resultado, 3)
+
+    def coeficienteTschuprow(self, nom_atributo1, nom_atributo2):
+        atributo1 = self.getAtributo(nom_atributo1)
+        atributo2 = self.getAtributo(nom_atributo2)
+
+        if atributo1 == None or atributo2 == None or \
+            atributo1.getTipo() != "categorico" or \
+            atributo2.getTipo() != "categorico":
+            return None
