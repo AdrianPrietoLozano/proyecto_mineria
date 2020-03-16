@@ -5,6 +5,7 @@ from ventana_valores_faltantes import *
 from ventana_fuera_dominio import *
 from ventana_agregar_instancia import *
 from ventana_eliminar_instancias import *
+from ventana_correlacion_pearson import *
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon
@@ -138,6 +139,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.agregar_instancia_action = QAction(QtGui.QIcon('iconos/add.ico'), "Agregar instancias")
         self.agregar_instancia_action.triggered.connect(self.mostrar_agregar_instancia)
         self.toolBar.addAction(self.agregar_instancia_action)
+
+        self.toolBar.addSeparator()
+        self.btnCorrelacion = QtWidgets.QPushButton(self.toolBar)
+        self.btnCorrelacion.setText("Correlación de Pearson")
+        self.btnCorrelacion.clicked.connect(self.mostrar_ventana_correlacion)
+        self.toolBar.addWidget(self.btnCorrelacion)
+
+    def mostrar_ventana_correlacion(self):
+        self.ventana = VentanaCorrelacionPearson(self.conjunto)
+        self.ventana.show()
 
     def mostrar_eliminar_instancias(self):
         """Muestra la ventana para eliminar instancias"""
