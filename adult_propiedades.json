@@ -12,7 +12,7 @@
 		},
 	        {
 			"nombre": "age",
-			"tipo": "categorico",
+			"tipo": "numerico",
 			"dominio": "[0-9]"
 		},
 		{
@@ -22,8 +22,8 @@
 		},
 		{
 			"nombre": "fnlwgt",
-			"tipo": "categorico",
-			"dominio": "(asdfkl)"
+			"tipo": "numerico",
+			"dominio": "[0-9]"
 		},
 		{
 			"nombre": "education",
@@ -32,8 +32,8 @@
 		},
 		{
 			"nombre": "education-num",
-			"tipo": "categorico",
-			"dominio": "(asdfkl)"
+			"tipo": "numerico",
+			"dominio": "[0-9]"
 		},
 		{
 			"nombre": "marital-status",
@@ -62,18 +62,18 @@
 		},
 		{
 			"nombre": "capital-gain",
-			"tipo": "categorico",
-			"dominio": "(asdfkl)"
+			"tipo": "numerico",
+			"dominio": "[0-9]"
 		},
 		{
 			"nombre": "capital-loss",
-			"tipo": "categorico",
-			"dominio": "(asdfkl)"
+			"tipo": "numerico",
+			"dominio": "[0-9]"
 		},
 		{
 			"nombre": "hours-per-week",
-			"tipo": "categorico",
-			"dominio": "(asdfkl)"
+			"tipo": "numerico",
+			"dominio": "[0-9]"
 		},
 		{
 			"nombre": "native-country",

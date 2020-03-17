@@ -39,8 +39,8 @@ class AtributoNumerico(Atributo):
             nombre = self.getNombre()
 
             total = 0.0
-            for i in range(n):
-                val = pow((self.panda[nombre].iloc[i] - media), 2)
+            for i in self.panda[nombre]:
+                val = pow((i - media), 2)
                 total += val
 
             resultado = math.sqrt(total / n)
