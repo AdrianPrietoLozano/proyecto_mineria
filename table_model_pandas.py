@@ -13,12 +13,9 @@ class TableModelPandas(QAbstractTableModel):
             return value
 
     def rowCount(self, index=QModelIndex()):
-        # The length of the outer list.
         return len(self.panda)
 
     def columnCount(self, index=QModelIndex()):
-        # The following takes the first sub-list, and returns
-        # the length (only works if all rows are an equal length)
         return len(self.panda.columns)
 
     def headerData(self, section, orientation, role):
@@ -30,6 +27,7 @@ class TableModelPandas(QAbstractTableModel):
             return str(self.panda.index[section])
 
     def removeColumns(self, column, count, parent=QModelIndex()):
+        """Elimina una columna de la tabla y del pandas"""
         try:
             self.beginRemoveColumns(parent, column, count)
             self.panda.drop([self.panda.columns[column]], axis='columns', inplace=True)
@@ -39,6 +37,7 @@ class TableModelPandas(QAbstractTableModel):
             return False
 
     def insertRows(self, row, count, new_row, parent=QModelIndex()):
+        """Inserta una fila de la tabla y del pandas"""
         try:
             self.beginInsertRows(parent, row, count)
             num = len(self.panda)
@@ -49,6 +48,7 @@ class TableModelPandas(QAbstractTableModel):
             return False
 
     def eliminarMultiplesFilas(self, rows, parent=QModelIndex()):
+        """Inicia el proceso para eliminar multiples filas"""
         total_eliminadas = 0
         for row in rows:
             fila_en_tabla = self.encontrarFilaEnTabla(row)
@@ -59,12 +59,14 @@ class TableModelPandas(QAbstractTableModel):
         return total_eliminadas
 
     def encontrarFilaEnTabla(self, row):
+        """Dado un id del pandas busca su correspondiente en la tabla"""
         try:
             return self.panda.index.get_loc(row)
         except:
             return -1
 
     def removeRows(self, row, count, parent=QModelIndex()):
+        """Elimina una columna de la tabla y del pandas"""
         try:
             self.beginRemoveRows(parent, row, count)
             self.panda.drop(self.panda.index[row], inplace=True)

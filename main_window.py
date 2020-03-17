@@ -71,7 +71,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tabla.setSelectionMode(QAbstractItemView.SingleSelection)
         self.tabla.selectionModel().selectionChanged.connect(self.selecciono)
 
-        # conectar evento agregar instancia
+        #event boton actualizar target, simbolo faltante y ruta
+        self.btnActualizarInfo.clicked.connect(self.actualizar_info_general)
+
+        # conectar evento agregar instancia. Estos eventos se emiten desde otras ventanas
         self.signal_agregar_instancia.connect(self.actualizar_etiquetas)
         self.signal_eliminar_instancias.connect(self.actualizar_etiquetas)
 
@@ -196,6 +199,35 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             elif atributo.getTipo() == "categorico":
                 self.comboBoxAtributos.addItem(QIcon("iconos/categorico.ico"), atributo.getNombre(), userData=self.CATEGORICO)
                 self.comboBoxTarget.addItem(QIcon("iconos/categorico.ico"), atributo.getNombre())
+
+    def actualizar_info_general(self):
+        """Actualizar el target, simbolo faltante y ruta"""
+        target_actual = self.conjunto.getTarget()
+        sim_faltante_actual = self.conjunto.getSimboloFaltante()
+        ruta_actual = self.conjunto.getSimboloFaltante()
+        debe_actualizar = False
+
+        nuevo_target = self.comboBoxTarget.currentText()
+        if nuevo_target != target_actual: # si el nuevo target es diferente al actual
+            if self.comboBoxTarget.currentIndex() == 0: # si se va a quitar el target (la opcion 0 corresponde a la opcion "Ninguno")
+                self.conjunto.setTarget("")
+            else:
+                self.conjunto.setTarget(nuevo_target)
+
+        nuevo_simbolo_faltante = self.lineEditValorFaltante.text()
+        if nuevo_simbolo_faltante != sim_faltante_actual: # si el nuevo simbolo es diferente al actual
+                self.conjunto.setSimboloFaltante(nuevo_simbolo_faltante)
+                debe_actualizar = True # debe actualizar etiquetas de moda, media, median, etc.
+
+        nueva_ruta = self.lineEditRuta.text()
+        if nueva_ruta != ruta_actual: # solo actualizar si la nueva ruta es diferente a la actual
+            if nueva_ruta != "": # no se permite valor en blanco
+                self.conjunto.setRuta(nueva_ruta)
+            else: # restaura el valor de la ruta actual
+                self.lineEditRuta.setText(str(self.conjunto.getRuta()))
+
+        if debe_actualizar:
+            self.actualizar_etiquetas()
 
     def actualizar_label_fuera_dominio(self, atributo):
         try:

@@ -44,12 +44,20 @@ class ConjuntoDatos:
 
     def setTarget(self, target):
         self.data["target"] = target
+        ConjuntoDatos.TARGET = target
 
     def getSimboloFaltante(self):
         return self.data.get("simbolo_faltante", None)
 
+    def setSimboloFaltante(self, simbolo):
+        self.data["simbolo_faltante"] = simbolo
+        ConjuntoDatos.SIMBOLO_FALTANTE = simbolo
+
     def getRuta(self):
         return self.data.get("ruta", None)
+
+    def setRuta(self, ruta):
+        self.data["ruta"] = ruta
 
     def setDescripcion(self, descripcion):
         self.data["descripcion"] = descripcion

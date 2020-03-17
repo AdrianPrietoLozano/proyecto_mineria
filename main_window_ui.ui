@@ -977,7 +977,7 @@
            <string>N/A</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_6">
+         <widget class="QPushButton" name="btnActualizarInfo">
           <property name="geometry">
            <rect>
             <x>80</x>
