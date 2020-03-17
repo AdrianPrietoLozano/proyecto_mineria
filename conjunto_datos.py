@@ -104,17 +104,19 @@ class ConjuntoDatos:
         media2 = atributo2.getMedia()
         n = self.getNumInstancias()
         desviacion1 = atributo1.getDesviacionEstandarManual()
-        desviacion2 = atributo2.getDesviacionEstandarManual()
+        if nom_atributo1 == nom_atributo2: # si son el mismo atributo entonces tiene la misma desviación estándar
+            desviacion2 = desviacion1
+        else:
+            desviacion2 = atributo2.getDesviacionEstandarManual()
 
         total = 0.0
-        for i in range(n):
-            val_1 = self.panda[nom_atributo1].iloc[i]
-            val_2 = self.panda[nom_atributo2].iloc[i]
+        # itera a traves de las dos columnas, hacerlo de esta forma es mas rapido que si se hace por indices
+        for val_1, val_2 in zip(self.panda[nom_atributo1], self.panda[nom_atributo2]):
             total += val_1 * val_2
 
         total -= (n * media1 * media2)
         resultado = total / (n * desviacion1 * desviacion2)
-        return round(resultado, 3)
+        return round(resultado, 3) # redondea el resultado a 3 numeros después del punto
 
     def coeficienteTschuprow(self, nom_atributo1, nom_atributo2):
         atributo1 = self.getAtributo(nom_atributo1)
@@ -124,3 +126,5 @@ class ConjuntoDatos:
             atributo1.getTipo() != "categorico" or \
             atributo2.getTipo() != "categorico":
             return None
+
+        # aún no terminado

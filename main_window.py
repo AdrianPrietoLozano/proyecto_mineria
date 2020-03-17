@@ -4,12 +4,13 @@ from ventana_descripcion import *
 from ventana_valores_faltantes import *
 from ventana_fuera_dominio import *
 from ventana_agregar_instancia import *
+from ventana_editar_instancia import *
 from ventana_eliminar_instancias import *
 from ventana_correlacion_pearson import *
 from ventana_coeficiente_tschuprow import *
-from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView
+from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView, QMenu,QHeaderView
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QCursor
 import pandas as pd
 import re
 from conjunto_datos import ConjuntoDatos
@@ -25,6 +26,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     signal_agregar_instancia = pyqtSignal()
     signal_eliminar_instancias = pyqtSignal()
+    signal_editar_instancia = pyqtSignal()
 
     def __init__(self, ruta, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
@@ -32,6 +34,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.ruta = ruta
         self.conjunto = ConjuntoDatos(self.ruta)
+
+        # id de la instancia en la que se dio clic en la tabla
+        self.currentIdRow = None
 
         # utilizando un modelo los datos en la tabla se cargan muchisimo más rápido
         self.model = TableModelPandas(self.conjunto.panda)
@@ -69,7 +74,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnFaltantes.clicked.connect(self.mostrar_val_faltantes)
 
         self.tabla.setSelectionMode(QAbstractItemView.SingleSelection)
-        self.tabla.selectionModel().selectionChanged.connect(self.selecciono)
+
+        # este menú se muestra al dar clic sobre un id en la tabla
+        self.menu_clic_tabla = QMenu("opciones")
+        self.action_editar = QAction(QtGui.QIcon('iconos/editar.png'), "Editar")
+        self.action_editar.triggered.connect(self.mostrar_editar_instancia)
+        self.menu_clic_tabla.addAction(self.action_editar)
+        self.tabla.verticalHeader().sectionPressed.connect(self.mostrar_menu_editar)
 
         #event boton actualizar target, simbolo faltante y ruta
         self.btnActualizarInfo.clicked.connect(self.actualizar_info_general)
@@ -77,6 +88,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # conectar evento agregar instancia. Estos eventos se emiten desde otras ventanas
         self.signal_agregar_instancia.connect(self.actualizar_etiquetas)
         self.signal_eliminar_instancias.connect(self.actualizar_etiquetas)
+        self.signal_editar_instancia.connect(self.actualizar_etiquetas)
+
+    def mostrar_menu_editar(self, index):
+        """Menú que se muestra al dar clic sobre el id de una instancia en la tabla"""
+        self.currentIdRow = self.conjunto.panda.index[index]
+        self.menu_clic_tabla.exec_(QCursor.pos())
 
     def mostrar_fuera_dominio(self):
         nombre_atributo = self.comboBoxAtributos.currentText()
@@ -118,10 +135,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.labelNumAtributos.setText(str(self.conjunto.getNumAtributos()))
         else:
             print("Ocurrio un error")
-
-
-    def selecciono(self, a, b):
-        print("entro a selecciono")
 
     def iniciar_target(self):
         """Inicializa el combo box del target con el atributo correcto"""
@@ -172,6 +185,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def mostrar_agregar_instancia(self):
         """Muestra la ventana para agregar un nueva instancia"""
         self.ventana = VentanaAgregarInstancia(self.conjunto, self.model, self.signal_agregar_instancia)
+        self.ventana.show()
+
+    def mostrar_editar_instancia(self):
+        """Muestra la ventana para agregar un nueva instancia"""
+        self.ventana = VentanaEditarInstancia(self.currentIdRow, self.conjunto, self.model, self.signal_agregar_instancia)
         self.ventana.show()
 
     def actualizar_etiquetas(self):
