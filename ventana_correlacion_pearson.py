@@ -31,16 +31,10 @@ class VentanaCorrelacionPearson(QWidget, Ui_Form):
 		atributo1 = self.comboBox1.currentText()
 		atributo2 = self.comboBox2.currentText()
 
-		tipo_atributo1 = self.conjunto.panda[atributo1].dtype
-		tipo_atributo2 = self.conjunto.panda[atributo2].dtype
-		if tipo_atributo1 == "float64" or tipo_atributo1 == "int64":
-			if tipo_atributo2 == "float64" or tipo_atributo2 == "int64":
-				self.labelResultado.setText(str(self.conjunto.correlacionPearson(atributo1, atributo2)))
-			else:
-				QMessageBox.critical(self, "Error",
-				"El atributo " + atributo2 + " no es numerico");
-				self.labelResultado.setText("N/A")
-		else:
+		resultado = self.conjunto.correlacionPearson(atributo1, atributo2)
+		if resultado == None:
 			QMessageBox.critical(self, "Error",
-				"El atributo " + atributo1 + " no es numerico");
+				"Ocurrio un error. Asegurate de que los atributos sean numericos")
 			self.labelResultado.setText("N/A")
+		else:
+			self.labelResultado.setText(str(resultado))

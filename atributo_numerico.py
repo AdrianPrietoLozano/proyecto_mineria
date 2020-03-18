@@ -12,42 +12,52 @@ class AtributoNumerico(Atributo):
     	except:
     		return None
 
-    def getMediana(self): # tal vez sea necesario validar los valores nulos
-    	try:
-    		return round(self.panda[self.getNombre()].median(), 4)
-    	except:
-    		return None
+    def getMediana(self):
+        try:
+            aux = self.quitarValoresFaltantes() # excluye los valores faltantes
+            return aux.astype("float64").median().round(4)
+        except:
+            return None
 
-    def getMedia(self): # tal vez sea necesario validar los valores nulos
-    	try:
-    		return round(self.panda[self.getNombre()].mean(), 4)
-    	except:
-    		return None
+    def getMedia(self):
+        try:
+            aux = self.quitarValoresFaltantes() # excluye los valores faltantes
+            return aux.astype("float64").mean().round(4)
+        except:
+            return None
 
     def getDesviacionEstandar(self):
         """Calcula la desviación estándar del atributo"""
         try:
-            return round(self.panda[self.getNombre()].std(), 4)
+            aux = self.quitarValoresFaltantes() # excluye los valores faltantes
+            return aux.astype("float64").std().round(4)
         except:
             return None
 
     def getDesviacionEstandarManual(self):
         """Calcula la desviación estándar sin usar librería"""
-        try:
+        from conjunto_datos import ConjuntoDatos
+        try:    
             media = self.getMedia()
-            n = len(self.panda)
             nombre = self.getNombre()
-
             total = 0.0
-            for i in self.panda[nombre]:
+            aux_data_frame = self.quitarValoresFaltantes().astype("float64") # excluye los valores faltantes
+            n = len(aux_data_frame)
+
+            for i in aux_data_frame:
                 val = pow((i - media), 2)
                 total += val
 
             resultado = math.sqrt(total / n)
             return round(resultado, 4)
-            
         except:
             return None
+
+
+    def quitarValoresFaltantes(self):
+        """Retorna un DataFrame sin los valores faltantes"""
+        from conjunto_datos import ConjuntoDatos
+        return self.panda[self.getNombre()].loc[self.panda[self.getNombre()] != ConjuntoDatos.SIMBOLO_FALTANTE]
 
 
     def boxPlot(self):

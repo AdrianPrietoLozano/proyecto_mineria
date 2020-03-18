@@ -95,14 +95,16 @@ class ConjuntoDatos:
         atributo1 = self.getAtributo(nom_atributo1)
         atributo2 = self.getAtributo(nom_atributo2)
 
-        if atributo1 == None or atributo2 == None or \
-            atributo1.getTipo() != "numerico" or \
-            atributo2.getTipo() != "numerico":
+        try: # si no se puede convertir a float significa que el atributo es categorico
+            # quita los valores faltantes
+            data_frame1 = self.quitarValoresFaltantes(nom_atributo1).astype("float64")
+            data_frame2 = self.quitarValoresFaltantes(nom_atributo2).astype("float64")
+        except:
             return None
 
         media1 = atributo1.getMedia()
         media2 = atributo2.getMedia()
-        n = self.getNumInstancias()
+        
         desviacion1 = atributo1.getDesviacionEstandarManual()
         if nom_atributo1 == nom_atributo2: # si son el mismo atributo entonces tiene la misma desviación estándar
             desviacion2 = desviacion1
@@ -110,13 +112,19 @@ class ConjuntoDatos:
             desviacion2 = atributo2.getDesviacionEstandarManual()
 
         total = 0.0
+        n = len(data_frame1)
+
         # itera a traves de las dos columnas, hacerlo de esta forma es mas rapido que si se hace por indices
-        for val_1, val_2 in zip(self.panda[nom_atributo1], self.panda[nom_atributo2]):
+        for val_1, val_2 in zip(data_frame1, data_frame2):
             total += val_1 * val_2
 
         total -= (n * media1 * media2)
         resultado = total / (n * desviacion1 * desviacion2)
         return round(resultado, 3) # redondea el resultado a 3 numeros después del punto
+
+    def quitarValoresFaltantes(self, nom_atributo):
+        """Retorna un DataFrame sin los valores faltantes"""
+        return self.panda[nom_atributo].loc[self.panda[nom_atributo] != ConjuntoDatos.SIMBOLO_FALTANTE]
 
     def coeficienteTschuprow(self, nom_atributo1, nom_atributo2):
         atributo1 = self.getAtributo(nom_atributo1)
