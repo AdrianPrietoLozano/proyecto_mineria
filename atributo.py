@@ -26,13 +26,13 @@ class Atributo:
         self.dic_datos["dominio"] = dominio
 
     def getNombre(self):
-        return self.dic_datos["nombre"]
+        return self.dic_datos.get("nombre", None)
 
     def getTipo(self):
-        return self.dic_datos["tipo"]
+        return self.dic_datos.get("tipo", None)
 
     def getDominio(self):
-        return self.dic_datos["dominio"]
+        return self.dic_datos.get("dominio", "")
 
     def getValoresFueraDominio(self):
         """Retorna una lista con los ids de las instancias fuera de domino para este atributo"""
@@ -42,5 +42,5 @@ class Atributo:
     def getValoresFaltantes(self):
         """Retorna una lista con los ids de las instancias con valores faltantes para este atributo"""
         from conjunto_datos import ConjuntoDatos
-        return list(self.panda.loc[self.panda[self.getNombre()] == ConjuntoDatos.SIMBOLO_FALTANTE].index)
+        return list(self.panda.loc[self.panda[self.getNombre()].astype(str) == ConjuntoDatos.SIMBOLO_FALTANTE].index)
        

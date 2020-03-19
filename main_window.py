@@ -31,12 +31,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     signal_eliminar_instancias = pyqtSignal()
     signal_editar_instancia = pyqtSignal()
 
-    def __init__(self, ruta, *args, **kwargs):
+    def __init__(self, ruta, conexion=None, query=None, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
         self.setupUi(self)
 
         self.ruta = ruta
-        self.conjunto = ConjuntoDatos(self.ruta)
+        self.conjunto = ConjuntoDatos(self.ruta, conexion, query)
 
         # id de la instancia en la que se dio clic en la tabla
         self.currentIdRow = None
@@ -217,7 +217,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         for atributo in self.conjunto.getAtributos():
             if atributo.getTipo() == "numerico":
                 self.comboBoxAtributos.addItem(QIcon("iconos/numerico.ico"), atributo.getNombre(), userData=self.NUMERICO)
-            elif atributo.getTipo() == "categorico":
+            else:
                 self.comboBoxAtributos.addItem(QIcon("iconos/categorico.ico"), atributo.getNombre(), userData=self.CATEGORICO)
                 self.comboBoxTarget.addItem(QIcon("iconos/categorico.ico"), atributo.getNombre())
 
@@ -341,13 +341,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """Evento clic del boton para actualizar un atributo"""
         dominio = self.editDominioAtributo.text()
         nom = self.editNombreAtributo.text()
-
-        if dominio == "" or nom == "":
-            print("vacios")
-            return
-
         nombre_atributo = self.comboBoxAtributos.currentText()
         atributo = self.conjunto.getAtributo(nombre_atributo)
+
+        if nom == "": # no se puede poner un nombre vacio a un atributo
+            self.editNombreAtributo.setText(atributo.getNombre())
+            QMessageBox.information(self, "Error", "El nombre no puede estar vacío")
+            return
 
         if self.comboBoxTipoAtributo.currentIndex() == self.POS_NUMERICO_COMBO:
             tipo = "numerico"

@@ -354,7 +354,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.btnDescripcion)
         self.horizontalLayout.addWidget(self.frame)
         self.tabla = QtWidgets.QTableView(self.centralwidget)
-        self.tabla.setSortingEnabled(True)
+        self.tabla.setSortingEnabled(False)
         self.tabla.setObjectName("tabla")
         self.horizontalLayout.addWidget(self.tabla)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -374,7 +374,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Proyecto Minería"))
         self.groupBoxAtributos.setTitle(_translate("MainWindow", "Atributos"))
         self.label.setText(_translate("MainWindow", "Nombre"))
         self.btnActualizar.setText(_translate("MainWindow", "Actualizar"))

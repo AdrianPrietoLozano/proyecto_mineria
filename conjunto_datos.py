@@ -9,32 +9,73 @@ class ConjuntoDatos:
     SIMBOLO_FALTANTE = "?"  # por default será ?
     TARGET = None
 
-    def __init__(self, archivo_propiedades):
+    def __init__(self, archivo_propiedades, conexion=None, query=None):
         self.archivo_propiedades = archivo_propiedades
+        self.conexion = conexion
+        self.query = query
         self.panda = None
         self.data = {} # aquí se guarda todo el archivo .json como un diccionario
         self.atributos = {}
-        self.__cargar_propiedades()
+
+        if self.conexion:
+            self.__cargar_propiedades_desde_BD()
+        else:
+            self.__cargar_propiedades()
 
         ConjuntoDatos.SIMBOLO_FALTANTE = self.data["simbolo_faltante"]
         ConjuntoDatos.TARGET = self.data["target"]
+
+        print(self.data)
 
     def __cargar_propiedades(self):
         with open(self.archivo_propiedades) as contenido:
             self.data = json.load(contenido) # combierte el .json a un diccionario
 
-            self.panda = pd.read_csv(self.getPathCsv(), skipinitialspace=True,
-                names=[c["nombre"] for c in self.data["atributos"]])
+            if self.conexion != None and self.query != None:
+                self.panda = pd.read_sql_query(self.query, self.conexion)
+                pass
+            else: # leer normalmente desde un un csv
+                self.panda = pd.read_csv(self.getPathCsv(), skipinitialspace=True,
+                    names=[c["nombre"] for c in self.data["atributos"]])
 
             # crea un diccionario de atributos, la llave es el nombre del atributo
             # y el valor una instancia de la clase AtributoNumerico o AtributCategorico 
             for atributo in self.data["atributos"]:
-                if atributo["tipo"] == "numerico":
+                tipo_atributo = atributo.get("tipo", None)
+
+                if tipo_atributo == "numerico":
                     self.atributos[atributo["nombre"]] = AtributoNumerico(self.panda, self.atributos, atributo)
                 else:
+                    atributo["tipo"] = "categorico" # en caso de que no este definido el tipo entonces por defecto se define como categorico
                     self.atributos[atributo["nombre"]] = AtributoCategorico(self.panda, self.atributos, atributo)
 
             contenido.close()
+
+
+    def __cargar_propiedades_desde_BD(self):
+        with open(self.archivo_propiedades) as contenido:
+            self.data = json.load(contenido) # combierte el .json a un diccionario
+            self.data["atributos"] = []
+
+            if self.conexion != None and self.query != None:
+                self.panda = pd.read_sql_query(self.query, self.conexion)
+
+                # crea un diccionario de atributos, la llave es el nombre del atributo
+                # y el valor una instancia de la clase AtributoNumerico o AtributCategorico 
+                for columna in self.panda.columns:
+                    tipo = self.panda[columna].dtype
+                    if tipo == "int64" or tipo == "float64":
+                        atributo = {"nombre": columna, "tipo": "numerico", "dominio":""}
+                        self.atributos[columna] = AtributoNumerico(self.panda, self.atributos, atributo)
+                    else:
+                        atributo = {"nombre": columna, "tipo": "categorico", "dominio":""}
+                        self.atributos[columna] = AtributoCategorico(self.panda, self.atributos, atributo)
+
+                    self.data["atributos"].append(atributo)
+
+            contenido.close()
+
+        self.conexion.close()
 
     def getPathCsv(self):
         return self.data.get("path_csv", None)

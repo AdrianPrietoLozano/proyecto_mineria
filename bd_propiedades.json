@@ -1,0 +1,10 @@
+{
+    "descripcion": "Esta es la descripcion de la base de datos",
+    "target": "class",
+    "simbolo_faltante": "?",
+    "datos_conexion": "root;;casas;localhost",
+    "ruta": "definir una ruta"
+}
+
+
+
