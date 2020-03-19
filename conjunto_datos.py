@@ -135,4 +135,8 @@ class ConjuntoDatos:
             atributo2.getTipo() != "categorico":
             return None
 
-        # aún no terminado
+        #TODO: Coeficiente Tschuprow aún no terminado
+    
+    #TODO: Falta por realizar chiCuadrada
+    def chiCuadrada(self, nom_atributo1, nom_atributo2):
+        pass

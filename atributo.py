@@ -20,8 +20,8 @@ class Atributo:
             else:
                 self.atributos[self.getNombre()] = AtributoNumerico(self.panda, self.atributos, self.dic_datos)
 
-    # aqui debe verificarse que toda la columna cumpla con el nuevo dominio
-    # y que el dominio sea una expresion regular
+
+
     def setDominio(self, dominio):
         self.dic_datos["dominio"] = dominio
 
@@ -36,8 +36,7 @@ class Atributo:
 
     def getValoresFueraDominio(self):
         """Retorna una lista con los ids de las instancias fuera de domino para este atributo"""
-        # falta validar
-        # falta validar que no cuente los valores faltantes
+
         return list(self.panda[self.panda[self.getNombre()].astype(str).str.match(self.getDominio()) == False].index)
 
     def getValoresFaltantes(self):

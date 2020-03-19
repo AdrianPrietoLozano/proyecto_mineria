@@ -16,6 +16,9 @@ import re
 from conjunto_datos import ConjuntoDatos
 from table_model_pandas import TableModelPandas
 
+#TODO: Falfa hacer los respaldos, donde falta hacer una clase para guardar los csv y properties
+#TODO: Conectarse a la base de datos
+
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     NUMERICO = 1
     CATEGORICO = 2
@@ -273,6 +276,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """Acutualiza el valor de la moda"""
         moda = str(atributo.getModa())
         self.labelModa.setText(moda)
+        #TODO: Agregar un boton para mostrar las modas
 
     def actualizar_label_media(self, atributo):
         """Acutualiza el valor de la media"""
@@ -288,6 +292,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         desviacion = str(atributo.getDesviacionEstandar())
         self.labelDesviacionEstandar.setText(desviacion)
 
+    # Este metodo se llama cada vez que se cambia de atributo del combo box
     def mostrar_atributo(self):
         """"Muestra los datos del atributo actual que esta en el combo box"""
         if self.comboBoxAtributos.count() == 0: # si no hay elementos en el combo box se desactiva

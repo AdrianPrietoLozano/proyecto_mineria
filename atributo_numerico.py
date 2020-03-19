@@ -8,7 +8,7 @@ class AtributoNumerico(Atributo):
 
     def getModa(self): # tal vez sea necesario validar los valores nulos
     	try:
-    		return self.panda[self.getNombre()].mode() # hay problemas con este
+    		return self.panda[self.getNombre()].mode() #TODO: hay problemas con este - Poner que se muestren todos
     	except:
     		return None
 
@@ -39,12 +39,12 @@ class AtributoNumerico(Atributo):
         from conjunto_datos import ConjuntoDatos
         try:    
             media = self.getMedia()
-            nombre = self.getNombre()
+#            nombre = self.getNombre()
             total = 0.0
             aux_data_frame = self.quitarValoresFaltantes().astype("float64") # excluye los valores faltantes
             n = len(aux_data_frame)
 
-            for i in aux_data_frame:
+            for i in aux_data_frame: # i hace referencia a un elemento de nuestro dataframe, no a su indice
                 val = pow((i - media), 2)
                 total += val
 
@@ -59,7 +59,8 @@ class AtributoNumerico(Atributo):
         from conjunto_datos import ConjuntoDatos
         return self.panda[self.getNombre()].loc[self.panda[self.getNombre()] != ConjuntoDatos.SIMBOLO_FALTANTE]
 
-
+    #TODO: Funcion box plot por hacer
+    # Debe estar dentro de un try catch
     def boxPlot(self):
     	pass
 
