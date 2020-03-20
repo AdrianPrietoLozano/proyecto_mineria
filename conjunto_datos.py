@@ -77,6 +77,17 @@ class ConjuntoDatos:
 
         self.conexion.close()
 
+    def agregarAtributo(self, nombre, tipo, dominio):
+        """Agrega un nuevo atributo al archivo de propiedades"""
+        atributo = {"nombre": nombre, "tipo": tipo, "dominio": dominio}
+        self.data["atributos"].append(atributo)
+
+        if tipo == "numerico":
+            self.atributos[nombre] = AtributoNumerico(self.panda, self.atributos, atributo)
+        else:
+            self.atributos[nombre] = AtributoCategorico(self.panda, self.atributos, atributo)
+
+
     def getPathCsv(self):
         return self.data.get("path_csv", None)
 
@@ -124,7 +135,13 @@ class ConjuntoDatos:
     def getIndiceAtributo(self, atributo):
         return self.panda.columns.get_loc(atributo)
 
+    def eliminarAtributoDePropiedades(self, index):
+        """Elimina el atributo que esta en index de la lista de atributos
+        que estan en el archivo de propiedades"""
+        self.data["atributos"].pop(index)
+
     def eliminarAtributoDeDiccionario(self, atributo):
+        """Elimina el atributo del diccionario de atributos"""
         try:
             del self.atributos[atributo]
             return True
