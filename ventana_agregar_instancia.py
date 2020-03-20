@@ -23,6 +23,7 @@ class VentanaAgregarInstancia(QWidget, Ui_Form):
 		"""agrega una instancia la modelo y emite la señal a la ventana principal"""
 		nueva_instancia = []
 		for i in self.conjunto.getNombresAtributos():
+			# busca los elementos generados dinamicamente
 			edit = self.findChild(QtWidgets.QLineEdit, "edit_" + i)
 			val = edit.text()
 			tipo_dato = self.conjunto.panda[i].dtype
@@ -42,7 +43,9 @@ class VentanaAgregarInstancia(QWidget, Ui_Form):
 		self.modelo_tabla.insertRows(num, num, nueva_instancia) # agregar instancia al pandas y al modelo
 		self.num_instancias_agregadas += 1
 		self.labelInstanciasAgregadas.setText(str(self.num_instancias_agregadas))
-		self.signal_instancia_agregada.emit() # emitir señal para actualizar etiquetas
+
+		# emitir señal para actualizar etiquetas, se actuliaza el numero de instancias, moda, media, etc.
+		self.signal_instancia_agregada.emit()
 
 	def agregar_campos(self):
 		"""Genera los campos dinamicamente y los muestra"""
@@ -61,12 +64,14 @@ class VentanaAgregarInstancia(QWidget, Ui_Form):
 		self.scrollAreaWidgetContents.setLayout(self.formLayout)
 
 	def convertir_a_entero(self, val):
+		"""Intenta converir un valor a entero"""
 		try:
 			return int(val)
 		except:
 			return val
 
 	def convertir_a_flotante(self, val):
+		"""Intenta convertir un valor a floatante"""
 		try:
 			return float(val)
 		except:

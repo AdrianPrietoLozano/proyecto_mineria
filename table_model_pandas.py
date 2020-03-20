@@ -7,23 +7,30 @@ class TableModelPandas(QAbstractTableModel):
         self.panda = data
 
     def data(self, index, role):
+        """Este método es llamado automáticamente por pyqt al mostrar la tabla"""
         value = str(self.panda.iloc[index.row(), index.column()])
 
         if role == Qt.DisplayRole:
             return value
 
     def rowCount(self, index=QModelIndex()):
+        """Retorna el número de instancias en el dataset"""
         return len(self.panda)
 
     def columnCount(self, index=QModelIndex()):
+        """Retorna el número de columnas en el dataset"""
         return len(self.panda.columns)
 
     def headerData(self, section, orientation, role):
+        """Este método es llamado automáticamente por pyqt al mostrar la tabla.
+        Sirve para mostrar los nombres de las columnas (horizontal) y el
+        id de cada instancia (vertical)
+        """
         if role != Qt.DisplayRole:
             return None
-        if orientation == Qt.Horizontal:
+        if orientation == Qt.Horizontal: # mostrar nombre de columna
             return str(self.panda.columns[section])
-        if orientation == Qt.Vertical:
+        if orientation == Qt.Vertical: # mostrar id de instancia
             return str(self.panda.index[section])
 
     def removeColumns(self, column, count, parent=QModelIndex()):
@@ -37,6 +44,7 @@ class TableModelPandas(QAbstractTableModel):
             return False
 
     def insertarColumnaAlFinal(self, nombre, parent=QModelIndex()):
+        """Inserta una columna al final"""
         if nombre in self.panda.columns: # no se permiten nombre de atributos repetidos
             return False
 
@@ -58,7 +66,12 @@ class TableModelPandas(QAbstractTableModel):
         try:
             self.beginInsertRows(parent, row, count)
             num = len(self.panda)
-            self.panda.loc[num] = new_row
+            # insertará al final del dataset
+
+            index_ultima_instancia = self.panda.index[num - 1] # index de la ultima instancia
+            # la nueva instancia tendrá de index el index de la ultima instancia mas 1
+            index_nueva_instancia = index_ultima_instancia + 1
+            self.panda.loc[index_nueva_instancia] = new_row # inserta una instancia la pandas
             self.endInsertRows()
             return True
         except:

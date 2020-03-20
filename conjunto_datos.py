@@ -2,6 +2,7 @@ import json
 from atributo_numerico import AtributoNumerico
 from atributo_categorico import AtributoCategorico
 import pandas as pd
+import math
 
 
 class ConjuntoDatos:
@@ -24,8 +25,6 @@ class ConjuntoDatos:
 
         ConjuntoDatos.SIMBOLO_FALTANTE = self.data["simbolo_faltante"]
         ConjuntoDatos.TARGET = self.data["target"]
-
-        print(self.data)
 
     def __cargar_propiedades(self):
         with open(self.archivo_propiedades) as contenido:
@@ -160,6 +159,16 @@ class ConjuntoDatos:
         except:
             return None
 
+        # para calcular la correlación de Pearson es necesario que los dos
+        # atributos tengan la misma cantidad de elementos.
+        if len(data_frame1) != len(data_frame2):
+            return None
+
+        # no se permite realizar el calculo si alguno de los atributos
+        # no tiene valores
+        if len(data_frame1) == 0 or len(data_frame2) == 0:
+            return None
+
         media1 = atributo1.getMedia()
         media2 = atributo2.getMedia()
         
@@ -185,16 +194,53 @@ class ConjuntoDatos:
         return self.panda[nom_atributo].loc[self.panda[nom_atributo] != ConjuntoDatos.SIMBOLO_FALTANTE]
 
     def coeficienteTschuprow(self, nom_atributo1, nom_atributo2):
-        atributo1 = self.getAtributo(nom_atributo1)
-        atributo2 = self.getAtributo(nom_atributo2)
+        """Calcula el coeficiente de contingencia de Tschuprow"""
 
-        if atributo1 == None or atributo2 == None or \
-            atributo1.getTipo() != "categorico" or \
-            atributo2.getTipo() != "categorico":
-            return None
+        # crea un diccionario donde las llaves son los valores únicos del
+        # primer atributo y los valores el número de veces que aparece ese valor en el dataset
+        totales_a1 = {}
+        for val in self.panda[nom_atributo1].unique(): # itera a traves de los valores únicos del atributo
+            totales_a1[val] = 0 # todos se inicializan en 0
+        
+        # hace lo mismo que arriba solo que con el atributo 2
+        totales_a2 = {}
+        for val in self.panda[nom_atributo2].unique(): # itera a traves de los valores únicos del atributo
+            totales_a2[val] = 0
 
-        #TODO: Coeficiente Tschuprow aún no terminado
-    
-    #TODO: Falta por realizar chiCuadrada
-    def chiCuadrada(self, nom_atributo1, nom_atributo2):
-        pass
+        # crea un diccionario de diccionarios para contabilizar el número
+        # de veces que aparce un par de valores en el dataset
+        """
+        ejemplo:
+        {
+            "sunny": {"True": 2, "False": 3},
+            "rainy": {"True": 1, "False": 5}
+            .
+            .
+        }
+        """
+        frecuencias = {}
+        for i in self.panda[nom_atributo1].unique():
+            frecuencias[i] = {}
+            for j in self.panda[nom_atributo2].unique():
+                frecuencias[i][j] = 0 # todo se inicializa en cero
+
+        # itera a traves de los valores de las dos columnas para acumular las frecuencias
+        for i, j in zip(self.panda[nom_atributo1], self.panda[nom_atributo2]):
+            frecuencias[i][j] += 1
+            totales_a1[i] += 1
+            totales_a2[j] += 1
+
+        n = self.getNumInstancias()
+        chi_cuadrada = 0.0
+        for i in totales_a1:
+            for j in totales_a2:
+                e = (totales_a1[i] * totales_a2[j]) / n
+                frecuencia = frecuencias[i][j]
+                val = pow((frecuencia - e), 2) / e
+                chi_cuadrada += val
+
+        c = len(totales_a1) - 1 # num de atributos diferentes en el primer atributo - 1
+        r = len(totales_a2) - 1 # num de atributos diferentes en el segundo atributo - 1
+        abajo = n * math.sqrt(c * r)
+
+        return round(math.sqrt(chi_cuadrada / abajo), 4) # redondea a 4 digitos después del punto

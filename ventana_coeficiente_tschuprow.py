@@ -21,7 +21,7 @@ class VentanaCoeficienteTschuprow(QWidget, Ui_Form):
 				self.comboBox1.addItem(QIcon("iconos/categorico.ico"), atributo.getNombre())
 				self.comboBox2.addItem(QIcon("iconos/categorico.ico"), atributo.getNombre())
 
-		if self.comboBox1.count() == 0: # si no hay atributos categoricos
+		if self.comboBox1.count() == 0: # si no hay atributos categoricos se desactiva el boton calcular
 			self.btnCalcular.setEnabled(False)
 
 	def calcular(self):
@@ -31,8 +31,11 @@ class VentanaCoeficienteTschuprow(QWidget, Ui_Form):
 		atributo1 = self.comboBox1.currentText()
 		atributo2 = self.comboBox2.currentText()
 
+		# obtiene los tipos de cada atributo
 		tipo_atributo1 = self.conjunto.panda[atributo1].dtype
 		tipo_atributo2 = self.conjunto.panda[atributo2].dtype
+
+		# comprueba que los dos atributos sean de tipo categoricos
 		if tipo_atributo1 == "O" or tipo_atributo1 == "O":
 			if tipo_atributo2 == "O" or tipo_atributo2 == "O":
 				self.labelResultado.setText(str(self.conjunto.coeficienteTschuprow(atributo1, atributo2)))

@@ -34,7 +34,7 @@ class VentanaCorrelacionPearson(QWidget, Ui_Form):
 		resultado = self.conjunto.correlacionPearson(atributo1, atributo2)
 		if resultado == None:
 			QMessageBox.critical(self, "Error",
-				"Ocurrio un error. Asegurate de que los atributos sean numericos")
+				"Ocurrio un error. Asegurate de que los atributos sean numericos y tengan el mismo número de valores")
 			self.labelResultado.setText("N/A")
 		else:
 			self.labelResultado.setText(str(resultado))

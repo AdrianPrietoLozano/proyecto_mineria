@@ -23,7 +23,7 @@ class VentanaEliminarInstancias(QWidget, Ui_Form):
 		try:
 			rows = list(map(int, rows)) # convertir cada valor de la lista a int
 		except:
-			print("Asegurate de que solo ingresaste numeros")
+			print("Asegurate de que solo ingresaste numeros separados por coma y espacio")
 			return
 
 		num_eliminadas = self.modelo.eliminarMultiplesFilas(rows)
@@ -32,3 +32,6 @@ class VentanaEliminarInstancias(QWidget, Ui_Form):
 			self.signal_instancia_eliminada.emit() # emitir señal para actualizar etiquetas
 			QMessageBox.information(self, "Instancias eliminadas",
 				"Se eliminaron " + str(num_eliminadas) + " instancias");
+		else:
+			QMessageBox.information(self, "Sin eliminaciones",
+				"No se eliminó ninguna instancias");
