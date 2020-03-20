@@ -1,9 +1,11 @@
 from dialogo_elegir_propiedades_ui import *
 from ventana_base_datos import VentanaBaseDatos
 from main_window import *
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 from PyQt5.QtCore import Qt, QDir
+import mysql.connector
 import json
+import os
 
 class DialogoElegirPropiedades(QtWidgets.QDialog, Ui_Dialog):
     def __init__(self, *args, **kwargs):
@@ -14,7 +16,7 @@ class DialogoElegirPropiedades(QtWidgets.QDialog, Ui_Dialog):
         self.botonCancelar.clicked.connect(self.cerrar_programa)
         self.elegir_archivo.clicked.connect(self.pedir_archivo)
 
-        self.lineEditRuta.setText("adult_propiedades.json")
+        self.lineEditRuta.setText("adult_propiedades.json") # se carga por defecto
 
     def pedir_archivo(self):
         file, _ = QFileDialog.getOpenFileName(self, "Selecciona un archivo", QDir.homePath(), "All Files (*)");
@@ -24,30 +26,62 @@ class DialogoElegirPropiedades(QtWidgets.QDialog, Ui_Dialog):
         if self.lineEditRuta.text() == "":
             pass
         else:
+            ruta_propiedades = self.lineEditRuta.text()
 
-            datos_conexion = self.get_datos_conexion_bd()
-            if datos_conexion != None and datos_conexion != "": # si se definieron datos de conexion
-                self.close()
-                self.ventana = VentanaBaseDatos(datos_conexion, self.lineEditRuta.text())
-                self.ventana.show()
-                
-            else: # inicia normalmente con archivo csv
-                self.close()
-                self.main = MainWindow(self.lineEditRuta.text())
-                self.main.show()
+            if not os.path.isfile(ruta_propiedades): # si no existe el archivo json muestra un error
+                QMessageBox.critical(self, "Error", "No existe el archivo")
+                return
 
-    def get_datos_conexion_bd(self):
-        with open(self.lineEditRuta.text()) as contenido:
-            data = json.load(contenido)
+            with open(ruta_propiedades) as contenido: # cargar archivo de propiedades
+                data = json.load(contenido)
+                contenido.close()
 
-            datos_conexion = data.get("datos_conexion", None)
+            path_csv = data.get("path_csv", None)
+            if path_csv != None: # si esta definido el csv
+                if os.path.isfile(path_csv): # comprueba que el csv exista
+                    self.mostrar_main_window()
 
-            contenido.close()
+                else: # si no existe el csv
+                    QMessageBox.critical(self, "Error", "No existe el archivo csv")
 
-        return datos_conexion
+            elif data.get("datos_conexion", False): # comprueba que este definido una conexion a base de datos
+                conexion = self.intentar_conectarse_bd(data["datos_conexion"])
+                if conexion != None: # si se pudo conectar
+                    self.mostrar_ventana_base_datos(conexion)
+                else:
+                    QMessageBox.critical(self, "Error", "No fue posible conectarse a la base de datos")
+            else:
+                QMessageBox.critical(self, "Error", "No esta definido el csv ni una conexion a base de datos")
+
+    def mostrar_main_window(self):
+        """Cierra esta ventana y muestra la principal"""
+        self.close()
+        self.main = MainWindow(self.lineEditRuta.text())
+        self.main.show()
+
+    def mostrar_ventana_base_datos(self, conexion):
+        """Cierra esta ventana y muestra la ventana de base de datos para ejecutar query"""
+        self.close()
+        self.ventana = VentanaBaseDatos(conexion, self.lineEditRuta.text())
+        self.ventana.show()
+
+    def intentar_conectarse_bd(self, datos_conexion):
+        """Intenta conectarse a la base de datos"""
+        usuario = datos_conexion.get("usuario", None)
+        contrasenia = datos_conexion.get("contrasenia", None)
+        base_datos = datos_conexion.get("base_datos", None)
+        host = datos_conexion.get("host", None)
+
+        try:
+            return mysql.connector.connect(user=usuario,
+                password=contrasenia,
+                database=base_datos,
+                host=host)
+        except:
+            return None
 
     def cerrar_programa(self):
-        pass
+        self.close()
 
 
 

@@ -90,6 +90,9 @@ class ConjuntoDatos:
     def getPathCsv(self):
         return self.data.get("path_csv", None)
 
+    def setPathCsv(self, path):
+        self.data["path_csv"] = path
+
     def getTarget(self):
         return self.data.get("target", None)
 
@@ -104,11 +107,11 @@ class ConjuntoDatos:
         self.data["simbolo_faltante"] = simbolo
         ConjuntoDatos.SIMBOLO_FALTANTE = simbolo
 
-    def getRuta(self):
-        return self.data.get("ruta", None)
+    def getRutaRespaldos(self):
+        return self.data.get("ruta_respaldos", None)
 
-    def setRuta(self, ruta):
-        self.data["ruta"] = ruta
+    def setRutaRespaldos(self, ruta):
+        self.data["ruta_respaldos"] = ruta
 
     def setDescripcion(self, descripcion):
         self.data["descripcion"] = descripcion
@@ -189,10 +192,6 @@ class ConjuntoDatos:
         resultado = total / (n * desviacion1 * desviacion2)
         return round(resultado, 3) # redondea el resultado a 3 numeros después del punto
 
-    def quitarValoresFaltantes(self, nom_atributo):
-        """Retorna un DataFrame sin los valores faltantes"""
-        return self.panda[nom_atributo].loc[self.panda[nom_atributo] != ConjuntoDatos.SIMBOLO_FALTANTE]
-
     def coeficienteTschuprow(self, nom_atributo1, nom_atributo2):
         """Calcula el coeficiente de contingencia de Tschuprow"""
 
@@ -244,3 +243,8 @@ class ConjuntoDatos:
         abajo = n * math.sqrt(c * r)
 
         return round(math.sqrt(chi_cuadrada / abajo), 4) # redondea a 4 digitos después del punto
+
+
+    def quitarValoresFaltantes(self, nom_atributo):
+        """Retorna un DataFrame sin los valores faltantes"""
+        return self.panda[nom_atributo].loc[self.panda[nom_atributo] != ConjuntoDatos.SIMBOLO_FALTANTE]

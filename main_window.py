@@ -9,15 +9,18 @@ from ventana_eliminar_instancias import *
 from ventana_correlacion_pearson import *
 from ventana_coeficiente_tschuprow import *
 from ventana_agregar_atributo import *
+from ventana_boxplot import *
+from ventana_histograma import *
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView, QMenu,QHeaderView
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon, QCursor
 import pandas as pd
 import re
+import json
 from conjunto_datos import ConjuntoDatos
 from table_model_pandas import TableModelPandas
-from ventana_boxplot import *
-from ventana_histograma import *
+from respaldos import Respaldos
+
 
 #TODO: Falfa hacer los respaldos, donde falta hacer una clase para guardar los csv y properties
 #TODO: Conectarse a la base de datos
@@ -42,6 +45,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ruta = ruta
         self.conjunto = ConjuntoDatos(self.ruta, conexion, query)
 
+        self.respaldos = Respaldos(self.conjunto) # para hacer los respaldos
+
         # id de la instancia en la que se dio clic en la tabla
         self.currentIdRow = None
 
@@ -64,7 +69,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
         self.iniciar_target()
         self.lineEditValorFaltante.setText(str(self.conjunto.getSimboloFaltante()))
-        self.lineEditRuta.setText(str(self.conjunto.getRuta()))
+        self.lineEditRuta.setText(str(self.conjunto.getRutaRespaldos()))
 
         # toolbar
         self.agregar_actions_toolbar()
@@ -144,6 +149,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
             # actualiza la etiqueta de numero de atributos
             self.labelNumAtributos.setText(str(self.conjunto.getNumAtributos()))
+
+            if self.respaldos.hacer_respaldo("respaldo"):
+                print("respaldo creado")
+            else:
+                print("error crear respaldo")
+
         else:
             print("Ocurrio un error")
 
@@ -234,7 +245,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ventana.show()
 
     def actualizar_etiquetas(self):
-        """Actualiza las etiquetas despues de insertar una instancia"""
+        """Actualiza las etiquetas despues de insertar, editar o eliminar una instancia"""
         if self.comboBoxAtributos.count() == 0: # si no hay atributos termina
             return
 
@@ -283,7 +294,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if nueva_ruta != "": # no se permite valor en blanco
                 self.conjunto.setRuta(nueva_ruta)
             else: # restaura el valor de la ruta actual
-                self.lineEditRuta.setText(str(self.conjunto.getRuta()))
+                self.lineEditRuta.setText(str(self.conjunto.getRutaRespaldos()))
 
         if debe_actualizar:
             self.actualizar_etiquetas()

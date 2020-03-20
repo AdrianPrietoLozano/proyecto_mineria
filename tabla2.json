@@ -3,7 +3,7 @@
     "target": "class",
     "simbolo_faltante": "?",
     "path_csv": "tabla2.csv",
-    "ruta": "definir una ruta",
+    "ruta_respaldos": "respaldos/",
     "atributos": [
         {
             "nombre": "Pronostico",

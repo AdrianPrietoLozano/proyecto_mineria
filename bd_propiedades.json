@@ -2,8 +2,14 @@
     "descripcion": "Esta es la descripcion de la base de datos",
     "target": "class",
     "simbolo_faltante": "?",
-    "datos_conexion": "root;;mysql;localhost",
-    "ruta": "definir una ruta"
+    "ruta_respaldos": "respaldos/",
+    "datos_conexion":
+    {
+    	"usuario": "root",
+    	"contrasenia": "",
+    	"base_datos": "mysql",
+    	"host": "localhost"
+    }
 }
 
 

@@ -1,57 +1,46 @@
 from ventana_base_datos_ui import *
 from main_window import MainWindow
 from PyQt5.QtWidgets import QWidget, QLabel, QMessageBox
-import mysql.connector
 
 """
 "SELECT bienraiz.id, titulo, precio, m2, rooms, baths, cars, descripcion, colonia.nombre AS colonia, municipio.nombre FROM bienraiz LEFT JOIN colonia ON bienraiz.id_colonia = colonia.id LEFT JOIN municipio ON municipio.id = colonia.id_municipio ORDER BY precio DESC"
 """
 
 
-
 class VentanaBaseDatos(QWidget, Ui_Form):
-	def __init__(self, datos_conexion, archivo_propiedddes, *args, **kwargs):
+	def __init__(self, conexion, archivo_propiedddes, *args, **kwargs):
 		QtWidgets.QWidget.__init__(self, *args, **kwargs)
 		self.setupUi(self)
 
 		self.btnAceptar.clicked.connect(self.aceptar)
-
-		self.datos_conexion = datos_conexion
+		self.conexion = conexion
 		self.propiedades = archivo_propiedddes
-		self.conexion = self.intentar_conectarse_BD()
 
-		if self.conexion == None:
-			self.close()
-			QMessageBox.critical(self, "Error",
-				"No fue posible conectarse a la base de datos");
-		else:
-			self.cursor = self.conexion.cursor()
-			self.mostrar_tablas()
+		self.cursor = self.conexion.cursor()
+		self.mostrar_tablas()
 
 	def aceptar(self):
 		"""Este método se ejecuta al dar clic sobre el boton aceptar"""
 		# debe comprobar que el query sea valido
 		# debe iniciar main windows y pasarle la conexion y el query
-		self.close()
-		self.main = MainWindow(self.propiedades, self.conexion, self.textQuery.toPlainText())
-		self.main.show()
 
-	
-	def intentar_conectarse_BD(self):
+		if self.es_query_valido():
+			self.close()
+			self.main = MainWindow(self.propiedades, self.conexion, self.textQuery.toPlainText())
+			self.main.show()
+		else:
+			QMessageBox.critical(self, "Error", "El query no es válido")
+
+	def es_query_valido(self):
+		"""Retorna True si el query es válido, en caso contrario retorna False"""
 		try:
-			datos = self.datos_conexion.split(";");
-			print(datos)
-			usuario = datos[0]
-			contrasenia = datos[1]
-			base_datos = datos[2]
-			host = datos[3]
-
-			return mysql.connector.connect(user=usuario,
-				password=contrasenia,
-				database=base_datos,
-				host=host)
+			query = self.textQuery.toPlainText()
+			self.cursor.execute(query)
+			self.cursor.fetchall()
+			return True
 		except:
-			return None
+			return False
+
 
 	def mostrar_tablas(self):
 		"""Muestra las tablas que hay en la base de datos"""

@@ -3,7 +3,7 @@
     "target": "class",
     "simbolo_faltante": "?",
     "path_csv": "iris.csv",
-    "ruta": "definir una ruta",
+    "ruta_respaldos": "respaldos/",
     "atributos": [
         {
             "nombre": "sepal length",

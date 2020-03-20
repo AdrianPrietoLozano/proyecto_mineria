@@ -1,0 +1,7 @@
+bytearray(b'test'),bytearray(b''),Y,Y,Y,Y,Y,Y,N,Y,Y,Y,Y,Y,Y,Y,Y,N,N,Y,Y
+bytearray(b'test\\_%'),bytearray(b''),Y,Y,Y,Y,Y,Y,N,Y,Y,Y,Y,Y,Y,Y,Y,N,N,Y,Y
+bytearray(b'phpmyadmin'),bytearray(b'pma'),Y,Y,Y,Y,N,N,N,N,N,N,N,N,N,N,N,N,Y,N,N
+bytearray(b'casas'),bytearray(b'adrian'),Y,Y,Y,Y,Y,Y,N,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y
+bytearray(b'proyecto_computadoras'),bytearray(b'usuario'),Y,Y,Y,Y,Y,Y,N,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y
+bytearray(b'oferta_academica'),bytearray(b'adrian'),Y,Y,Y,Y,Y,Y,N,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y
+bytearray(b'mercadolibre'),bytearray(b'usuario'),Y,Y,Y,Y,Y,Y,N,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y
