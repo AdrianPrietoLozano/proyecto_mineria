@@ -15,6 +15,8 @@ import pandas as pd
 import re
 from conjunto_datos import ConjuntoDatos
 from table_model_pandas import TableModelPandas
+from ventana_boxplot import *
+from ventana_histograma import *
 
 #TODO: Falfa hacer los respaldos, donde falta hacer una clase para guardar los csv y properties
 #TODO: Conectarse a la base de datos
@@ -87,6 +89,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         #event boton actualizar target, simbolo faltante y ruta
         self.btnActualizarInfo.clicked.connect(self.actualizar_info_general)
+        self.btnHistograma.clicked.connect(self.mostrar_histograma)
+        self.btnBoxPlot.clicked.connect(self.mostrar_boxplot)
 
         # conectar evento agregar instancia. Estos eventos se emiten desde otras ventanas
         self.signal_agregar_instancia.connect(self.actualizar_etiquetas)
@@ -387,6 +391,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if dominio != atributo.getDominio(): # solo cambia el dominio si es diferente
             atributo.setDominio(dominio)
             self.actualizar_label_fuera_dominio(atributo)
+    
+    def mostrar_boxplot(self):
+        self.ventana = boxplot(self.conjunto, self.comboBoxAtributos.currentText())
+        self.ventana.show()
+
+    def mostrar_histograma(self):
+        self.ventana = histograma(self.conjunto, self.comboBoxAtributos.currentText())
+        self.ventana.show()
 
 
         
