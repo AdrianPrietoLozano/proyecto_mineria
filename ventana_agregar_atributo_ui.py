@@ -1,0 +1,117 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'ventana_agregar_atributo_ui.ui'
+#
+# Created by: PyQt5 UI code generator 5.13.0
+#
+# WARNING! All changes made in this file will be lost!
+
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+
+class Ui_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(420, 200)
+        Form.setMinimumSize(QtCore.QSize(420, 200))
+        Form.setMaximumSize(QtCore.QSize(420, 200))
+        self.verticalLayout = QtWidgets.QVBoxLayout(Form)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.label = QtWidgets.QLabel(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.verticalLayout.addWidget(self.label)
+        self.label_2 = QtWidgets.QLabel(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy)
+        self.label_2.setLineWidth(3)
+        self.label_2.setObjectName("label_2")
+        self.verticalLayout.addWidget(self.label_2)
+        self.formLayout = QtWidgets.QFormLayout()
+        self.formLayout.setContentsMargins(-1, 9, -1, -1)
+        self.formLayout.setObjectName("formLayout")
+        self.label_3 = QtWidgets.QLabel(Form)
+        self.label_3.setObjectName("label_3")
+        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_3)
+        self.label_4 = QtWidgets.QLabel(Form)
+        self.label_4.setObjectName("label_4")
+        self.formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_4)
+        self.label_5 = QtWidgets.QLabel(Form)
+        self.label_5.setObjectName("label_5")
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.label_5)
+        self.lineEditNombre = QtWidgets.QLineEdit(Form)
+        self.lineEditNombre.setObjectName("lineEditNombre")
+        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.lineEditNombre)
+        self.lineEditDominio = QtWidgets.QLineEdit(Form)
+        self.lineEditDominio.setObjectName("lineEditDominio")
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.lineEditDominio)
+        self.comboBoxTipo = QtWidgets.QComboBox(Form)
+        self.comboBoxTipo.setIconSize(QtCore.QSize(12, 12))
+        self.comboBoxTipo.setObjectName("comboBoxTipo")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("iconos/numerico.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.comboBoxTipo.addItem(icon, "")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("iconos/categorico.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.comboBoxTipo.addItem(icon1, "")
+        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.comboBoxTipo)
+        self.verticalLayout.addLayout(self.formLayout)
+        self.frame = QtWidgets.QFrame(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
+        self.frame.setSizePolicy(sizePolicy)
+        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setObjectName("frame")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.frame)
+        self.horizontalLayout.setContentsMargins(3, 3, 3, 3)
+        self.horizontalLayout.setSpacing(3)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.btnCancelar = QtWidgets.QPushButton(self.frame)
+        self.btnCancelar.setObjectName("btnCancelar")
+        self.horizontalLayout.addWidget(self.btnCancelar)
+        self.btnAceptar = QtWidgets.QPushButton(self.frame)
+        self.btnAceptar.setObjectName("btnAceptar")
+        self.horizontalLayout.addWidget(self.btnAceptar)
+        self.verticalLayout.addWidget(self.frame)
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.label.setText(_translate("Form", "Agregar atributo"))
+        self.label_2.setText(_translate("Form", "Ingresa el nombre del atributo. Los datos serán llenados con el símbolo faltante"))
+        self.label_3.setText(_translate("Form", "Nombre"))
+        self.label_4.setText(_translate("Form", "Tipo"))
+        self.label_5.setText(_translate("Form", "Dominio"))
+        self.comboBoxTipo.setItemText(0, _translate("Form", "Numérico"))
+        self.comboBoxTipo.setItemText(1, _translate("Form", "Categórico"))
+        self.btnCancelar.setText(_translate("Form", "Cancelar"))
+        self.btnAceptar.setText(_translate("Form", "Aceptar"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Form = QtWidgets.QWidget()
+    ui = Ui_Form()
+    ui.setupUi(Form)
+    Form.show()
+    sys.exit(app.exec_())

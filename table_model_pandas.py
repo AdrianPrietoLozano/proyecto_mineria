@@ -36,6 +36,23 @@ class TableModelPandas(QAbstractTableModel):
         except:
             return False
 
+    def insertarColumnaAlFinal(self, nombre, parent=QModelIndex()):
+        if nombre in self.panda.columns: # no se permiten nombre de atributos repetidos
+            return False
+
+        indexColumn = len(self.panda.columns) # insertará la columna al final
+        return self.insertColumns(indexColumn, indexColumn, nombre)
+
+    def insertColumns(self, column, count, nombre, parent=QModelIndex()):
+        """Inserta una columna en el pandas"""
+        try:
+            self.beginInsertColumns(parent, column, count)
+            self.panda[nombre] = "?"
+            self.endInsertColumns()
+            return True
+        except:
+            return False
+
     def insertRows(self, row, count, new_row, parent=QModelIndex()):
         """Inserta una fila de la tabla y del pandas"""
         try:

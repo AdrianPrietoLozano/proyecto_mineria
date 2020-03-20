@@ -8,6 +8,7 @@ from ventana_editar_instancia import *
 from ventana_eliminar_instancias import *
 from ventana_correlacion_pearson import *
 from ventana_coeficiente_tschuprow import *
+from ventana_agregar_atributo import *
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView, QMenu,QHeaderView
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon, QCursor
@@ -32,6 +33,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     signal_agregar_instancia = pyqtSignal()
     signal_eliminar_instancias = pyqtSignal()
     signal_editar_instancia = pyqtSignal()
+    signal_agregar_columna = pyqtSignal(str)
 
     def __init__(self, ruta, conexion=None, query=None, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
@@ -96,6 +98,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.signal_agregar_instancia.connect(self.actualizar_etiquetas)
         self.signal_eliminar_instancias.connect(self.actualizar_etiquetas)
         self.signal_editar_instancia.connect(self.actualizar_etiquetas)
+        self.signal_agregar_columna.connect(self.atributo_agregado)
 
     def mostrar_menu_editar(self, index):
         """Menú que se muestra al dar clic sobre el id de una instancia en la tabla"""
@@ -128,6 +131,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         actual_index = self.conjunto.getIndiceAtributo(nombre_atributo)
         if self.model.removeColumns(actual_index, actual_index): # si se eliminó la columan correctamente
             self.conjunto.eliminarAtributoDeDiccionario(nombre_atributo)
+            self.conjunto.eliminarAtributoDePropiedades(actual_index) # elimina el atributo del archivo de propiedades
             self.comboBoxAtributos.removeItem(index_combo_box)
 
             # del combo box que tiene las opciones para el target se quita el atributo eliminado
@@ -142,6 +146,24 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.labelNumAtributos.setText(str(self.conjunto.getNumAtributos()))
         else:
             print("Ocurrio un error")
+
+        
+    def atributo_agregado(self, nombre):
+        """Esta función se llama inmediatamente después de haber agregado un nuevo atributo"""
+        atributo = self.conjunto.getAtributo(nombre)
+
+        if atributo.getTipo() == "numerico":
+            icon = QIcon("iconos/numerico.ico")
+            tipo = self.NUMERICO
+        else:
+            icon = QIcon("iconos/categorico.ico")
+            tipo = self.CATEGORICO
+            self.comboBoxTarget.addItem(icon, nombre)
+
+        self.comboBoxAtributos.addItem(icon, nombre, userData=tipo)
+        self.actualizar_etiquetas()
+        self.labelNumAtributos.setText(str(self.conjunto.getNumAtributos()))
+
 
     def iniciar_target(self):
         """Inicializa el combo box del target con el atributo correcto"""
@@ -165,6 +187,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.agregar_instancia_action.triggered.connect(self.mostrar_agregar_instancia)
         self.toolBar.addAction(self.agregar_instancia_action)
 
+        self.toolBar.addSeparator()
+        self.toolBar.addSeparator()
+        self.agregar_columna_action = QAction(QtGui.QIcon('iconos/add_column.png'), "Agregar columna")
+        self.agregar_columna_action.triggered.connect(self.mostrar_agregar_columna)
+        self.toolBar.addAction(self.agregar_columna_action)
+
+        self.toolBar.addSeparator()
         self.toolBar.addSeparator()
         self.btnCorrelacion = QtWidgets.QPushButton(self.toolBar)
         self.btnCorrelacion.setText("Correlación de Pearson")
@@ -192,6 +221,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def mostrar_agregar_instancia(self):
         """Muestra la ventana para agregar un nueva instancia"""
         self.ventana = VentanaAgregarInstancia(self.conjunto, self.model, self.signal_agregar_instancia)
+        self.ventana.show()
+
+    def mostrar_agregar_columna(self):
+        """Muestra la ventana para agregar un nueva instancia"""
+        self.ventana = VentanaAgregarAtributo(self.conjunto, self.model, self.signal_agregar_columna)
         self.ventana.show()
 
     def mostrar_editar_instancia(self):
