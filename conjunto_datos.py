@@ -30,12 +30,8 @@ class ConjuntoDatos:
         with open(self.archivo_propiedades) as contenido:
             self.data = json.load(contenido) # combierte el .json a un diccionario
 
-            if self.conexion != None and self.query != None:
-                self.panda = pd.read_sql_query(self.query, self.conexion)
-                pass
-            else: # leer normalmente desde un un csv
-                self.panda = pd.read_csv(self.getPathCsv(), skipinitialspace=True,
-                    names=[c["nombre"] for c in self.data["atributos"]])
+            self.panda = pd.read_csv(self.getPathCsv(), skipinitialspace=True,
+                names=[c["nombre"] for c in self.data["atributos"]])
 
             # crea un diccionario de atributos, la llave es el nombre del atributo
             # y el valor una instancia de la clase AtributoNumerico o AtributCategorico 

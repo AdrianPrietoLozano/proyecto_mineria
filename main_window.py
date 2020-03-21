@@ -483,7 +483,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             print("error al crear respaldo")
 
     def iniciar_version(self, nombre):
-        """Método que se ejecuta al iniciar una versión desde el menubar"""
+        """Método que se ejecuta al iniciar una versión de los respaldos desde el menubar"""
         self.close()
         self.ventana = MainWindow(self.conjunto.getRutaRespaldos() + nombre)
         self.ventana.show()
@@ -492,14 +492,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """Carga los nombres de los respaldos que hay en la ruta de respaldos"""
         ruta_respaldos = self.conjunto.getRutaRespaldos()
 
+        # itera a traves de todos los respaldos y los agrega al menubar de las versiones
         if os.path.isdir(ruta_respaldos): # si existe la ruta
             for respaldo in glob(ruta_respaldos + "*.json"):
-                nombre_respaldo = os.path.basename(respaldo) # extra solo el nombre del archivo
+                nombre_respaldo = os.path.basename(respaldo) # extrae solo el nombre del archivo
                 action = QAction(self)
                 action.setText(nombre_respaldo)
-                action.triggered.connect(lambda x: self.iniciar_version(nombre_respaldo))
-                self.menuVersiones.addAction(action)
 
+                # chk es necesario para que triggered envie su estado actual (True o False)
+                # el argumento por defecto es necesario para que lambda obtenga una copia de
+                # la variable actual del ciclo
+                action.triggered.connect(lambda chk, nombre_respaldo=nombre_respaldo: self.iniciar_version(nombre_respaldo))
+                self.menuVersiones.addAction(action)
+                self.num_version += 1
 
 
         
