@@ -29,7 +29,7 @@ class VentanaEliminarInstancias(QWidget, Ui_Form):
 		num_eliminadas = self.modelo.eliminarMultiplesFilas(rows)
 
 		if num_eliminadas > 0:
-			self.signal_instancia_eliminada.emit() # emitir señal para actualizar etiquetas
+			self.signal_instancia_eliminada.emit(num_eliminadas) # emitir señal para actualizar etiquetas
 			QMessageBox.information(self, "Instancias eliminadas",
 				"Se eliminaron " + str(num_eliminadas) + " instancias");
 		else:

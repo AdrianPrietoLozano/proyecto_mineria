@@ -1,0 +1,1 @@
+{"descripcion": "Esta es la descripcion de la base de datos", "target": "", "simbolo_faltante": "?", "path_csv": "respaldos/6_agregar_h.csv", "ruta_respaldos": "respaldos/", "atributos": [{"nombre": "h", "tipo": "numerico", "dominio": "[0-9]"}]}

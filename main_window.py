@@ -33,10 +33,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     POS_NUMERICO_COMBO = 0
     POS_CATEGORICO_COMBO = 1
 
-    signal_agregar_instancia = pyqtSignal()
-    signal_eliminar_instancias = pyqtSignal()
-    signal_editar_instancia = pyqtSignal()
-    signal_agregar_columna = pyqtSignal(str)
+    signal_agregar_instancia = pyqtSignal() # se emite cuando se agrega una instancia
+    signal_eliminar_instancias = pyqtSignal(int) # se emite cuando se elimina una instancia
+    signal_editar_instancia = pyqtSignal() # se emite cuando se edita una instancia
+    signal_agregar_columna = pyqtSignal(str) # se emite cuando se agrega una instancia
 
     def __init__(self, ruta, conexion=None, query=None, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
@@ -46,6 +46,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.conjunto = ConjuntoDatos(self.ruta, conexion, query)
 
         self.respaldos = Respaldos(self.conjunto) # para hacer los respaldos
+        self.num_version = 1 # numero de versión para el nombre de los respaldos
+        self.num_instancias_agregadas = 0 # cada que se agregan 10 instancias se hace un respaldo
+        self.num_instancias_eliminadas = 0 # cada que se eliminar 10 instancias se hacer un respaldo
 
         # id de la instancia en la que se dio clic en la tabla
         self.currentIdRow = None
@@ -100,10 +103,30 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnBoxPlot.clicked.connect(self.mostrar_boxplot)
 
         # conectar evento agregar instancia. Estos eventos se emiten desde otras ventanas
-        self.signal_agregar_instancia.connect(self.actualizar_etiquetas)
-        self.signal_eliminar_instancias.connect(self.actualizar_etiquetas)
+        self.signal_agregar_instancia.connect(self.instancia_agregada)
+        self.signal_eliminar_instancias.connect(self.instancias_eliminadas)
         self.signal_editar_instancia.connect(self.actualizar_etiquetas)
         self.signal_agregar_columna.connect(self.atributo_agregado)
+
+    def instancia_agregada(self):
+        """Este método se ejecuta cada que se agrega una instancia"""
+        self.actualizar_etiquetas() # actualizar moda, media, media, num de instancias, etc
+
+        self.num_instancias_agregadas += 1
+        # hace respaldo cuando se han agregado 10 instancias
+        if self.num_instancias_agregadas >= 10:
+            self.hacer_respaldo("instancias_agregadas")
+            self.num_instancias_agregadas = 0
+
+    def instancias_eliminadas(self, num):
+        """Este método se ejecuta cada que se elimina una instancia"""
+        self.actualizar_etiquetas() # actualiza moda, media, media, num de instancias, etc
+
+        self.num_instancias_eliminadas += num
+        # hace respaldo cuando se eliminan 10 o más instancias
+        if self.num_instancias_eliminadas >= 10:
+            self.hacer_respaldo("instancias_eliminadas")
+            self.num_instancias_eliminadas = 0
 
     def mostrar_menu_editar(self, index):
         """Menú que se muestra al dar clic sobre el id de una instancia en la tabla"""
@@ -150,10 +173,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # actualiza la etiqueta de numero de atributos
             self.labelNumAtributos.setText(str(self.conjunto.getNumAtributos()))
 
-            if self.respaldos.hacer_respaldo("respaldo"):
-                print("respaldo creado")
-            else:
-                print("error crear respaldo")
+            self.hacer_respaldo("eliminar_" + nombre_atributo)
 
         else:
             print("Ocurrio un error")
@@ -174,6 +194,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxAtributos.addItem(icon, nombre, userData=tipo)
         self.actualizar_etiquetas()
         self.labelNumAtributos.setText(str(self.conjunto.getNumAtributos()))
+
+        self.hacer_respaldo("agregar_" + nombre)
 
 
     def iniciar_target(self):
@@ -444,6 +466,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def mostrar_histograma(self):
         self.ventana = histograma(self.conjunto, self.comboBoxAtributos.currentText())
         self.ventana.show()
+
+    def hacer_respaldo(self, nombre):
+        """Crea un respaldo del csv y del archivo de propiedades"""
+        nombre_respaldo = str(self.num_version) + "_" + nombre
+        if self.respaldos.hacer_respaldo(nombre_respaldo):
+            self.num_version += 1
+        else:
+            print("error al crear respaldo")
 
 
         
