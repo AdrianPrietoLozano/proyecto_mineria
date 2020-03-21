@@ -361,6 +361,8 @@ class Ui_MainWindow(object):
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 765, 21))
         self.menubar.setObjectName("menubar")
+        self.menuVersiones = QtWidgets.QMenu(self.menubar)
+        self.menuVersiones.setObjectName("menuVersiones")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -368,6 +370,9 @@ class Ui_MainWindow(object):
         self.toolBar = QtWidgets.QToolBar(MainWindow)
         self.toolBar.setObjectName("toolBar")
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
+        self.action = QtWidgets.QAction(MainWindow)
+        self.action.setObjectName("action")
+        self.menubar.addAction(self.menuVersiones.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -410,7 +415,9 @@ class Ui_MainWindow(object):
         self.label_6.setText(_translate("MainWindow", "Faltante"))
         self.comboBoxTarget.setItemText(0, _translate("MainWindow", "--Ninguno"))
         self.btnDescripcion.setText(_translate("MainWindow", "Descripción del dataset"))
+        self.menuVersiones.setTitle(_translate("MainWindow", "Versiones"))
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
+        self.action.setText(_translate("MainWindow", "asdf"))
 
 
 if __name__ == "__main__":

@@ -15,8 +15,10 @@ from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction,
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon, QCursor
 import pandas as pd
+from glob import glob
 import re
 import json
+import os
 from conjunto_datos import ConjuntoDatos
 from table_model_pandas import TableModelPandas
 from respaldos import Respaldos
@@ -49,6 +51,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.num_version = 1 # numero de versión para el nombre de los respaldos
         self.num_instancias_agregadas = 0 # cada que se agregan 10 instancias se hace un respaldo
         self.num_instancias_eliminadas = 0 # cada que se eliminar 10 instancias se hacer un respaldo
+        self.cargar_respaldos()
 
         # id de la instancia en la que se dio clic en la tabla
         self.currentIdRow = None
@@ -472,8 +475,31 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         nombre_respaldo = str(self.num_version) + "_" + nombre
         if self.respaldos.hacer_respaldo(nombre_respaldo):
             self.num_version += 1
+            action = QAction(self)
+            action.setText(nombre_respaldo + ".json")
+            action.triggered.connect(lambda x: self.iniciar_version(nombre_respaldo + ".json"))
+            self.menuVersiones.addAction(action)
         else:
             print("error al crear respaldo")
+
+    def iniciar_version(self, nombre):
+        """Método que se ejecuta al iniciar una versión desde el menubar"""
+        self.close()
+        self.ventana = MainWindow(self.conjunto.getRutaRespaldos() + nombre)
+        self.ventana.show()
+
+    def cargar_respaldos(self):
+        """Carga los nombres de los respaldos que hay en la ruta de respaldos"""
+        ruta_respaldos = self.conjunto.getRutaRespaldos()
+
+        if os.path.isdir(ruta_respaldos): # si existe la ruta
+            for respaldo in glob(ruta_respaldos + "*.json"):
+                nombre_respaldo = os.path.basename(respaldo) # extra solo el nombre del archivo
+                action = QAction(self)
+                action.setText(nombre_respaldo)
+                action.triggered.connect(lambda x: self.iniciar_version(nombre_respaldo))
+                self.menuVersiones.addAction(action)
+
 
 
         
