@@ -29,15 +29,14 @@ class VentanaBaseDatos(QWidget, Ui_Form):
 			self.main = MainWindow(self.propiedades, self.conexion, self.textQuery.toPlainText())
 			self.main.show()
 		else:
-			QMessageBox.critical(self, "Error", "El query no es válido")
+			QMessageBox.critical(self, "Error", "El query no es válido o no tiene instancias")
 
 	def es_query_valido(self):
 		"""Retorna True si el query es válido, en caso contrario retorna False"""
 		try:
 			query = self.textQuery.toPlainText()
 			self.cursor.execute(query)
-			self.cursor.fetchall()
-			return True
+			return len(self.cursor.fetchall()) > 0
 		except:
 			return False
 
