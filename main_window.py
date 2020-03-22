@@ -329,7 +329,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         nueva_ruta = self.lineEditRuta.text()
         if nueva_ruta != ruta_actual: # solo actualizar si la nueva ruta es diferente a la actual
             if nueva_ruta != "": # no se permite valor en blanco
-                self.conjunto.setRuta(nueva_ruta)
+                self.conjunto.setRutaRespaldos(nueva_ruta)
             else: # restaura el valor de la ruta actual
                 self.lineEditRuta.setText(str(self.conjunto.getRutaRespaldos()))
 
