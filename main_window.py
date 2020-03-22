@@ -9,6 +9,7 @@ from ventana_eliminar_instancias import *
 from ventana_correlacion_pearson import *
 from ventana_coeficiente_tschuprow import *
 from ventana_agregar_atributo import *
+from ventana_moda import *
 from ventana_boxplot import *
 from ventana_histograma import *
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView, QMenu,QHeaderView
@@ -82,6 +83,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # evento boton eliminar atributo
         self.btnEliminarAtributo.clicked.connect(self.eliminar_atributo)
+
+        # evento boton mostar moda
+        self.btnModas.clicked.connect(self.mostrar_ventanas_modas)
 
         # evento boton descripcion
         self.btnDescripcion.clicked.connect(self.mostrar_descripcion)
@@ -241,6 +245,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnTschuprow.clicked.connect(self.mostrar_ventana_tschuprow)
         self.toolBar.addWidget(self.btnTschuprow)
 
+    def mostrar_ventanas_modas(self):
+        """Muestra una ventana con las modas"""
+        nombre_atributo = self.comboBoxAtributos.currentText()
+        atributo = self.conjunto.getAtributo(nombre_atributo)
+        modas = atributo.getModa()
+        self.ventana = VentanaModa(modas)
+        self.ventana.show()
+
     def mostrar_ventana_correlacion(self):
         self.ventana = VentanaCorrelacionPearson(self.conjunto)
         self.ventana.show()
@@ -346,12 +358,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         texto = str(faltantes) + " (" + str(round(porcentaje, 2)) +"%)"
         self.labelValoresFaltantes.setText(texto)
 
-    def actualizar_label_moda(self, atributo):
-        """Acutualiza el valor de la moda"""
-        moda = str(atributo.getModa())
-        self.labelModa.setText(moda)
-        #TODO: Agregar un boton para mostrar las modas
-
     def actualizar_label_media(self, atributo):
         """Acutualiza el valor de la media"""
         media = str(atributo.getMedia())
@@ -405,7 +411,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """Muestra el contenedor donde esta la moda, media, mediana, etc.
         y actualiza los valores"""
         self.contenedorMetricas.setVisible(True)
-        self.actualizar_label_moda(atributo)
         self.actualizar_label_mediana(atributo)
         self.actualizar_label_media(atributo)
         self.actualizar_label_desviacion(atributo)

@@ -6,11 +6,10 @@ class AtributoNumerico(Atributo):
     def __init__(self, panda, atributos, dic_datos):
     	Atributo.__init__(self, panda, atributos, dic_datos)
 
-    def getModa(self): # tal vez sea necesario validar los valores nulos
-    	try:
-    		return self.panda[self.getNombre()].mode() #TODO: hay problemas con este - Poner que se muestren todos
-    	except:
-    		return None
+    def getModa(self):
+        aux = self.quitarValoresFaltantes()
+        # retorna una lista de las modas
+        return list(aux.mode()) #TODO: hay problemas con este - Poner que se muestren todos
 
     def getMediana(self):
         try:
