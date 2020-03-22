@@ -26,7 +26,6 @@ from respaldos import Respaldos
 
 
 #TODO: Falfa hacer los respaldos, donde falta hacer una clase para guardar los csv y properties
-#TODO: Conectarse a la base de datos
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     NUMERICO = 1
