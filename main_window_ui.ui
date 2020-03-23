@@ -1136,6 +1136,13 @@
      <string>Versiones</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuArchivo">
+    <property name="title">
+     <string>Archivo</string>
+    </property>
+    <addaction name="actionNuevo"/>
+   </widget>
+   <addaction name="menuArchivo"/>
    <addaction name="menuVersiones"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -1153,6 +1160,11 @@
   <action name="action">
    <property name="text">
     <string>asdf</string>
+   </property>
+  </action>
+  <action name="actionNuevo">
+   <property name="text">
+    <string>Nuevo</string>
    </property>
   </action>
  </widget>

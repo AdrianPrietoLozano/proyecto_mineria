@@ -53,6 +53,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.num_instancias_eliminadas = 0 # cada que se eliminar 10 instancias se hacer un respaldo
         self.cargar_respaldos()
 
+        # action nuevo para cargar nuevo dataset
+        self.actionNuevo.triggered.connect(self.cargar_nuevo_dataset)
+
         # id de la instancia en la que se dio clic en la tabla
         self.currentIdRow = None
 
@@ -113,6 +116,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.signal_eliminar_instancias.connect(self.instancias_eliminadas)
         self.signal_editar_instancia.connect(self.actualizar_etiquetas)
         self.signal_agregar_columna.connect(self.atributo_agregado)
+
+
+    def cargar_nuevo_dataset(self):
+        """Cierra la ventana actual y abre dialogo para abrir nuevo archivo de propiedades"""
+        from dialogo_elegir_propiedades import DialogoElegirPropiedades
+        self.dialogo = DialogoElegirPropiedades()
+        self.close()
+        self.dialogo.show()
 
     def instancia_agregada(self):
         """Este método se ejecuta cada que se agrega una instancia"""
@@ -436,8 +447,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # actualizar nombre
         if nom != atributo.getNombre(): # solo cambia el nombre si es diferente al anterior
-            atributo.setNombre(nom)
-            self.comboBoxAtributos.setItemText(index, nom)
+            if not nom in self.conjunto.getNombresAtributos(): # no puede haber nombres de atributo repetidos
+                atributo.setNombre(nom)
+                self.comboBoxAtributos.setItemText(index, nom)
+            else:
+                QMessageBox.information(self, "Error", "El nombre ya existe")
 
         # actualizar tipo
         if tipo != atributo.getTipo(): # solo cambia el tipo si es diferente al anterior

@@ -363,6 +363,8 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName("menubar")
         self.menuVersiones = QtWidgets.QMenu(self.menubar)
         self.menuVersiones.setObjectName("menuVersiones")
+        self.menuArchivo = QtWidgets.QMenu(self.menubar)
+        self.menuArchivo.setObjectName("menuArchivo")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -372,6 +374,10 @@ class Ui_MainWindow(object):
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.action = QtWidgets.QAction(MainWindow)
         self.action.setObjectName("action")
+        self.actionNuevo = QtWidgets.QAction(MainWindow)
+        self.actionNuevo.setObjectName("actionNuevo")
+        self.menuArchivo.addAction(self.actionNuevo)
+        self.menubar.addAction(self.menuArchivo.menuAction())
         self.menubar.addAction(self.menuVersiones.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -416,8 +422,10 @@ class Ui_MainWindow(object):
         self.comboBoxTarget.setItemText(0, _translate("MainWindow", "--Ninguno"))
         self.btnDescripcion.setText(_translate("MainWindow", "Descripción del dataset"))
         self.menuVersiones.setTitle(_translate("MainWindow", "Versiones"))
+        self.menuArchivo.setTitle(_translate("MainWindow", "Archivo"))
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
         self.action.setText(_translate("MainWindow", "asdf"))
+        self.actionNuevo.setText(_translate("MainWindow", "Nuevo"))
 
 
 if __name__ == "__main__":
