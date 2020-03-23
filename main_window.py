@@ -44,8 +44,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
         self.setupUi(self)
 
+        self.conexion = conexion
+        self.query = query
+
         self.ruta = ruta
-        self.conjunto = ConjuntoDatos(self.ruta, conexion, query)
+        self.conjunto = ConjuntoDatos(self.ruta, self.conexion, self.query)
+
+        # si hay una conexión y un query entonces mostrar la opción para cambiar el query
+        if self.conexion != None and self.query != None:
+            self.agregar_opcion_cambiar_query()
+
 
         self.respaldos = Respaldos(self.conjunto) # para hacer los respaldos
         self.num_version = 1 # numero de versión para el nombre de los respaldos
@@ -124,6 +132,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.dialogo = DialogoElegirPropiedades()
         self.close()
         self.dialogo.show()
+
+    def agregar_opcion_cambiar_query(self):
+        action_nuevo_query = QAction(self)
+        action_nuevo_query.setText("Cambiar query")
+        action_nuevo_query.triggered.connect(self.mostrar_ventana_query)
+        self.menuArchivo.addAction(action_nuevo_query)
+
+    def mostrar_ventana_query(self):
+        from ventana_base_datos import VentanaBaseDatos
+        self.conexion.reconnect() # reconecta a la base de datos
+        self.ventana = VentanaBaseDatos(self.conexion, self.ruta)
+        self.close()
+        self.ventana.show()
 
     def instancia_agregada(self):
         """Este método se ejecuta cada que se agrega una instancia"""
