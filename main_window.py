@@ -482,11 +482,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 nuevo_tipo = self.CATEGORICO
                 icono = QIcon("iconos/categorico.ico")
                 self.contenedorMetricas.setVisible(False) # oculta la moda, media, mediana, ...
+                self.btnBoxPlot.setVisible(False) # oculta el boton boxplot
+                self.btnHistograma.setVisible(True) # muetra el boton histograma
                 self.comboBoxTarget.addItem(QIcon("iconos/categorico.ico"), atributo.getNombre())
             else:
                 nuevo_tipo = self.NUMERICO
                 icono = QIcon("iconos/numerico.ico")
                 self.actualizarMetricas(atributo) # muestra la moda, media, mediana, ...
+                self.btnHistograma.setVisible(False) # oculta el boton histograma
+                self.btnBoxPlot.setVisible(True) # muestra el boton boxplot
                 index_target = self.comboBoxTarget.findText(atributo.getNombre())
                 self.comboBoxTarget.removeItem(index_target)
                 if atributo.getNombre() == self.conjunto.getTarget(): # si se cambio el tipo del atributo target
