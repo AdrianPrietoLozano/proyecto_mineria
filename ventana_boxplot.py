@@ -1,35 +1,57 @@
 from ventana_boxplot_ui import *
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QMessageBox
 from PyQt5.QtGui import QPixmap
+from pandas.api.types import is_numeric_dtype
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
-
 
 
 class boxplot(QWidget, Ui_Form):
     
     num_version = 1
 
-    def __init__(self, conjunto_datos,nombre,*args, **kwargs):
+    def __init__(self, conjunto_datos, nombre, *args, **kwargs):
         QtWidgets.QWidget.__init__(self, *args, **kwargs)
         self.setupUi(self)
+
         self.conjunto = conjunto_datos
         self.nombre = nombre
+        self.figura = None # aquí se guardará el boxplot
         self.btnGuardar.clicked.connect(self.guardar)
+        self.datos_panda = self.quitarValoresFaltantes()
         self.generar_BoxPlot()
-        
-    def cambiarTipo(self):
-        try:
-            self.conjunto.panda[self.nombre].astype("float64")
-            return True
-
-        except:
-            return False
     
 
 
     def generar_BoxPlot(self):
+
+        # si el atributo no es numérico no se puede crear el boxplot
+        if not is_numeric_dtype(self.datos_panda[self.nombre]):
+            QMessageBox.critical(self, "Error", "El atributo " + self.nombre + " no es numérico")
+            self.close()
+            return
+
+        carpetaAux = "generarBoxplot"
+        if not os.path.isdir(carpetaAux):
+            self.crearCarpeta(carpetaAux)        
+        nombreCarpeta = carpetaAux + "/"
+        nombreBoxplot = "Boxplot.png"
+        plt.figure(figsize = (16, 6))
+
+        target = self.conjunto.getTarget()
+        if target != None and target != "":
+            # hacer boxplot como lo 
+            self.figura = sns.boxplot(y=target, x=self.nombre, data=self.datos_panda, palette="Blues")
+        else:
+            self.figura = sns.boxplot(x=self.nombre, data=self.datos_panda, palette="Blues")
+
+        plt.savefig(nombreCarpeta + nombreBoxplot)
+        grafica = QPixmap(nombreCarpeta + nombreBoxplot)
+        self.label.setPixmap(grafica)
+
+
+        """
         if self.cambiarTipo():
             carpetaAux = "generarBoxplot"
             if not os.path.isdir(carpetaAux):
@@ -56,6 +78,7 @@ class boxplot(QWidget, Ui_Form):
         else:
             print("No se puede generar el Boxplot")
             self.close()
+        """
 
 
     def crearCarpeta(self, carpeta):
@@ -66,16 +89,30 @@ class boxplot(QWidget, Ui_Form):
 
 
     def guardar(self):
-        ruta = self.conjunto.getRutaRespaldos()
+        self.close()
+        """
+        ruta_respaldos = self.conjunto.getRutaRespaldos()
         nomFinal = str(boxplot.num_version) + "_boxplot_" + self.nombre + ".png"
         
-        if not os.path.isdir(ruta):
-            self.crearCarpeta(ruta)
-        plt.figure(figsize = (16, 6))
-        sns.boxplot(y = self.conjunto.getTarget(), x = self.nombre, data = self.conjunto.panda, palette="Blues")
-        plt.savefig(ruta + nomFinal)
+        if not os.path.isdir(ruta_respaldos):
+            self.crearCarpeta(ruta_respaldos)
+        self.figura.get_figure().savefig(ruta_respaldos + nomFinal)
         boxplot.num_version += 1
+
+        QMessageBox.information(self, "Guardado", "Se guardó en " + ruta_respaldos + nomFinal)
+        """
     
     #1_boxplot_atributo
 
+    def quitarValoresFaltantes(self):
+        """Retorna un nuevo pandas sin los valores faltantes"""
+        # quita valores faltantes del atributo al que se hará el boxplot
+        aux = self.conjunto.panda[self.conjunto.panda[self.nombre] != self.conjunto.getSimboloFaltante()]
+
+        target = self.conjunto.getTarget()
+        if target != None and target != "": # si el target esta definido entoces quita sus valores faltantes
+            aux = self.conjunto.panda[self.conjunto.panda[target] != self.conjunto.getSimboloFaltante()]
+
+        aux = aux.infer_objects() # vuelve a verificar los tipos de datos
+        return aux
 

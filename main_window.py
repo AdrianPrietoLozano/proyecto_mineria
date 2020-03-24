@@ -516,10 +516,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ventana = histograma(self.conjunto, self.comboBoxAtributos.currentText())
         self.ventana.show()
 
-    def hacer_respaldo(self, nombre):
+    def hacer_respaldo(self, nombre, guardar_indices=True):
         """Crea un respaldo del csv y del archivo de propiedades"""
         nombre_respaldo = str(self.num_version) + "_" + nombre
-        if self.respaldos.hacer_respaldo(nombre_respaldo):
+        if self.respaldos.hacer_respaldo(nombre_respaldo, guardar_indices):
             self.num_version += 1
             action = QAction(self)
             action.setText(nombre_respaldo + ".json")
