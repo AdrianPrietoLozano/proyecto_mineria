@@ -25,7 +25,10 @@ from table_model_pandas import TableModelPandas
 from respaldos import Respaldos
 
 
-#TODO: Falfa hacer los respaldos, donde falta hacer una clase para guardar los csv y properties
+#TODO: Revisar los respaldos, en atributo lo guarda despues de eliminar, en instancias, lo guarda antes de eliminar
+#TODO: Eliminar valores faltantes en Boxplot y también histograma
+#TODO: Investigar como arreglar que el pandas cuando pasa un valor faltante, convierte toda la columna en categorico
+#TODO: Si el target no esta definido, el boxplot e histograma deben hacerse sin tomar en cuenta ese atributo
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     NUMERICO = 1

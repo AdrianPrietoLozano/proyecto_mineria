@@ -19,7 +19,7 @@ class DialogoElegirPropiedades(QtWidgets.QDialog, Ui_Dialog):
         self.lineEditRuta.setText("adult_propiedades.json") # se carga por defecto
 
     def pedir_archivo(self):
-        file, _ = QFileDialog.getOpenFileName(self, "Selecciona un archivo", QDir.homePath(), "All Files (*.json)");
+        file, _ = QFileDialog.getOpenFileName(self, "Selecciona un archivo", ".", "All Files (*.json)")
         self.lineEditRuta.setText(file)
 
     def cargar_datos(self):

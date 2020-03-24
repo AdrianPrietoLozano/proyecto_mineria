@@ -9,7 +9,7 @@ class AtributoNumerico(Atributo):
     def getModa(self):
         aux = self.quitarValoresFaltantes()
         # retorna una lista de las modas
-        return list(aux.mode()) #TODO: hay problemas con este - Poner que se muestren todos
+        return list(aux.mode()) 
 
     def getMediana(self):
         try:
@@ -58,8 +58,7 @@ class AtributoNumerico(Atributo):
         from conjunto_datos import ConjuntoDatos
         return self.panda[self.getNombre()].loc[self.panda[self.getNombre()] != ConjuntoDatos.SIMBOLO_FALTANTE]
 
-    #TODO: Funcion box plot por hacer
-    # Debe estar dentro de un try catch
+    
     def boxPlot(self):
     	pass
 

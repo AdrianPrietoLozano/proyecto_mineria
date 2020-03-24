@@ -19,19 +19,43 @@ class boxplot(QWidget, Ui_Form):
         self.btnGuardar.clicked.connect(self.guardar)
         self.generar_BoxPlot()
         
-        
+    def cambiarTipo(self):
+        try:
+            self.conjunto.panda[self.nombre].astype("float64")
+            return True
+
+        except:
+            return False
     
+
+
     def generar_BoxPlot(self):
-        carpetaAux = "generarBoxplot"
-        if not os.path.isdir(carpetaAux):
-            self.crearCarpeta(carpetaAux)        
-        nombreCarpeta = carpetaAux + "/"
-        nombreBoxplot = "Boxplot.png"
-        plt.figure(figsize = (16, 6))
-        sns.boxplot(y = self.conjunto.getTarget(), x = self.nombre, data = self.conjunto.panda, palette="Blues")
-        plt.savefig(nombreCarpeta + nombreBoxplot)
-        grafica = QPixmap(nombreCarpeta + nombreBoxplot)
-        self.label.setPixmap(grafica)
+        if self.cambiarTipo():
+            carpetaAux = "generarBoxplot"
+            if not os.path.isdir(carpetaAux):
+                self.crearCarpeta(carpetaAux)        
+            nombreCarpeta = carpetaAux + "/"
+            nombreBoxplot = "Boxplot.png"
+            plt.figure(figsize = (16, 6))
+
+            tipoAuxiliar = self.conjunto.panda[self.nombre].dtype
+            
+            print("Entra breakpoint 1: ", tipoAuxiliar)
+            self.conjunto.panda[self.nombre] = self.conjunto.panda[self.nombre].astype("float64")
+            print("Entra breakpoint 2: ", self.conjunto.panda[self.nombre].dtype)
+
+            sns.boxplot(y = self.conjunto.getTarget(), x = self.nombre, data = self.conjunto.panda, palette="Blues")
+
+            print("Entra breakpoint 3: ", self.conjunto.panda[self.nombre].dtype)
+            self.conjunto.panda[self.nombre] = self.conjunto.panda[self.nombre].astype(tipoAuxiliar)
+            print("Entra breakpoint 4: ", self.conjunto.panda[self.nombre].dtype)
+
+            plt.savefig(nombreCarpeta + nombreBoxplot)
+            grafica = QPixmap(nombreCarpeta + nombreBoxplot)
+            self.label.setPixmap(grafica)
+        else:
+            print("No se puede generar el Boxplot")
+            self.close()
 
 
     def crearCarpeta(self, carpeta):
