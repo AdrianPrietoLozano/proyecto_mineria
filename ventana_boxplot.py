@@ -5,6 +5,7 @@ from pandas.api.types import is_numeric_dtype
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
+import pandas as pd
 
 
 class boxplot(QWidget, Ui_Form):
@@ -40,7 +41,7 @@ class boxplot(QWidget, Ui_Form):
         plt.figure(figsize = (16, 6))
 
         target = self.conjunto.getTarget()
-        if target != None and target != "":
+        if target != None and target != "" and target in self.conjunto.getNombresAtributos():
             # hacer boxplot como lo 
             self.figura = sns.boxplot(y=target, x=self.nombre, data=self.datos_panda, palette="Blues")
         else:
@@ -110,9 +111,16 @@ class boxplot(QWidget, Ui_Form):
         aux = self.conjunto.panda[self.conjunto.panda[self.nombre] != self.conjunto.getSimboloFaltante()]
 
         target = self.conjunto.getTarget()
-        if target != None and target != "": # si el target esta definido entoces quita sus valores faltantes
-            aux = self.conjunto.panda[self.conjunto.panda[target] != self.conjunto.getSimboloFaltante()]
+        if target != None and target != "" and target in self.conjunto.getNombresAtributos(): # si el target esta definido entoces quita sus valores faltantes
+            aux = aux[aux[target] != self.conjunto.getSimboloFaltante()]
 
-        aux = aux.infer_objects() # vuelve a verificar los tipos de datos
+        #aux = aux.infer_objects() # vuelve a verificar los tipos de datos
+
+        # intenta cambier el tipo a numerico
+        try:
+            aux[self.nombre] = pd.to_numeric(aux[self.nombre])
+        except:
+            pass
+
         return aux
 
