@@ -1,6 +1,7 @@
 from PyQt5.QtCore import Qt, QAbstractTableModel, QModelIndex
 from PyQt5.QtGui import QColor
 
+# Es necesaria esta clase para que se muestre todo el conjunto de datos en la interfaz grafica
 class TableModelPandas(QAbstractTableModel):
     def __init__(self, data):
         QAbstractTableModel.__init__(self)
@@ -37,7 +38,7 @@ class TableModelPandas(QAbstractTableModel):
         """Elimina una columna de la tabla y del pandas"""
         try:
             self.beginRemoveColumns(parent, column, count)
-            self.panda.drop([self.panda.columns[column]], axis='columns', inplace=True)
+            self.panda.drop([self.panda.columns[column]], axis='columns', inplace=True) # Para eliminar una columna del pandas, eliminamos desde el mismo dataframe
             self.endRemoveColumns()
             return True
         except:

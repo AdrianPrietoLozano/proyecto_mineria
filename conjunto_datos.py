@@ -10,6 +10,7 @@ class ConjuntoDatos:
     SIMBOLO_FALTANTE = "?"  # por default será ?
     TARGET = None
 
+    # Constructor que recibe la ruta de nuestro archivo de propiedades, y también determina sí tiene una conexión con la base de datos y su query
     def __init__(self, archivo_propiedades, conexion=None, query=None):
         self.archivo_propiedades = archivo_propiedades
         self.conexion = conexion
@@ -72,6 +73,7 @@ class ConjuntoDatos:
 
         self.conexion.close()
 
+    # Agregamos los atributos correspondientes
     def agregarAtributo(self, nombre, tipo, dominio):
         """Agrega un nuevo atributo al archivo de propiedades"""
         atributo = {"nombre": nombre, "tipo": tipo, "dominio": dominio}
@@ -82,6 +84,7 @@ class ConjuntoDatos:
         else:
             self.atributos[nombre] = AtributoCategorico(self.panda, self.atributos, atributo)
 
+# Declaramos / Obtenemos todo sobre el archivo propiedades
 
     def getPathCsv(self):
         return self.data.get("path_csv", None)
@@ -168,19 +171,21 @@ class ConjuntoDatos:
         if len(data_frame1) == 0 or len(data_frame2) == 0:
             return None
 
+        # Obtenemos la media de cada atributo
         media1 = atributo1.getMedia()
         media2 = atributo2.getMedia()
         
+        # Obtenemos la desviación estandar del primer atributo con la función hecha por nosotros
         desviacion1 = atributo1.getDesviacionEstandarManual()
         if nom_atributo1 == nom_atributo2: # si son el mismo atributo entonces tiene la misma desviación estándar
             desviacion2 = desviacion1
         else:
-            desviacion2 = atributo2.getDesviacionEstandarManual()
+            desviacion2 = atributo2.getDesviacionEstandarManual() # Sí es diferente, calculamos la desviación del segundo atributo
 
         total = 0.0
         n = len(data_frame1)
 
-        # itera a traves de las dos columnas, hacerlo de esta forma es mas rapido que si se hace por indices
+        # itera a traves de las dos columnas, hacerlo de esta forma es mas rapido que si se hace por indices (Esto con ayuda de zip)
         for val_1, val_2 in zip(data_frame1, data_frame2):
             total += val_1 * val_2
 
@@ -221,9 +226,12 @@ class ConjuntoDatos:
 
         # itera a traves de los valores de las dos columnas para acumular las frecuencias
         for i, j in zip(self.panda[nom_atributo1], self.panda[nom_atributo2]):
-            frecuencias[i][j] += 1
+            frecuencias[i][j] += 1 # Sí i es sunny y j es true, suma 1 a ese par de valores
             totales_a1[i] += 1
             totales_a2[j] += 1
+        print(frecuencias)
+        print(totales_a1)
+        print(totales_a2)
 
         n = self.getNumInstancias()
         chi_cuadrada = 0.0

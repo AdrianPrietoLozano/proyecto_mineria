@@ -8,17 +8,17 @@
 		{
 			"nombre": "id",
 			"tipo": "numerico",
-			"dominio": "(asdfas)"
+			"dominio": "^[0-9]+$"
 		},
 	        {
 			"nombre": "age",
 			"tipo": "numerico",
-			"dominio": "[0-9]"
+			"dominio": "^([1-9]|[1-8][0-9]|9[0-9]|1[01][0-9]|120)$"
 		},
 		{
 			"nombre": "workclass",
 			"tipo": "categorico",
-			"dominio": "(asdfkl)"
+			"dominio": "^[a-zA-z]+"
 		},
 		{
 			"nombre": "fnlwgt",
@@ -28,7 +28,7 @@
 		{
 			"nombre": "education",
 			"tipo": "categorico",
-			"dominio": "(asdfkl)"
+			"dominio": "^[a-zA-z]+"
 		},
 		{
 			"nombre": "education-num",
@@ -38,27 +38,27 @@
 		{
 			"nombre": "marital-status",
 			"tipo": "categorico",
-			"dominio": "(asdfkl)"
+			"dominio": "(Never-married|Divorced|Married-civ-spouse|Widowed|Separated)"
 		},
 		{
 			"nombre": "occupation",
 			"tipo": "categorico",
-			"dominio": "(asdfkl)"
+			"dominio": "^[a-zA-z]+"
 		},
 		{
 			"nombre": "relationship",
 			"tipo": "categorico",
-			"dominio": "(asdfkl)"
+			"dominio": "(Wife|Husband|Not-in-family|Own-child|Unmarried)"
 		},
 		{
 			"nombre": "race",
 			"tipo": "categorico",
-			"dominio": "(asdfkl)"
+			"dominio": "(White|Black|Asian-Pac-Islander|Amer-Indian-Eskimo|Other)"
 		},
 		{
 			"nombre": "sex",
 			"tipo": "categorico",
-			"dominio": "(asdfkl)"
+			"dominio": "(Male|Female)"
 		},
 		{
 			"nombre": "capital-gain",
@@ -78,12 +78,12 @@
 		{
 			"nombre": "native-country",
 			"tipo": "categorico",
-			"dominio": "(asdfkl)"
+			"dominio": "^[a-zA-z]+"
 		},
 		{
 			"nombre": "class",
 			"tipo": "categorico",
-			"dominio": "(asdfkl)"
+			"dominio": "(<=50K|>50K)"
 		}
     ]
 }

@@ -7,6 +7,7 @@ class Respaldos:
 	def __init__(self, conjunto):
 		self.conjunto = conjunto
 
+	# Recibimos el nombre que va a tener nuestro respaldo y otro parametro que nos dice sí debe guardar los indices
 	def hacer_respaldo(self, nombre, guardar_indices=True):
 
 		carpeta_respaldos = self.conjunto.getRutaRespaldos()

@@ -2,12 +2,12 @@
     "descripcion": "Esta es la descripcion de la base de datos",
     "target": "class",
     "simbolo_faltante": "?",
-    "ruta_respaldos": "respaldos/",
+    "ruta_respaldos": "respaldosBase/",
     "datos_conexion":
     {
     	"usuario": "root",
     	"contrasenia": "",
-    	"base_datos": "mysql",
+    	"base_datos": "casas",
     	"host": "localhost"
     }
 }
