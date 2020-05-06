@@ -12,7 +12,10 @@ from ventana_agregar_atributo import *
 from ventana_moda import *
 from ventana_boxplot import *
 from ventana_histograma import *
-from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView, QMenu,QHeaderView
+
+from ventana_knn import *
+
+from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView, QMenu,QHeaderView, QMessageBox
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon, QCursor
 import pandas as pd
@@ -23,6 +26,7 @@ import os
 from conjunto_datos import ConjuntoDatos
 from table_model_pandas import TableModelPandas
 from respaldos import Respaldos
+from algoritmos import zero_r
 
 
 #TODO: Revisar los respaldos, en atributo lo guarda despues de eliminar, en instancias, lo guarda antes de eliminar
@@ -66,6 +70,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # action nuevo para cargar nuevo dataset
         self.actionNuevo.triggered.connect(self.cargar_nuevo_dataset)
+
+        # conectar eventos para las opciones de los algoritmos
+        self.actionZero_R.triggered.connect(self.zeroR)
+        self.actionOne_R.triggered.connect(self.mostrar_ventana_oneR)
+        self.actionNaive_Bayes.triggered.connect(self.mostrar_ventana_naive_bayes)
+        self.actionK_NN.triggered.connect(self.mostrar_ventana_knn)
 
         # id de la instancia en la que se dio clic en la tabla
         self.currentIdRow = None
@@ -551,6 +561,44 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 action.triggered.connect(lambda chk, nombre_respaldo=nombre_respaldo: self.iniciar_version(nombre_respaldo))
                 self.menuVersiones.addAction(action)
                 self.num_version += 1
+
+
+    ###############################################
+    # EVENTOS PARA LOS ALGORITMOS #
+    def comprobar_target(self):
+        target = self.conjunto.getTarget()
+        if target == None or target == "":
+            QMessageBox.critical(self, "Error", "El target no esta definido")
+            return False
+
+        return True
+
+    def zeroR(self):
+        if self.comprobar_target():
+            msg = "Frecuencias para el atributo " + self.conjunto.getTarget()
+            frecuencias = zero_r.generar_frecuencias(self.conjunto.panda,
+                self.conjunto.getTarget())
+
+            msg += "\n\n"
+            for key, val in frecuencias.items():
+                msg += key + ":  " + str(val) + "\n"
+
+            clase, umbral = zero_r.obtenerMayor(frecuencias)
+            msg += "\nUmbral: " + str(round(umbral, 4))
+
+            QMessageBox.information(self, "Zero-R", msg)
+
+    def mostrar_ventana_oneR(self):
+        pass
+
+    def mostrar_ventana_naive_bayes(self):
+        pass
+
+    def mostrar_ventana_knn(self):
+        if self.comprobar_target():
+            self.ventana = VentanaKNN(self.conjunto.panda,
+                self.conjunto.getTarget())
+            self.ventana.show()
 
 
         

@@ -1148,8 +1148,18 @@
     </property>
     <addaction name="actionNuevo"/>
    </widget>
+   <widget class="QMenu" name="menuAlgoritmos">
+    <property name="title">
+     <string>Algoritmos</string>
+    </property>
+    <addaction name="actionZero_R"/>
+    <addaction name="actionOne_R"/>
+    <addaction name="actionNaive_Bayes"/>
+    <addaction name="actionK_NN"/>
+   </widget>
    <addaction name="menuArchivo"/>
    <addaction name="menuVersiones"/>
+   <addaction name="menuAlgoritmos"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -1171,6 +1181,26 @@
   <action name="actionNuevo">
    <property name="text">
     <string>Nuevo</string>
+   </property>
+  </action>
+  <action name="actionZero_R">
+   <property name="text">
+    <string>Zero-R</string>
+   </property>
+  </action>
+  <action name="actionOne_R">
+   <property name="text">
+    <string>One-R</string>
+   </property>
+  </action>
+  <action name="actionNaive_Bayes">
+   <property name="text">
+    <string>Naive Bayes</string>
+   </property>
+  </action>
+  <action name="actionK_NN">
+   <property name="text">
+    <string>K-NN</string>
    </property>
   </action>
  </widget>
