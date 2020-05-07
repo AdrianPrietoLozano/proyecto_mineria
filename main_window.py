@@ -14,6 +14,7 @@ from ventana_boxplot import *
 from ventana_histograma import *
 
 from ventana_knn import *
+from ventana_oneR import *
 
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView, QMenu,QHeaderView, QMessageBox
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
@@ -589,10 +590,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             QMessageBox.information(self, "Zero-R", msg)
 
     def mostrar_ventana_oneR(self):
-        pass
+        if self.comprobar_target():
+            self.ventana = VentanaOneR(self.conjunto.panda,
+                self.conjunto.getTarget())
+            self.ventana.show()
 
     def mostrar_ventana_naive_bayes(self):
         pass
+
 
     def mostrar_ventana_knn(self):
         if self.comprobar_target():
