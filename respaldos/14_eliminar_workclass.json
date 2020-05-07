@@ -1,1 +1,0 @@
-{"descripcion": "Esta es la descripcion de la base de datos", "target": "class", "simbolo_faltante": "?", "path_csv": "respaldos/14_eliminar_workclass.csv", "ruta_respaldos": "respaldos/", "atributos": [{"nombre": "sex", "tipo": "categorico", "dominio": "(Male|Female)"}, {"nombre": "class", "tipo": "categorico", "dominio": "(<=50K|>50K)"}]}
