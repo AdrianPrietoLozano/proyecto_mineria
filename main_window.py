@@ -15,6 +15,7 @@ from ventana_histograma import *
 
 from ventana_knn import *
 from ventana_oneR import *
+from ventana_naive import *
 
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView, QMenu,QHeaderView, QMessageBox
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
@@ -568,7 +569,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     # EVENTOS PARA LOS ALGORITMOS #
     def comprobar_target(self):
         target = self.conjunto.getTarget()
-        if target == None or target == "":
+        if target == None or target == "" or target not in self.conjunto.panda.columns:
             QMessageBox.critical(self, "Error", "El target no esta definido")
             return False
 
@@ -596,7 +597,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.ventana.show()
 
     def mostrar_ventana_naive_bayes(self):
-        pass
+        if self.comprobar_target():
+            self.ventana = VentanaNaiveBayes(self.conjunto.panda,
+                self.conjunto.getTarget())
+            self.ventana.show()
 
 
     def mostrar_ventana_knn(self):

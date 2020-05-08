@@ -1,4 +1,3 @@
-Pronostico, Temperatura, Humedad, Viento, Jugar
 sunny, 85, 85, FALSE, no
 rainy, 80, 90, TRUE, no
 overcast, 83, 86, FALSE, yes
