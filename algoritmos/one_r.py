@@ -31,7 +31,7 @@ def generar_reglas(frecuencias):
         numerador_error_total = 0
         denominador_error_total = 0
         for val in frecuencias[atributo].columns:
-            reglas[atributo]["regla"][val] = {}
+            
             mayor = frecuencias[atributo][val].idxmax() # encuentra el index de la fila con el mayor elemento
             total = frecuencias[atributo][val].sum()
 
@@ -39,7 +39,7 @@ def generar_reglas(frecuencias):
             numerador_error_total += numerador
             denominador_error_total += total
 
-            reglas[atributo]["regla"][val][mayor] = str(numerador) + "/" + str(total)
+            reglas[atributo]["regla"][val] = [mayor, str(numerador) + "/" + str(total)]
 
         reglas[atributo]["error_total"] = numerador_error_total / denominador_error_total
 
@@ -61,19 +61,19 @@ def encontrar_error_menor(reglas):
 
 
 
-"""
-data = pandas.read_csv("adult.csv", skipinitialspace=True)
-target = "y"
-data.drop(["id", "fnlwgt"], axis=1, inplace=True)
 
-frecuencias = generar_frecuencias_pandas(data, target)
+"""
+data = pandas.read_csv("iris_columnas.csv", skipinitialspace=True)
+target = "class"
+
+frecuencias = generar_frecuencias(data, target)
 
 for frecuencia in frecuencias.values():
     print(frecuencia)
 
 
 reglas = generar_reglas(frecuencias)
-
+print(json.dumps(reglas, indent=2))
 
 print("---------------------------------------------------------------")
 print("FRECUENCIAS")

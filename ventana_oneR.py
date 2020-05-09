@@ -49,9 +49,7 @@ class VentanaOneR(QWidget, Ui_Form):
         menor = one_r.encontrar_error_menor(reglas)
         modelo = menor + "\n"
         for i in reglas[menor]["regla"]:
-            modelo += "\t" + i + "-> "
-            for j in reglas[menor]["regla"][i]:
-                modelo += j + "\n"
+            modelo += "\t{} -> {}\n".format(i, reglas[menor]["regla"][i][0])
 
         self.textModelo.setPlainText(modelo)
 

@@ -63,4 +63,14 @@ class KNN:
             resultado = distancias[:self.k][self.target].mode()[0] # retorna el valor mas frecuenta del target (CLASIFICACIÓN)
 
         return resultado, distancias[:self.k]
-        
+
+
+data = pandas.read_csv("iris_columnas.csv", skipinitialspace=True)
+target = "class"
+
+instancia = [1,2,3,4]
+
+knn = KNN(data, target, 5)
+
+for i in range(100):
+    knn.get_prediccion(instancia)[0] 

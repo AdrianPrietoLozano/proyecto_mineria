@@ -30,7 +30,7 @@ class NaiveBayes:
         for i in frecuencias.index:
             frec = len(self.data[(self.data[self.target] == i)])
             frecuencias["frecuencia"][i] = frec
-            frecuencias["probabilidad"][i] = round(frec / num_filas, 3)
+            frecuencias["probabilidad"][i] = frec / num_filas
 
         return frecuencias
 
@@ -40,7 +40,7 @@ class NaiveBayes:
         exponente = -( (x - media)**2 / (desviacion**2 * 2) )
         resultado *= pow(math.e, exponente)
 
-        return round(resultado, 3)
+        return resultado
 
 
     def procesar(self, row):
@@ -130,11 +130,11 @@ class NaiveBayes:
             #print(probabilidad_total, "\n")
             procedimiento_str += "{}\n\n".format(probabilidad_total)
             
-            resultado[i] = round(probabilidad_total, 3)
+            resultado[i] = probabilidad_total
 
         #Normalización
         procedimiento_str += "\nNormalización\n"
-        suma = round( sum(resultado.values()), 3)
+        suma = sum(resultado.values())
 
         for val in resultado:
             #print(val, end=", ")
@@ -143,8 +143,7 @@ class NaiveBayes:
             #print(resultado[val], "/", suma, " = ", normalizado)
             procedimiento_str += "{} / {} = {}\n".format(resultado[val], suma, normalizado)
             resultado[val] = normalizado
-            
-        print()
+        
 
         return resultado, procedimiento_str
 
