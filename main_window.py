@@ -17,7 +17,7 @@ from ventana_knn import *
 from ventana_oneR import *
 from ventana_naive import *
 
-#from ventana_k_fold import *
+from ventana_k_fold import *
 
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView, QMenu,QHeaderView, QMessageBox
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
@@ -614,13 +614,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.ventana.show()
 
     def mostrar_ventana_kfold(self):
-        QMessageBox.warning(self, "Falta", "Aún no esta terminado")
-        """
         if self.comprobar_target():
             self.ventana = VentanaKFold(self.conjunto.panda,
                 self.conjunto.getTarget())
             self.ventana.show()
-        """
 
 
         

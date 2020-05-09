@@ -17,6 +17,8 @@ class VentanaNaiveBayes(QWidget, Ui_Form):
         self.naive = NaiveBayes(self.data, self.target)
 
         self.generar_campos()
+        self.mostrar_tablas_frecuencias()
+        self.mostrar_tablas_verosimilitudes()
         self.btnAceptar.clicked.connect(self.procesar_instancia)
 
     def procesar_instancia(self):
@@ -31,8 +33,6 @@ class VentanaNaiveBayes(QWidget, Ui_Form):
         else:
             # Falta verificar que los datos sean del tipo correcto
             resultado, procedimiento = self.naive.get_prediccion(lista_valores)
-            self.mostrar_tablas_frecuencias()
-            self.mostrar_tablas_verosimilitudes()
             self.textProcedimiento.setPlainText(procedimiento)
 
             target_final = max(resultado, key=resultado.get)

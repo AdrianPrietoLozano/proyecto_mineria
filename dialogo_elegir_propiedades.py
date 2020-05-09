@@ -16,7 +16,7 @@ class DialogoElegirPropiedades(QtWidgets.QDialog, Ui_Dialog):
         self.botonCancelar.clicked.connect(self.cerrar_programa)
         self.elegir_archivo.clicked.connect(self.pedir_archivo)
 
-        self.lineEditRuta.setText("adult_propiedades.json") # se carga por defecto
+        self.lineEditRuta.setText("iris_propiedades.json") # se carga por defecto
 
     def pedir_archivo(self):
         file, _ = QFileDialog.getOpenFileName(self, "Selecciona un archivo", ".", "All Files (*.json)")

@@ -1,28 +1,35 @@
 import numpy as np
 import pandas
-from knn import KNN
-from naive import NaiveBayes
-import one_r
+from algoritmos.knn import KNN
+from algoritmos.naive import NaiveBayes
+import algoritmos.one_r
 
 class KFoldCrossValidation:
 
-    def __init__(self, data, target, k, positivo=None, negativo=None):
+    def __init__(self, data, target, k=2, positivo=None, negativo=None):
         self.data = data.sample(frac=1) # mezcla los datos
         self.target = target
         self.k = k
+        self.positivo = positivo
+        self.negativo = negativo
+
         self.pos_target = self.data.columns.get_loc(self.target)
         self.unicos_target = self.data[self.target].unique()
 
         # comprueba si el target tiene 2 posibles valores o más
         if len(self.unicos_target) == 2:
             self.es_multi_clase = False
-            self.positivo = positivo
-            self.negativo = negativo
         else:
             self.es_multi_clase = True
 
     def setK(self, k):
         self.k = k
+
+    def setValorPositivo(self, valor):
+        self.positivo = valor
+
+    def setValorNegativo(self, valor):
+        self.negativo = valor
 
     def iniciar_validacion(self):
         if self.es_multi_clase:
@@ -131,9 +138,9 @@ class KFoldCrossValidation:
     def validationOneR(self, entrenamiento, prueba):
         matriz = pandas.DataFrame(0, columns=self.unicos_target, index=self.unicos_target)
 
-        frecuencias = one_r.generar_frecuencias(entrenamiento, self.target)
-        reglas = one_r.generar_reglas(frecuencias)
-        menor = one_r.encontrar_error_menor(reglas)
+        frecuencias = algoritmos.one_r.generar_frecuencias(entrenamiento, self.target)
+        reglas = algoritmos.one_r.generar_reglas(frecuencias)
+        menor = algoritmos.one_r.encontrar_error_menor(reglas)
         
         for i, row in prueba.iterrows():
             val = row[menor]
