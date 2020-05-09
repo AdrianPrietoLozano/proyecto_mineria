@@ -17,6 +17,8 @@ from ventana_knn import *
 from ventana_oneR import *
 from ventana_naive import *
 
+#from ventana_k_fold import *
+
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView, QMenu,QHeaderView, QMessageBox
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon, QCursor
@@ -78,6 +80,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionOne_R.triggered.connect(self.mostrar_ventana_oneR)
         self.actionNaive_Bayes.triggered.connect(self.mostrar_ventana_naive_bayes)
         self.actionK_NN.triggered.connect(self.mostrar_ventana_knn)
+
+        # conectar eventos para las opciones de evalución de algoritmos
+        self.actionKFold.triggered.connect(self.mostrar_ventana_kfold)
 
         # id de la instancia en la que se dio clic en la tabla
         self.currentIdRow = None
@@ -602,12 +607,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.conjunto.getTarget())
             self.ventana.show()
 
-
     def mostrar_ventana_knn(self):
         if self.comprobar_target():
             self.ventana = VentanaKNN(self.conjunto.panda,
                 self.conjunto.getTarget())
             self.ventana.show()
+
+    def mostrar_ventana_kfold(self):
+        QMessageBox.warning(self, "Falta", "Aún no esta terminado")
+        """
+        if self.comprobar_target():
+            self.ventana = VentanaKFold(self.conjunto.panda,
+                self.conjunto.getTarget())
+            self.ventana.show()
+        """
 
 
         

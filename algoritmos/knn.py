@@ -65,6 +65,7 @@ class KNN:
         return resultado, distancias[:self.k]
 
 
+"""
 data = pandas.read_csv("iris_columnas.csv", skipinitialspace=True)
 target = "class"
 
@@ -74,3 +75,4 @@ knn = KNN(data, target, 5)
 
 for i in range(100):
     knn.get_prediccion(instancia)[0] 
+"""

@@ -1157,9 +1157,17 @@
     <addaction name="actionNaive_Bayes"/>
     <addaction name="actionK_NN"/>
    </widget>
+   <widget class="QMenu" name="menuEvaluaci_n">
+    <property name="title">
+     <string>Evaluación</string>
+    </property>
+    <addaction name="actionKFold"/>
+    <addaction name="actionasdd"/>
+   </widget>
    <addaction name="menuArchivo"/>
    <addaction name="menuVersiones"/>
    <addaction name="menuAlgoritmos"/>
+   <addaction name="menuEvaluaci_n"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -1201,6 +1209,16 @@
   <action name="actionK_NN">
    <property name="text">
     <string>K-NN</string>
+   </property>
+  </action>
+  <action name="actionKFold">
+   <property name="text">
+    <string>K Fold Cross Validation</string>
+   </property>
+  </action>
+  <action name="actionasdd">
+   <property name="text">
+    <string>asdd</string>
    </property>
   </action>
  </widget>
