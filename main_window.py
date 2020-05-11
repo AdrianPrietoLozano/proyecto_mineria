@@ -247,8 +247,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             icon = QIcon("iconos/categorico.ico")
             tipo = self.CATEGORICO
-            self.comboBoxTarget.addItem(icon, nombre)
 
+        self.comboBoxTarget.addItem(icon, nombre)
         self.comboBoxAtributos.addItem(icon, nombre, userData=tipo)
         self.actualizar_etiquetas()
         self.labelNumAtributos.setText(str(self.conjunto.getNumAtributos()))
@@ -260,10 +260,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """Inicializa el combo box del target con el atributo correcto"""
         target = self.conjunto.getTarget()
         if target != None and target != "" and target in self.conjunto.getNombresAtributos():
-            if self.conjunto.getAtributo(target).getTipo() == "categorico":
-                self.comboBoxTarget.setCurrentText(target)
-            else:
-                print("el target debe ser categorico")
+            self.comboBoxTarget.setCurrentText(target)
         else:
             print("target no valido")
         
@@ -354,6 +351,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         for atributo in self.conjunto.getAtributos():
             if atributo.getTipo() == "numerico":
                 self.comboBoxAtributos.addItem(QIcon("iconos/numerico.ico"), atributo.getNombre(), userData=self.NUMERICO)
+                self.comboBoxTarget.addItem(QIcon("iconos/numerico.ico"), atributo.getNombre())
             else:
                 self.comboBoxAtributos.addItem(QIcon("iconos/categorico.ico"), atributo.getNombre(), userData=self.CATEGORICO)
                 self.comboBoxTarget.addItem(QIcon("iconos/categorico.ico"), atributo.getNombre())
@@ -485,15 +483,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             tipo = "categorico"
         
         index = self.comboBoxAtributos.currentIndex()
+        index_target = self.comboBoxTarget.findText(nombre_atributo)
 
         # actualizar nombre
         if nom != atributo.getNombre(): # solo cambia el nombre si es diferente al anterior
             if not nom in self.conjunto.getNombresAtributos(): # no puede haber nombres de atributo repetidos
                 atributo.setNombre(nom)
                 self.comboBoxAtributos.setItemText(index, nom)
+                self.comboBoxTarget.setItemText(index_target, nom) # actualiza
+                self.actualizar_info_general() # actualiza el target si el atributo modificado era el target
             else:
                 QMessageBox.information(self, "Error", "El nombre ya existe")
 
+        icono = None # nuevo icono del 
         # actualizar tipo
         if tipo != atributo.getTipo(): # solo cambia el tipo si es diferente al anterior
             atributo.setTipo(tipo) # al cambiar el tipo es necesario actualizar la instancia atributo
@@ -504,26 +506,26 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.contenedorMetricas.setVisible(False) # oculta la moda, media, mediana, ...
                 self.btnBoxPlot.setVisible(False) # oculta el boton boxplot
                 self.btnHistograma.setVisible(True) # muetra el boton histograma
-                self.comboBoxTarget.addItem(QIcon("iconos/categorico.ico"), atributo.getNombre())
             else:
                 nuevo_tipo = self.NUMERICO
                 icono = QIcon("iconos/numerico.ico")
                 self.actualizarMetricas(atributo) # muestra la moda, media, mediana, ...
                 self.btnHistograma.setVisible(False) # oculta el boton histograma
                 self.btnBoxPlot.setVisible(True) # muestra el boton boxplot
-                index_target = self.comboBoxTarget.findText(atributo.getNombre())
-                self.comboBoxTarget.removeItem(index_target)
-                if atributo.getNombre() == self.conjunto.getTarget(): # si se cambio el tipo del atributo target
-                    self.conjunto.setTarget("")
-                    self.comboBoxTarget.setCurrentIndex(0)
 
             self.comboBoxAtributos.setItemData(index, nuevo_tipo)
             self.comboBoxAtributos.setItemIcon(index, icono)
+
+            # actualiza el icono del combo box para elegir el target
+            self.comboBoxTarget.setItemIcon(index_target, icono)
                 
         # actualizar dominio
         if dominio != atributo.getDominio(): # solo cambia el dominio si es diferente
             atributo.setDominio(dominio)
             self.actualizar_label_fuera_dominio(atributo)
+
+
+        print("Target: ", self.conjunto.getTarget())
     
     def mostrar_boxplot(self):
         self.ventana = boxplot(self.conjunto, self.comboBoxAtributos.currentText())
