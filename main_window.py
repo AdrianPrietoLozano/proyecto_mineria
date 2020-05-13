@@ -18,6 +18,7 @@ from ventana_oneR import *
 from ventana_naive import *
 
 from ventana_k_fold import *
+from ventana_reemplazo_faltantes import *
 
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView, QMenu,QHeaderView, QMessageBox
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
@@ -292,6 +293,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnTschuprow.setText("Coeficiente de contingencia de Tschuprow")
         self.btnTschuprow.clicked.connect(self.mostrar_ventana_tschuprow)
         self.toolBar.addWidget(self.btnTschuprow)
+
+        self.btnReemplazoFaltantes = QtWidgets.QPushButton(self.toolBar)
+        self.btnReemplazoFaltantes.setText("Reemplazar valores faltantes")
+        self.btnReemplazoFaltantes.clicked.connect(self.mostrar_reemplazo_faltantes)
+        self.toolBar.addWidget(self.btnReemplazoFaltantes)
 
     def mostrar_ventanas_modas(self):
         """Muestra una ventana con las modas"""
@@ -572,6 +578,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.num_version += 1
 
 
+    def mostrar_reemplazo_faltantes(self):
+        self.ventana = VentanaReemplazoFaltantes(self.conjunto.panda,
+            self.conjunto.getTarget())
+        self.ventana.show()
+
+
     ###############################################
     # EVENTOS PARA LOS ALGORITMOS #
     def comprobar_target(self):
@@ -620,6 +632,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.ventana = VentanaKFold(self.conjunto.panda,
                 self.conjunto.getTarget())
             self.ventana.show()
+
 
 
         
