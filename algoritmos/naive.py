@@ -147,6 +147,27 @@ class NaiveBayes:
 
         return resultado, procedimiento_str
 
+"""
+data = pandas.read_csv("iris_columnas.csv", skipinitialspace=True)
+target = "sepal length"
+
+naive_bayes = NaiveBayes(data, target)
+
+print("FRECUENCIAS\n")
+for key, val in naive_bayes.frecuencias.items():
+    print(key, "\n", val, "\n")
+print("-------------------------------------------------------------\n")
+
+print("FRECUENCIAS DEL TARGET\n")
+print(naive_bayes.frec_target)
+print("-------------------------------------------------------------\n")
+
+print("VEROSIMILITUDES\n")
+for key, val in naive_bayes.probabilidades.items():
+    print(key, "\n", val, "\n")
+print("-------------------------------------------------------------\n")
+"""
+
 # ----------------------------------------------------------------------------------------
 
 """

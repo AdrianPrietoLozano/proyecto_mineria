@@ -590,7 +590,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
             msg += "\n\n"
             for key, val in frecuencias.items():
-                msg += key + ":  " + str(val) + "\n"
+                msg += str(key) + ":  " + str(val) + "\n"
 
             clase, umbral = zero_r.obtenerMayor(frecuencias)
             msg += "\nUmbral: " + str(round(umbral, 4))

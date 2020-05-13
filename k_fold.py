@@ -6,10 +6,11 @@ import algoritmos.one_r
 
 class KFoldCrossValidation:
 
-    def __init__(self, data, target, k=2, positivo=None, negativo=None):
+    def __init__(self, data, target, k, algoritmo, positivo=None, negativo=None):
         self.data = data.sample(frac=1) # mezcla los datos
         self.target = target
         self.k = k
+        self.algoritmo = algoritmo
         self.positivo = positivo
         self.negativo = negativo
 
@@ -22,21 +23,22 @@ class KFoldCrossValidation:
         else:
             self.es_multi_clase = True
 
-    def setK(self, k):
-        self.k = k
-
-    def setValorPositivo(self, valor):
-        self.positivo = valor
-
-    def setValorNegativo(self, valor):
-        self.negativo = valor
-
     def iniciar_validacion(self):
         if self.es_multi_clase:
             return self.validation_multi_clases()
         else:
             return self.validation_dos_clases()
             
+    def _funcion_validacion(self):
+        """ Dependiendo del algoritmo, retorna la función a usar para la validación """
+        if self.algoritmo == "KNN":
+            funcion_validacion = self.validationKNN
+        elif self.algoritmo == "Naive Bayes":
+            funcion_validacion = self.validationNaiveBayes
+        else:
+            funcion_validacion = self.validationOneR
+
+        return funcion_validacion
 
     def validation_dos_clases(self):
         """ Método para validar cuando los posibles valores de la clase son dos """
@@ -45,24 +47,17 @@ class KFoldCrossValidation:
         data_split = np.array_split(self.data, self.k)
 
         columnas = ["Exactitud", "Sensibilidad", "Especificidad"]
-        tabla = pandas.DataFrame(columns=columnas,
-                                index=["KNN", "Naive Bayes", "One-R"])
+        tabla = pandas.DataFrame(columns=columnas)
+        tabla_algoritmo = pandas.DataFrame(columns=columnas)
 
-        tabla_naive = pandas.DataFrame(columns=columnas)
-        tabla_knn = pandas.DataFrame(columns=columnas)
-        tabla_one = pandas.DataFrame(columns=columnas)
+        funcion_validacion = self._funcion_validacion()
 
         for i in range(self.k):
             probar = data_split[i]
             entrenar = pandas.concat(data_split[:i] + data_split[i+1:])
+            tabla_algoritmo.loc[i] = funcion_validacion(entrenar, probar)
 
-            tabla_naive.loc[i] = self.validationNaiveBayes(entrenar, probar)
-            tabla_knn.loc[i] = self.validationKNN(entrenar, probar)
-            tabla_one.loc[i] = self.validationOneR(entrenar, probar)
-
-        tabla.loc["KNN"] = tabla_knn.mean().round(4)
-        tabla.loc["Naive Bayes"] = tabla_naive.mean().round(4)
-        tabla.loc["One-R"] = tabla_one.mean().round(4)
+        tabla.loc[self.algoritmo] = tabla_algoritmo.mean().round(4)
 
         return tabla
 
@@ -71,44 +66,23 @@ class KFoldCrossValidation:
         data_split = np.array_split(self.data, self.k)
 
         columnas = ["Precision", "Sensibilidad"]
-        tablas = {
-            "Naive Bayes": pandas.DataFrame(0, columns=columnas, index=self.unicos_target),
-            "KNN": pandas.DataFrame(0, columns=columnas, index=self.unicos_target),
-            "One-R": pandas.DataFrame(0, columns=columnas, index=self.unicos_target)
-        }
+        tabla = pandas.DataFrame(0, columns=columnas, index=self.unicos_target)
+        exactitud_final = 0.0
 
-        # exactitudes promedio por algoritmo
-        exactitudes = {
-            "Naive Bayes": 0.0,
-            "KNN": 0.0,
-            "One-R": 0.0
-        }
+        funcion_validacion = self._funcion_validacion()
 
         for i in range(self.k):
             probar = data_split[i]
             entrenar = pandas.concat(data_split[:i] + data_split[i+1:])
 
-            matriz, exactitud = self.validationNaiveBayes(entrenar, probar)
-            exactitudes["Naive Bayes"] += exactitud
-            tablas["Naive Bayes"] += matriz
+            matriz, exactitud = funcion_validacion(entrenar, probar)
+            exactitud_final += exactitud
+            tabla += matriz
 
-            matriz, exactitud = self.validationKNN(entrenar, probar)
-            exactitudes["KNN"] += exactitud
-            tablas["KNN"] += matriz
+        tabla /= self.k
+        exactitud_final /= self.k
 
-            matriz, exactitud = self.validationOneR(entrenar, probar)
-            exactitudes["One-R"] += exactitud
-            tablas["One-R"] += matriz
-
-        # calcula promedio de cada tabla de cada algoritmo
-        for tabla in tablas.values():
-            tabla /= self.k
-
-        # calcula exactitud promedio de cada algoritmo
-        for i in exactitudes:
-            exactitudes[i] /= self.k
-
-        return tablas, exactitudes
+        return tabla, round(exactitud_final, 4)
 
 
     def validationKNN(self, entrenamiento, prueba):
