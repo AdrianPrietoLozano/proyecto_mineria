@@ -2,7 +2,8 @@ from ventana_k_fold_ui import *
 #from algoritmos.k_fold import KFoldCrossValidation
 from k_fold import KFoldCrossValidation
 from table_model_pandas import TableModelPandas
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QMessageBox
+import numpy as np
 
 class VentanaKFold(QWidget, Ui_Form):
 
@@ -14,33 +15,49 @@ class VentanaKFold(QWidget, Ui_Form):
         self.target = target
         self.es_multi_clase = True
 
+        # si el target es de tipo numérico, entonces es un problema de regresión
+        # KNN es el único de estos algoritmos que funciona para regresión
+        self.es_regresion = False
+        if np.issubdtype(self.data[self.target].dtype, np.number):
+            self.es_regresion = True
+
         self.btnAceptar.clicked.connect(self.iniciar_evaluacion)
         self.labelCargando.setVisible(False)
         self.INDEX_LEAVE_ONE_OUT = 4
 
-        # si los posibles valores del target son 2 muestra la opcion para
-        # elegir el valor positivo y el negativo
+        # si los posibles valores del target son 2 y el problema no es de regresion
+        #muestra la opcion para elegir el valor positivo y el negativo
         if len(self.data[self.target].unique()) == 2:
             self.es_multi_clase = False
-            posibles_valores = self.data[self.target].unique().astype(str).tolist()
-            self.comboBoxValorPositivo.addItems(posibles_valores)
+            if not self.es_regresion:
+                posibles_valores = self.data[self.target].unique().astype(str).tolist()
+                self.comboBoxValorPositivo.addItems(posibles_valores)
         else:
             self.groupBoxValorPositivo.setVisible(False)
 
     def iniciar_evaluacion(self):
+        algoritmo = self.comboBoxAlgoritmo.currentText()
+
+        if self.es_regresion:
+            if algoritmo == "One R" or algoritmo == "Naive Bayes":
+                QMessageBox.critical(self, "Error", \
+                    "El algoritmo seleccionado no funciona con problemas de regresión")
+                return
+
         self.btnAceptar.setEnabled(False) # desactiva boton
         self.labelCargando.setVisible(True)
         self.tablaResultados.setModel(None)
         self.labelAlgoritmo.setText("")
         self.repaint() # para que se actualice la etiqueta
 
+        # Leave One Out
         if self.numFolds.currentIndex() == self.INDEX_LEAVE_ONE_OUT:
             num_folds = len(self.data)
         else:
             num_folds = int(self.numFolds.currentText())
 
         positivo, negativo = None, None
-        if not self.es_multi_clase:
+        if not self.es_multi_clase and not self.es_regresion:
             index_val_positivo = self.comboBoxValorPositivo.currentIndex()
             index_val_negativo = 0 if index_val_positivo == 1 else 1
             val_positivo = self.comboBoxValorPositivo.itemText(index_val_positivo)
@@ -49,7 +66,6 @@ class VentanaKFold(QWidget, Ui_Form):
             positivo = val_positivo
             negativo = val_negativo
         
-        algoritmo = self.comboBoxAlgoritmo.currentText()
         k_fold = KFoldCrossValidation(self.data, self.target, num_folds,
             algoritmo, positivo, negativo)
         resultado = k_fold.iniciar_validacion()
@@ -59,7 +75,7 @@ class VentanaKFold(QWidget, Ui_Form):
 
 
     def mostrar_tablas(self, resultado):
-        if self.es_multi_clase:
+        if self.es_multi_clase and not self.es_regresion:
             tabla = resultado[0]
             exactitud = resultado[1]
 

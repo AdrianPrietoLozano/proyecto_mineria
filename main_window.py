@@ -51,6 +51,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     signal_eliminar_instancias = pyqtSignal(int) # se emite cuando se elimina una instancia
     signal_editar_instancia = pyqtSignal() # se emite cuando se edita una instancia
     signal_agregar_columna = pyqtSignal(str) # se emite cuando se agrega una instancia
+    #signal_reemplazo_faltantes = pyqtSignal()
 
     def __init__(self, ruta, conexion=None, query=None, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
@@ -580,7 +581,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def mostrar_reemplazo_faltantes(self):
         self.ventana = VentanaReemplazoFaltantes(self.conjunto.panda,
-            self.conjunto.getTarget())
+            self.conjunto.getTarget(), self.conjunto.getSimboloFaltante())
         self.ventana.show()
 
 

@@ -14,6 +14,12 @@ class KFoldCrossValidation:
         self.positivo = positivo
         self.negativo = negativo
 
+        self.es_regresion = False
+        if np.issubdtype(self.data[self.target].dtype, np.number):
+            self.es_regresion = True
+            if algoritmo == "One R" or algoritmo == "Naive Bayes":
+                raise ValueError("Solo KNN funciona con problemas de regresion")
+
         self.pos_target = self.data.columns.get_loc(self.target)
         self.unicos_target = self.data[self.target].unique()
 
@@ -24,6 +30,8 @@ class KFoldCrossValidation:
             self.es_multi_clase = True
 
     def iniciar_validacion(self):
+        if self.es_regresion:
+            return self.validacion_regresion_knn()
         if self.es_multi_clase:
             return self.validation_multi_clases()
         else:
@@ -57,12 +65,14 @@ class KFoldCrossValidation:
             entrenar = pandas.concat(data_split[:i] + data_split[i+1:])
             tabla_algoritmo.loc[i] = funcion_validacion(entrenar, probar)
 
+        # saca promedio
         tabla.loc[self.algoritmo] = tabla_algoritmo.mean().round(4)
 
         return tabla
 
 
     def validation_multi_clases(self):
+        # divide el dataset en k conjuntos
         data_split = np.array_split(self.data, self.k)
 
         columnas = ["Precision", "Sensibilidad"]
@@ -72,15 +82,15 @@ class KFoldCrossValidation:
         funcion_validacion = self._funcion_validacion()
 
         for i in range(self.k):
-            probar = data_split[i]
-            entrenar = pandas.concat(data_split[:i] + data_split[i+1:])
+            probar = data_split[i] # datos de prueba
+            entrenar = pandas.concat(data_split[:i] + data_split[i+1:]) # datos de entrenamiento
 
             matriz, exactitud = funcion_validacion(entrenar, probar)
             exactitud_final += exactitud
             tabla += matriz
 
-        tabla /= self.k
-        exactitud_final /= self.k
+        tabla /= self.k # saca promedio
+        exactitud_final /= self.k # exactiud promedio final
 
         return tabla, round(exactitud_final, 4)
 
@@ -88,14 +98,20 @@ class KFoldCrossValidation:
     def validationKNN(self, entrenamiento, prueba):
         matriz = pandas.DataFrame(0, columns=self.unicos_target, index=self.unicos_target)
 
+        suma_errores = 0.0
         knn = KNN(entrenamiento, self.target)
         for i in prueba.values:
             prediccion = knn.get_prediccion(np.delete(i, self.pos_target))[0]
             real = i[self.pos_target] # valor real del conjunto de prueba
-            matriz[prediccion][real] += 1
+            if self.es_regresion:
+                suma_errores += ((real - prediccion)**2)
+            else:
+                matriz[prediccion][real] += 1
 
-        return self._procesar_matriz(matriz)
-            
+        if self.es_regresion:
+            return suma_errores / len(prueba) # error cuadrático médio
+        else:
+            return self._procesar_matriz(matriz)  
 
     def validationNaiveBayes(self, entrenamiento, prueba):
         matriz = pandas.DataFrame(0, columns=self.unicos_target, index=self.unicos_target)
@@ -122,7 +138,7 @@ class KFoldCrossValidation:
                 prediccion = reglas[menor]["regla"][val][0]
                 real = row[self.target] # valor real del conjunto de prueba
                 matriz[prediccion][real] += 1
-            except:
+            except Exception as e:
                 pass
 
         return self._procesar_matriz(matriz)
@@ -152,13 +168,29 @@ class KFoldCrossValidation:
 
             return tabla, exactitud
 
+    def validacion_regresion_knn(self):
+        # divide el DataFrame en k folds
+        data_split = np.array_split(self.data, self.k)
+        tabla = pandas.DataFrame(columns=["Error cuadrático medio"], index=["KNN"])
+
+        suma_errores_cuadraticos = 0.0
+        for i in range(self.k):
+            probar = data_split[i]
+            entrenar = pandas.concat(data_split[:i] + data_split[i+1:])
+            suma_errores_cuadraticos += self.validationKNN(entrenar, probar)
+            print(suma_errores_cuadraticos)
+
+        # saca promedio
+        tabla.loc["KNN"] = round(suma_errores_cuadraticos / self.k, 4)
+
+        return tabla
+
 
         
 """
-data = pandas.read_csv("randomOneRKnn.csv", skipinitialspace=True)
-target = "Sail"
+data = pandas.read_csv("algoritmos/iris_columnas.csv", skipinitialspace=True)
+target = "sepal length"
 
-print("inicio")
-fold = KFoldCrossValidation(data, target, 2, "yes", "no")
-print(fold.iniciar_validacion())
+fold = KFoldCrossValidation(data, target, 10, "KNN")
+print(fold.validacion_regresion_knn())
 """

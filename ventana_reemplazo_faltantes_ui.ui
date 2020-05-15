@@ -168,7 +168,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButtonModaTarget">
+       <widget class="QRadioButton" name="radioButtonTarget">
         <property name="text">
          <string>Moda</string>
         </property>
