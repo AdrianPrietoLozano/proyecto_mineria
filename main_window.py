@@ -18,6 +18,7 @@ from ventana_oneR import *
 from ventana_naive import *
 
 from ventana_k_fold import *
+from ventana_hold_out import *
 from ventana_reemplazo_faltantes import *
 
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView, QMenu,QHeaderView, QMessageBox
@@ -82,6 +83,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionOne_R.triggered.connect(self.mostrar_ventana_oneR)
         self.actionNaive_Bayes.triggered.connect(self.mostrar_ventana_naive_bayes)
         self.actionK_NN.triggered.connect(self.mostrar_ventana_knn)
+        self.actionHoldOut.triggered.connect(self.mostrar_ventana_hold_out)
 
         # conectar eventos para las opciones de evalución de algoritmos
         self.actionKFold.triggered.connect(self.mostrar_ventana_kfold)
@@ -640,6 +642,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def mostrar_ventana_kfold(self):
         if self.comprobar_target():
             self.ventana = VentanaKFold(self.conjunto.panda,
+                self.conjunto.getTarget())
+            self.ventana.show()
+    
+    def mostrar_ventana_hold_out(self):
+        if self.comprobar_target():
+            self.ventana = VentanaHoldOut(self.conjunto.panda,
                 self.conjunto.getTarget())
             self.ventana.show()
 
