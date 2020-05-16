@@ -578,6 +578,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.menuVersiones.addAction(action)
                 self.num_version += 1
 
+    def es_target_numerico(self):
+        if np.issubdtype(pandas.to_numeric(
+            self.conjunto.panda[self.conjunto.getTarget()], errors="ignore").dtype, np.number):
+            return True
+        return False
+
 
     def mostrar_reemplazo_faltantes(self):
         self.ventana = VentanaReemplazoFaltantes(self.conjunto.panda,
@@ -618,9 +624,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def mostrar_ventana_naive_bayes(self):
         if self.comprobar_target():
-            self.ventana = VentanaNaiveBayes(self.conjunto.panda,
-                self.conjunto.getTarget())
-            self.ventana.show()
+            if self.es_target_numerico():
+                QMessageBox.critical(self, "Error", "Naive Bayes solo funciona con problemas de clasificación")
+            else:
+                self.ventana = VentanaNaiveBayes(self.conjunto.panda,
+                    self.conjunto.getTarget())
+                self.ventana.show()
 
     def mostrar_ventana_knn(self):
         if self.comprobar_target():

@@ -66,7 +66,7 @@ class KFoldCrossValidation:
             tabla_algoritmo.loc[i] = funcion_validacion(entrenar, probar)
 
         # saca promedio
-        tabla.loc[self.algoritmo] = tabla_algoritmo.mean().round(4)
+        tabla.loc[self.algoritmo] = tabla_algoritmo.mean(skipna=False).round(4)
 
         return tabla
 
@@ -103,6 +103,7 @@ class KFoldCrossValidation:
         for i in prueba.values:
             prediccion = knn.get_prediccion(np.delete(i, self.pos_target))[0]
             real = i[self.pos_target] # valor real del conjunto de prueba
+            print(prediccion, real)
             if self.es_regresion:
                 suma_errores += ((real - prediccion)**2)
             else:
@@ -137,8 +138,10 @@ class KFoldCrossValidation:
             try: # puede darse el caso de que una llave no exista. ¿qué se debe hacer?
                 prediccion = reglas[menor]["regla"][val][0]
                 real = row[self.target] # valor real del conjunto de prueba
+                print(prediccion, real)
                 matriz[prediccion][real] += 1
             except Exception as e:
+                print(e)
                 pass
 
         return self._procesar_matriz(matriz)
@@ -151,20 +154,37 @@ class KFoldCrossValidation:
         exactitud = np.trace(matriz) / matriz.sum().sum()
 
         if not self.es_multi_clase: # si no es multiclase
-            sensibilidad = matriz[self.positivo][self.positivo] / matriz[self.positivo].sum()
-            especificidad = matriz[self.negativo][self.negativo] / matriz[self.negativo].sum()
+            print("\n\n----------")
+            print("MATRIZ")
+            print(matriz)
+            try:
+                sensibilidad = int(matriz[self.positivo][self.positivo]) / int(matriz[self.positivo].sum())
+            except ZeroDivisionError:
+                sensibilidad = 0
 
+            try:
+                especificidad = int(matriz[self.negativo][self.negativo]) / int(matriz[self.negativo].sum())
+            except ZeroDivisionError:
+                especificidad = 0
+
+            print(exactitud, sensibilidad, especificidad)
             return [exactitud, sensibilidad, especificidad]
 
         else: # si es multiclase
             tabla = pandas.DataFrame(columns=["Precision", "Sensibilidad"],
                 index=self.unicos_target)
 
+            print("----------")
+            print("MATRIZ")
+            print(matriz)
             # para cada posible valor del target calcula la precision y sensibilidad
             for i in matriz.index:
                 precision = matriz[i][i] / matriz.loc[i].sum() # fila
                 sensibilidad = matriz[i][i] / matriz[i].sum() # columna
                 tabla.loc[i] = [precision, sensibilidad]
+            print("DESPUES")
+            print(tabla)
+            print("----------")
 
             return tabla, exactitud
 

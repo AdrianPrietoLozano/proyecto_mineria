@@ -12,14 +12,16 @@ class VentanaNaiveBayes(QWidget, Ui_Form):
         QtWidgets.QWidget.__init__(self, *args, **kwargs)
         self.setupUi(self)
 
-        self.data = data
+        self.data = data.apply(pandas.to_numeric, errors="ignore")
         self.target = target
+
         self.naive = NaiveBayes(self.data, self.target)
 
         self.generar_campos()
         self.mostrar_tablas_frecuencias()
         self.mostrar_tablas_verosimilitudes()
         self.btnAceptar.clicked.connect(self.procesar_instancia)
+
 
     def procesar_instancia(self):
         """ Se ejecuta al presionar el boton aceptar """

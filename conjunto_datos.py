@@ -32,7 +32,7 @@ class ConjuntoDatos:
             self.data = json.load(contenido) # combierte el .json a un diccionario
 
             self.panda = pd.read_csv(self.getPathCsv(), skipinitialspace=True,
-                names=[c["nombre"] for c in self.data["atributos"]])
+                names=[c["nombre"] for c in self.data["atributos"]], true_values=None, false_values=None)
 
             # crea un diccionario de atributos, la llave es el nombre del atributo
             # y el valor una instancia de la clase AtributoNumerico o AtributCategorico 

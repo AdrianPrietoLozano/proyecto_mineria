@@ -47,7 +47,7 @@ class NaiveBayes:
         """ Dada una fila calcula la probabilidad de cada uno de los valores """
         suma = row.sum()
 
-        return row.apply(lambda x: x / suma).round(3)
+        return row.apply(lambda x: x / suma)
         
 
 
@@ -60,8 +60,8 @@ class NaiveBayes:
                 probabilidades[atributo] = pandas.DataFrame(columns=["media", "desviacion"],
                                                             index=self.frecuencias[atributo].columns)
                 for i in self.frecuencias[atributo].columns:
-                    probabilidades[atributo].at[i, "media"] = self.frecuencias[atributo].at[0, i].mean().round(3)
-                    probabilidades[atributo].at[i, "desviacion"] = self.frecuencias[atributo].at[0, i].std(ddof=1).round(3)
+                    probabilidades[atributo].at[i, "media"] = self.frecuencias[atributo].at[0, i].mean()
+                    probabilidades[atributo].at[i, "desviacion"] = self.frecuencias[atributo].at[0, i].std(ddof=1)
 
             else:
                 probabilidades[atributo] = self.frecuencias[atributo].apply(lambda row: self.procesar(row), axis=1)

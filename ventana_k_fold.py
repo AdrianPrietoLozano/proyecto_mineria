@@ -32,6 +32,8 @@ class VentanaKFold(QWidget, Ui_Form):
             if not self.es_regresion:
                 posibles_valores = self.data[self.target].unique().astype(str).tolist()
                 self.comboBoxValorPositivo.addItems(posibles_valores)
+            else:
+                self.groupBoxValorPositivo.setVisible(False)
         else:
             self.groupBoxValorPositivo.setVisible(False)
 
