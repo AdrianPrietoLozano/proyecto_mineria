@@ -75,7 +75,7 @@ class KFoldCrossValidation:
         # divide el dataset en k conjuntos
         data_split = np.array_split(self.data, self.k)
 
-        columnas = ["Precision", "Sensibilidad"]
+        columnas = ["Precisión", "Sensibilidad"]
         tabla = pandas.DataFrame(0, columns=columnas, index=self.unicos_target)
         exactitud_final = 0.0
 
@@ -138,10 +138,8 @@ class KFoldCrossValidation:
             try: # puede darse el caso de que una llave no exista. ¿qué se debe hacer?
                 prediccion = reglas[menor]["regla"][val][0]
                 real = row[self.target] # valor real del conjunto de prueba
-                print(prediccion, real)
                 matriz[prediccion][real] += 1
             except Exception as e:
-                print(e)
                 pass
 
         return self._procesar_matriz(matriz)
@@ -154,9 +152,6 @@ class KFoldCrossValidation:
         exactitud = np.trace(matriz) / matriz.sum().sum()
 
         if not self.es_multi_clase: # si no es multiclase
-            print("\n\n----------")
-            print("MATRIZ")
-            print(matriz)
             try:
                 sensibilidad = int(matriz[self.positivo][self.positivo]) / int(matriz[self.positivo].sum())
             except ZeroDivisionError:
@@ -171,20 +166,14 @@ class KFoldCrossValidation:
             return [exactitud, sensibilidad, especificidad]
 
         else: # si es multiclase
-            tabla = pandas.DataFrame(columns=["Precision", "Sensibilidad"],
+            tabla = pandas.DataFrame(columns=["Precisión", "Sensibilidad"],
                 index=self.unicos_target)
 
-            print("----------")
-            print("MATRIZ")
-            print(matriz)
             # para cada posible valor del target calcula la precision y sensibilidad
             for i in matriz.index:
                 precision = matriz[i][i] / matriz.loc[i].sum() # fila
                 sensibilidad = matriz[i][i] / matriz[i].sum() # columna
                 tabla.loc[i] = [precision, sensibilidad]
-            print("DESPUES")
-            print(tabla)
-            print("----------")
 
             return tabla, exactitud
 

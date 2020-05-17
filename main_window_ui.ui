@@ -1156,6 +1156,7 @@
     <addaction name="actionOne_R"/>
     <addaction name="actionNaive_Bayes"/>
     <addaction name="actionK_NN"/>
+    <addaction name="actionK_Means"/>
    </widget>
    <widget class="QMenu" name="menuEvaluaci_n">
     <property name="title">
@@ -1219,6 +1220,11 @@
   <action name="actionasdd">
    <property name="text">
     <string>asdd</string>
+   </property>
+  </action>
+  <action name="actionK_Means">
+   <property name="text">
+    <string>K-Means</string>
    </property>
   </action>
  </widget>

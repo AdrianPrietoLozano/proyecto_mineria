@@ -16,6 +16,7 @@ from ventana_histograma import *
 from ventana_knn import *
 from ventana_oneR import *
 from ventana_naive import *
+from ventana_kmeans import *
 
 from ventana_k_fold import *
 from ventana_reemplazo_faltantes import *
@@ -82,6 +83,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionOne_R.triggered.connect(self.mostrar_ventana_oneR)
         self.actionNaive_Bayes.triggered.connect(self.mostrar_ventana_naive_bayes)
         self.actionK_NN.triggered.connect(self.mostrar_ventana_knn)
+        self.actionK_Means.triggered.connect(self.mostrar_ventana_kmeans)
 
         # conectar eventos para las opciones de evalución de algoritmos
         self.actionKFold.triggered.connect(self.mostrar_ventana_kfold)
@@ -642,6 +644,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.ventana = VentanaKFold(self.conjunto.panda,
                 self.conjunto.getTarget())
             self.ventana.show()
+
+
+    def mostrar_ventana_kmeans(self):
+        print("entro")
+        self.ventana = VentanaKMeans(self.conjunto.panda)
+        self.ventana.show()
 
 
 

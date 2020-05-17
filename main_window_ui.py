@@ -393,11 +393,14 @@ class Ui_MainWindow(object):
         self.actionKFold.setObjectName("actionKFold")
         self.actionasdd = QtWidgets.QAction(MainWindow)
         self.actionasdd.setObjectName("actionasdd")
+        self.actionK_Means = QtWidgets.QAction(MainWindow)
+        self.actionK_Means.setObjectName("actionK_Means")
         self.menuArchivo.addAction(self.actionNuevo)
         self.menuAlgoritmos.addAction(self.actionZero_R)
         self.menuAlgoritmos.addAction(self.actionOne_R)
         self.menuAlgoritmos.addAction(self.actionNaive_Bayes)
         self.menuAlgoritmos.addAction(self.actionK_NN)
+        self.menuAlgoritmos.addAction(self.actionK_Means)
         self.menuEvaluaci_n.addAction(self.actionKFold)
         self.menuEvaluaci_n.addAction(self.actionasdd)
         self.menubar.addAction(self.menuArchivo.menuAction())
@@ -459,6 +462,7 @@ class Ui_MainWindow(object):
         self.actionK_NN.setText(_translate("MainWindow", "K-NN"))
         self.actionKFold.setText(_translate("MainWindow", "K Fold Cross Validation"))
         self.actionasdd.setText(_translate("MainWindow", "asdd"))
+        self.actionK_Means.setText(_translate("MainWindow", "K-Means"))
 
 
 if __name__ == "__main__":
