@@ -55,6 +55,19 @@ def main_HoldOut(data, target, bandera_cat_num, algoritmo, iteraciones, arrayOrd
     #print()
     return exactitudFinal, dataframeFinal
 
+def numerico_HoldOut(data, target, iteraciones):
+    h_Out = HoldOut(data, target)
+    h_Out.tamaniosEntrenamientoPrueba(70, 30)
+    arrayErrorCuadratico = []
+    for i in range(0, iteraciones):
+        valor = h_Out.errorCuadraticoMedio()
+        arrayErrorCuadratico.append(valor)
+    resultado = h_Out.promedioConTamanio(arrayErrorCuadratico)
+    tabla = pandas.DataFrame(columns=["Error cuadrático medio"], index=["KNN"])
+    tabla.loc["KNN"] = resultado
+    return tabla
+
+
 #data = pandas.read_csv("tabla1.csv", skipinitialspace=True)
 #target = "Sail"
 

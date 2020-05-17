@@ -506,6 +506,23 @@ class HoldOut:
         promedioPrecision = self.promediarConDiccionario(entrenamientoDicPrecision, pruebaDicPrecision)
 
         return promedioExactitud, promedioRecall, promedioPrecision
+    
+    def errorCuadraticoMedio(self):
+        auxData = self.data.sample(frac=1)
+        self.nuevoDataframe(auxData)
+        
+        entrenamiento = self.data.head(self.tamanioEntrenamiento)
+        prueba = self.data.tail(self.tamanioPrueba)
+        self.pos_target = self.data.columns.get_loc(self.target)
+
+        suma_errores = 0.0
+        knn = KNN(entrenamiento, self.target)
+        for i in prueba.values:
+            prediccion = knn.get_prediccion(np.delete(i, self.pos_target))[0]
+            real = i[self.pos_target] # valor real del conjunto de prueba
+            suma_errores += ((real - prediccion)**2)
+
+        return suma_errores / len(prueba)
 
 # Obtenemos todas las clases
 # Recorremos esa lista de clases

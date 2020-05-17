@@ -63,12 +63,17 @@ class VentanaHoldOut(QWidget, Ui_Form):
 
         # def main_HoldOut(data, target, bandera_cat_num, algoritmo, iteraciones, arrayOrden):
         
-        exactitudFinal, dataframeFinal = main_HoldOut(self.data, self.target, self.es_regresion, algoritmo, self.numeroIteraciones.value(), self.arrayOrden)
-        msg = "{}, exactitud promedio: {}".format(self.comboBoxAlgoritmo.currentText(), exactitudFinal)
-        self.labelAlgoritmo.setText(msg)
-        self.tablaResultados.setModel(TableModelPandas(dataframeFinal))
+        if self.es_regresion == False:
+            exactitudFinal, dataframeFinal = main_HoldOut(self.data, self.target, self.es_regresion, algoritmo, self.numeroIteraciones.value(), self.arrayOrden)
+            msg = "{}, exactitud promedio: {}".format(self.comboBoxAlgoritmo.currentText(), exactitudFinal)
+            self.labelAlgoritmo.setText(msg)
+            self.tablaResultados.setModel(TableModelPandas(dataframeFinal))
         
+        # def numerico_HoldOut(data, target, bandera_cat_num, algoritmo, iteraciones):
 
+        else:
+            dataframeFinal = numerico_HoldOut(self.data, self.target, self.numeroIteraciones.value())
+            self.tablaResultados.setModel(TableModelPandas(dataframeFinal))
         """
         positivo, negativo = None, None
         if not self.es_multi_clase and not self.es_regresion:
