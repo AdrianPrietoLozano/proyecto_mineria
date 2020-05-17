@@ -13,5 +13,29 @@ class VentanaKMeans(QWidget, Ui_Form):
         self.data = data
         self.kmeans = KMeans(self.data)
 
-        #self.btnAceptar.clicked.connect(self.procesar_instancia)
+        self.btnAceptar.clicked.connect(self.iniciar_algoritmo)
+
+    def iniciar_algoritmo(self):
+        self.btnAceptar.setEnabled(False) # desactiva boton
+        self.tablaResultado.setModel(None)
+        self.labelPromedioSilhouette.setText("")
+        self.repaint() # para que se actualice la etiqueta
+
+        k = self.spinBoxK.value()
+        corridas = self.spinBoxCorridas.value()
+        iteraciones = self.spinBoxIteraciones.value()
+
+        self.kmeans.setCorridas(corridas)
+        self.kmeans.setIteraciones(iteraciones)
+
+        resultados = self.kmeans.generar_clusters(n_clusters=k)
+        self.data["Cluster"] = resultados[0]
+        self.data["Silhouette"] = resultados[1]
+        promedio_silhouette = resultados[2]
+
+        self.tablaResultado.setModel(TableModelPandas(self.data))
+        self.labelPromedioSilhouette.setText("Silhouette score: " + \
+            str(promedio_silhouette))
+
+        self.btnAceptar.setEnabled(True)
 

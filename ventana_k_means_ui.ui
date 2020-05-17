@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>626</width>
-    <height>547</height>
+    <width>685</width>
+    <height>566</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -138,6 +138,13 @@
         </property>
         <property name="text">
          <string>Resultado</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelPromedioSilhouette">
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </item>

@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(626, 547)
+        Form.resize(685, 566)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.frame = QtWidgets.QFrame(Form)
@@ -76,6 +76,10 @@ class Ui_Form(object):
         self.label_4.setFont(font)
         self.label_4.setObjectName("label_4")
         self.verticalLayout_2.addWidget(self.label_4)
+        self.labelPromedioSilhouette = QtWidgets.QLabel(self.frame_2)
+        self.labelPromedioSilhouette.setText("")
+        self.labelPromedioSilhouette.setObjectName("labelPromedioSilhouette")
+        self.verticalLayout_2.addWidget(self.labelPromedioSilhouette)
         self.tablaResultado = QtWidgets.QTableView(self.frame_2)
         self.tablaResultado.setObjectName("tablaResultado")
         self.verticalLayout_2.addWidget(self.tablaResultado)
