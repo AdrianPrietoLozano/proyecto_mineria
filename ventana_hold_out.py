@@ -4,6 +4,9 @@ from ventana_hold_out_ui import *
 from table_model_pandas import TableModelPandas
 from PyQt5.QtWidgets import QWidget, QMessageBox
 import numpy as np
+import pandas
+
+from holdOut_main import *
 
 class VentanaHoldOut(QWidget, Ui_Form):
 
@@ -11,10 +14,10 @@ class VentanaHoldOut(QWidget, Ui_Form):
         QtWidgets.QWidget.__init__(self, *args, **kwargs)
         self.setupUi(self)
 
-        self.data = data
+        self.data = data.apply(pandas.to_numeric, errors="ignore")
         self.target = target
-        self.es_multi_clase = True
-
+        #self.es_multi_clase = True
+        self.arrayOrden = pandas.unique(self.data[self.target]).tolist()
         # si el target es de tipo numérico, entonces es un problema de regresión
         # KNN es el único de estos algoritmos que funciona para regresión
         self.es_regresion = False
@@ -40,12 +43,17 @@ class VentanaHoldOut(QWidget, Ui_Form):
 
     def iniciar_evaluacion(self):
         algoritmo = self.comboBoxAlgoritmo.currentText()
-
+        
         if self.es_regresion:
             if algoritmo == "One R" or algoritmo == "Naive Bayes":
                 QMessageBox.critical(self, "Error", \
                     "El algoritmo seleccionado no funciona con problemas de regresión")
                 return
+
+        if algoritmo == "One R" and np.dtype(np.number) in self.data.dtypes.values:
+            QMessageBox.critical(self, "Error", \
+                    "One R solo funciona con todas las columnas categóricas")
+            return
 
         self.btnAceptar.setEnabled(False) # desactiva boton
         self.labelCargando.setVisible(True)
@@ -53,6 +61,13 @@ class VentanaHoldOut(QWidget, Ui_Form):
         self.labelAlgoritmo.setText("")
         self.repaint() # para que se actualice la etiqueta
 
+        # def main_HoldOut(data, target, bandera_cat_num, algoritmo, iteraciones, arrayOrden):
+        
+        exactitudFinal, dataframeFinal = main_HoldOut(self.data, self.target, self.es_regresion, algoritmo, self.numeroIteraciones.value(), self.arrayOrden)
+        msg = "{}, exactitud promedio: {}".format(self.comboBoxAlgoritmo.currentText(), exactitudFinal)
+        self.labelAlgoritmo.setText(msg)
+        self.tablaResultados.setModel(TableModelPandas(dataframeFinal))
+        
 
         """
         positivo, negativo = None, None
@@ -70,8 +85,8 @@ class VentanaHoldOut(QWidget, Ui_Form):
         resultado = k_fold.iniciar_validacion()
         """
 
-
-        self.mostrar_tablas(resultado)
+        #revisar TODO: Here
+        #self.mostrar_tablas(resultado)
         self.btnAceptar.setEnabled(True)
         self.labelCargando.setVisible(False)
 
