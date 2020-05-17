@@ -109,7 +109,7 @@ class KFoldCrossValidation:
                 matriz[prediccion][real] += 1
 
         if self.es_regresion:
-            return suma_errores / len(prueba) # error cuadrático médio
+            return suma_errores / len(prueba) # error cuadrático medio
         else:
             return self._procesar_matriz(matriz)  
 
@@ -161,7 +161,6 @@ class KFoldCrossValidation:
             except ZeroDivisionError:
                 especificidad = 0
 
-            print(exactitud, sensibilidad, especificidad)
             return [exactitud, sensibilidad, especificidad]
 
         else: # si es multiclase
@@ -186,7 +185,6 @@ class KFoldCrossValidation:
             probar = data_split[i]
             entrenar = pandas.concat(data_split[:i] + data_split[i+1:])
             suma_errores_cuadraticos += self.validationKNN(entrenar, probar)
-            print(suma_errores_cuadraticos)
 
         # saca promedio
         tabla.loc["KNN"] = round(suma_errores_cuadraticos / self.k, 4)

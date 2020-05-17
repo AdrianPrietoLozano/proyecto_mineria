@@ -591,9 +591,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
     def mostrar_reemplazo_faltantes(self):
+        print("ANTES")
+        print(self.conjunto.panda)
+
         self.ventana = VentanaReemplazoFaltantes(self.conjunto.panda,
             self.conjunto.getTarget(), self.conjunto.getSimboloFaltante())
         self.ventana.show()
+
+        print("\nDESPUES")
+        print(self.conjunto.panda)
 
 
     ###############################################

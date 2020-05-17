@@ -24,7 +24,6 @@ class VentanaKFold(QWidget, Ui_Form):
 
         self.btnAceptar.clicked.connect(self.iniciar_evaluacion)
         self.labelCargando.setVisible(False)
-        self.INDEX_LEAVE_ONE_OUT = 4
 
         # si los posibles valores del target son 2 y el problema no es de regresion
         #muestra la opcion para elegir el valor positivo y el negativo
@@ -59,11 +58,7 @@ class VentanaKFold(QWidget, Ui_Form):
         self.labelAlgoritmo.setText("")
         self.repaint() # para que se actualice la etiqueta
 
-        # Leave One Out
-        if self.numFolds.currentIndex() == self.INDEX_LEAVE_ONE_OUT:
-            num_folds = len(self.data)
-        else:
-            num_folds = int(self.numFolds.currentText())
+        num_folds = int(self.numFolds.currentText())
 
         positivo, negativo = None, None
         if not self.es_multi_clase and not self.es_regresion:

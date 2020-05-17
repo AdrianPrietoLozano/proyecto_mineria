@@ -53,7 +53,9 @@ class VentanaReemplazoFaltantes(QWidget, Ui_Form):
                 reemplazo.eliminar_filas_target_faltante()
         
         reemplazo.iniciar_reemplazo()
-        print(reemplazo.data)
+
+        print("\nREEMPLAZO")
+        print(reemplazo.get_datos())
         
 
     def _llenar_interfaz(self):
