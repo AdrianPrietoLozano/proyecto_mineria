@@ -84,14 +84,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionOne_R.triggered.connect(self.mostrar_ventana_oneR)
         self.actionNaive_Bayes.triggered.connect(self.mostrar_ventana_naive_bayes)
         self.actionK_NN.triggered.connect(self.mostrar_ventana_knn)
-<<<<<<< HEAD
         self.actionK_Means.triggered.connect(self.mostrar_ventana_kmeans)
-=======
-        self.actionHoldOut.triggered.connect(self.mostrar_ventana_hold_out)
->>>>>>> 5d89cbd651839746ae140057bb468bf17613f55d
 
         # conectar eventos para las opciones de evalución de algoritmos
         self.actionKFold.triggered.connect(self.mostrar_ventana_kfold)
+        self.actionHoldOut.triggered.connect(self.mostrar_ventana_hold_out)
 
         # id de la instancia en la que se dio clic en la tabla
         self.currentIdRow = None
