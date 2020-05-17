@@ -90,9 +90,6 @@ class Ui_MainWindow(object):
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.ToolTipText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0, 128))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.PlaceholderText, brush)
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.WindowText, brush)
@@ -138,9 +135,6 @@ class Ui_MainWindow(object):
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.ToolTipText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0, 128))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.PlaceholderText, brush)
         brush = QtGui.QBrush(QtGui.QColor(88, 88, 88))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
@@ -186,9 +180,6 @@ class Ui_MainWindow(object):
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ToolTipText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0, 128))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.PlaceholderText, brush)
         self.groupBoxAtributos.setPalette(palette)
         self.groupBoxAtributos.setObjectName("groupBoxAtributos")
         self.comboBoxAtributos = QtWidgets.QComboBox(self.groupBoxAtributos)
@@ -391,10 +382,15 @@ class Ui_MainWindow(object):
         self.actionK_NN.setObjectName("actionK_NN")
         self.actionKFold = QtWidgets.QAction(MainWindow)
         self.actionKFold.setObjectName("actionKFold")
+<<<<<<< HEAD
         self.actionasdd = QtWidgets.QAction(MainWindow)
         self.actionasdd.setObjectName("actionasdd")
         self.actionK_Means = QtWidgets.QAction(MainWindow)
         self.actionK_Means.setObjectName("actionK_Means")
+=======
+        self.actionHoldOut = QtWidgets.QAction(MainWindow)
+        self.actionHoldOut.setObjectName("actionHoldOut")
+>>>>>>> 5d89cbd651839746ae140057bb468bf17613f55d
         self.menuArchivo.addAction(self.actionNuevo)
         self.menuAlgoritmos.addAction(self.actionZero_R)
         self.menuAlgoritmos.addAction(self.actionOne_R)
@@ -402,7 +398,7 @@ class Ui_MainWindow(object):
         self.menuAlgoritmos.addAction(self.actionK_NN)
         self.menuAlgoritmos.addAction(self.actionK_Means)
         self.menuEvaluaci_n.addAction(self.actionKFold)
-        self.menuEvaluaci_n.addAction(self.actionasdd)
+        self.menuEvaluaci_n.addAction(self.actionHoldOut)
         self.menubar.addAction(self.menuArchivo.menuAction())
         self.menubar.addAction(self.menuVersiones.menuAction())
         self.menubar.addAction(self.menuAlgoritmos.menuAction())
@@ -461,8 +457,12 @@ class Ui_MainWindow(object):
         self.actionNaive_Bayes.setText(_translate("MainWindow", "Naive Bayes"))
         self.actionK_NN.setText(_translate("MainWindow", "K-NN"))
         self.actionKFold.setText(_translate("MainWindow", "K Fold Cross Validation"))
+<<<<<<< HEAD
         self.actionasdd.setText(_translate("MainWindow", "asdd"))
         self.actionK_Means.setText(_translate("MainWindow", "K-Means"))
+=======
+        self.actionHoldOut.setText(_translate("MainWindow", "Hold Out"))
+>>>>>>> 5d89cbd651839746ae140057bb468bf17613f55d
 
 
 if __name__ == "__main__":
