@@ -26,6 +26,7 @@ from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction,
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon, QCursor
 import pandas as pd
+import numpy as np
 from glob import glob
 import re
 import json
@@ -655,9 +656,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
     def mostrar_ventana_kmeans(self):
-        print("entro")
-        self.ventana = VentanaKMeans(self.conjunto.panda)
-        self.ventana.show()
+        target = self.conjunto.getTarget()
+        if target not in self.conjunto.panda.columns: target = None
+        print("target:", target)
+
+        # intentar convertir a numerico
+        self.conjunto.panda = self.conjunto.panda.apply(pd.to_numeric, errors="ignore")
+
+        # si existe una columna categórica muestra un error
+        if np.dtype(np.object) in self.conjunto.panda.loc[:, self.conjunto.panda.columns != target].dtypes.values:
+            QMessageBox.critical(self, "Error",
+                "K Means solo funciona con atributos numéricos")
+        else:
+            self.ventana = VentanaKMeans(self.conjunto.panda, target)
+            self.ventana.show()
 
 
 

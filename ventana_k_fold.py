@@ -4,6 +4,7 @@ from k_fold import KFoldCrossValidation
 from table_model_pandas import TableModelPandas
 from PyQt5.QtWidgets import QWidget, QMessageBox
 import numpy as np
+import pandas as pd
 
 class VentanaKFold(QWidget, Ui_Form):
 
@@ -11,7 +12,7 @@ class VentanaKFold(QWidget, Ui_Form):
         QtWidgets.QWidget.__init__(self, *args, **kwargs)
         self.setupUi(self)
 
-        self.data = data
+        self.data = data.apply(pd.to_numeric, errors="ignore")
         self.target = target
         self.es_multi_clase = True
 
@@ -45,6 +46,12 @@ class VentanaKFold(QWidget, Ui_Form):
                 QMessageBox.critical(self, "Error", \
                     "El algoritmo seleccionado no funciona con problemas de regresión")
                 return
+
+        # One R solo funciona con todas las columnas categoricas
+        if algoritmo == "One R" and np.dtype(np.number) in self.data.dtypes.values:
+            QMessageBox.critical(self, "Error", \
+                    "One R solo funciona con todas las columnas categóricas")
+            return
 
         self.btnAceptar.setEnabled(False) # desactiva boton
         self.labelCargando.setVisible(True)

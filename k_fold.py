@@ -103,7 +103,6 @@ class KFoldCrossValidation:
         for i in prueba.values:
             prediccion = knn.get_prediccion(np.delete(i, self.pos_target))[0]
             real = i[self.pos_target] # valor real del conjunto de prueba
-            print(prediccion, real)
             if self.es_regresion:
                 suma_errores += ((real - prediccion)**2)
             else:

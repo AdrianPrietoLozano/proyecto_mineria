@@ -111,15 +111,12 @@ class NaiveBayes:
             for atributo, val in instancia.items():
 
                 prob = 0
-                try:
-                    if np.issubdtype(self.data[atributo].dtype, np.number):
-                        media = self.probabilidades[atributo]["media"][i]
-                        desviacion = self.probabilidades[atributo]["desviacion"][i]
-                        prob = self._distribucion_normal(val, media, desviacion)
-                    else:
-                        prob = self.probabilidades[atributo][val][i]
-                except:
-                    prob = 0.0001
+                if np.issubdtype(self.data[atributo].dtype, np.number):
+                    media = self.probabilidades[atributo]["media"][i]
+                    desviacion = self.probabilidades[atributo]["desviacion"][i]
+                    prob = self._distribucion_normal(val, media, desviacion)
+                else:
+                    prob = self.probabilidades[atributo][val][i]
                 
                 #print(prob, end=" * ")
                 procedimiento_str += "{} * ".format(prob)

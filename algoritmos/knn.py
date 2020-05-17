@@ -69,10 +69,10 @@ class KNN:
 data = pandas.read_csv("iris_columnas.csv", skipinitialspace=True)
 target = "class"
 
-instancia = [1,2,3,4]
+instancia = [1,2,3,"asdf"]
 
 knn = KNN(data, target, 5)
 
-for i in range(100):
-    knn.get_prediccion(instancia)[0] 
+for i in range(10):
+    print(knn.get_prediccion(instancia)[0])
 """

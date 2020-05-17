@@ -45,7 +45,6 @@ class KMeans:
         for i in range(self.corridas):
             num_veces_iguales = 0
             self._generar_centroides_iniciales(n_clusters)
-            print(self.centroides)
             for j in range(self.iteraciones):
 
                 for k in range(n_clusters):
@@ -69,7 +68,6 @@ class KMeans:
                 self._recalcular_centroides()
 
             promedio = self._calcular_silhouette()
-            print("promedio:", promedio)
             if promedio > promedio_mayor:
                 mejor_silhouette = self.silhouettes.copy()
                 mejor_asignados = self.asignados.copy()

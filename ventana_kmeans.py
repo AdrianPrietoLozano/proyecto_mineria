@@ -6,12 +6,16 @@ from PyQt5.QtWidgets import QWidget, QMessageBox
 
 class VentanaKMeans(QWidget, Ui_Form):
 
-    def __init__(self, data, *args, **kwargs):
+    def __init__(self, data, target=None, *args, **kwargs):
         QtWidgets.QWidget.__init__(self, *args, **kwargs)
         self.setupUi(self)
 
         self.data = data
-        self.kmeans = KMeans(self.data)
+
+        if target is not None: # si el target esta definido, lo ignora
+            self.kmeans = KMeans(self.data.drop(target, axis=1))
+        else:
+            self.kmeans = KMeans(self.data)
 
         self.btnAceptar.clicked.connect(self.iniciar_algoritmo)
 
