@@ -7,13 +7,14 @@ import pandas
 
 class VentanaReemplazoFaltantes(QWidget, Ui_Form):
 
-    def __init__(self, data, target, simbolo_faltante, *args, **kwargs):
+    def __init__(self, data, target, simbolo_faltante, signal, *args, **kwargs):
         QtWidgets.QWidget.__init__(self, *args, **kwargs)
         self.setupUi(self)
 
         self.simbolo_faltante = simbolo_faltante
         self.data = data.replace(self.simbolo_faltante, np.nan).apply(pandas.to_numeric, errors="ignore")
         self.target = target
+        self.signal = signal
         self.atributos_numericos_modificar = []
         self.target_es_numerico = False
 
@@ -26,6 +27,7 @@ class VentanaReemplazoFaltantes(QWidget, Ui_Form):
                 self.target_es_numerico = True
 
         self.btnAceptar.clicked.connect(self.iniciar_reemplazo)
+        self.btnCancelar.clicked.connect(lambda x: self.close())
 
         self._llenar_interfaz()
 
@@ -54,8 +56,8 @@ class VentanaReemplazoFaltantes(QWidget, Ui_Form):
         
         reemplazo.iniciar_reemplazo()
 
-        print("\nREEMPLAZO")
-        print(reemplazo.get_datos())
+        self.signal.emit(reemplazo.get_datos())
+        self.close()
         
 
     def _llenar_interfaz(self):

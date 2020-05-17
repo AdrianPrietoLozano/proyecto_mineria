@@ -54,7 +54,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     signal_eliminar_instancias = pyqtSignal(int) # se emite cuando se elimina una instancia
     signal_editar_instancia = pyqtSignal() # se emite cuando se edita una instancia
     signal_agregar_columna = pyqtSignal(str) # se emite cuando se agrega una instancia
-    #signal_reemplazo_faltantes = pyqtSignal()
+    signal_reemplazo_faltantes = pyqtSignal(pd.DataFrame)
 
     def __init__(self, ruta, conexion=None, query=None, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
@@ -151,6 +151,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.signal_eliminar_instancias.connect(self.instancias_eliminadas)
         self.signal_editar_instancia.connect(self.actualizar_etiquetas)
         self.signal_agregar_columna.connect(self.atributo_agregado)
+        self.signal_reemplazo_faltantes.connect(self.actualizar_model)
 
 
     def cargar_nuevo_dataset(self):
@@ -591,15 +592,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
     def mostrar_reemplazo_faltantes(self):
-        print("ANTES")
-        print(self.conjunto.panda)
-
         self.ventana = VentanaReemplazoFaltantes(self.conjunto.panda,
-            self.conjunto.getTarget(), self.conjunto.getSimboloFaltante())
+            self.conjunto.getTarget(), self.conjunto.getSimboloFaltante(),
+            self.signal_reemplazo_faltantes)
         self.ventana.show()
 
-        print("\nDESPUES")
-        print(self.conjunto.panda)
+    def actualizar_model(self, dataframe):
+        self.conjunto.panda = dataframe
+        self.model = TableModelPandas(self.conjunto.panda)
+        self.tabla.setModel(self.model)
+
+        for atributo in self.conjunto.getAtributos():
+            atributo.panda = self.conjunto.panda
+
+        self.actualizar_etiquetas()
 
 
     ###############################################
@@ -636,7 +642,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def mostrar_ventana_naive_bayes(self):
         if self.comprobar_target():
             if self.es_target_numerico():
-                QMessageBox.critical(self, "Error", "Naive Bayes solo funciona con problemas de clasificación")
+                QMessageBox.critical(self, "Error",
+                    "Naive Bayes solo funciona con problemas de clasificación")
             else:
                 self.ventana = VentanaNaiveBayes(self.conjunto.panda,
                     self.conjunto.getTarget())

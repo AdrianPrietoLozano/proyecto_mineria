@@ -48,9 +48,9 @@ class ReemplazoFaltantes:
 				metodo = "media"
 				
 			if metodo == "media":
-				valor = columna.mean()
+				valor = columna.mean().round(3)
 			else:
-				valor = columna.median()
+				valor = columna.median().round(3)
 		else: # es categorica usar la moda
 			valor = columna.mode()[0]
 
