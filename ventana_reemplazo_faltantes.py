@@ -94,13 +94,13 @@ class VentanaReemplazoFaltantes(QWidget, Ui_Form):
         radioButtonMediana.setText("Mediana")
         horizontalLayout.addWidget(radioButtonMediana)
 
-        if self.es_casi_distribucion_normal(atributo):
+        if self.es_distribucion_normal(atributo):
             radioButtonMedia.setChecked(True)
         else:
             radioButtonMediana.setChecked(True)
 
         self.formLayout.setWidget(pos, QtWidgets.QFormLayout.FieldRole, frame)
 
-    def es_casi_distribucion_normal(self, atributo):
+    def es_distribucion_normal(self, atributo):
         # FALTA DETECTAR SI UNA DISTRIBUCIÓN ES NORMAL
-        return True
+        return self.data[atributo].mean() == self.data[atributo].median()
