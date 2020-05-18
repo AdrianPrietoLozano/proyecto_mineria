@@ -208,6 +208,7 @@ class HoldOut:
         promedio = divisor / dividendo
         return promedio
     
+    # Obtiene el promedio entre dos diccionarios y retorna el diccionario final
     def promediarConDiccionario(self, entrenamiento, prueba):
         newDiccionario = {}
         for llaveEntre, valorEntre in entrenamiento.items():
@@ -226,19 +227,19 @@ class HoldOut:
         promedio = divisor / dividendo
         return promedio
     
-
+    # Obtiene el promedio de todos los diccionarios que se iteraron (sea sensibilidad o precisión)
     def promedioConTamanio_Diccionarios(self, arregloDic):
         clasesUnicas = pandas.unique(self.data[self.target]).tolist()
         diccionario = {}
-        for clase in clasesUnicas:
+        for clase in clasesUnicas: # Recorrde el arreglo de los valores unicos de la clase
             arregloClase = []    
-            for i in arregloDic:
+            for i in arregloDic: # Recorrde el arreglo de todos los diccionarios
                 diccionario = i
-                for clave, valor in diccionario.items():
-                    if clave == clase:
-                        arregloClase.append(valor)
-            promedio = self.promedioConTamanio(arregloClase)
-            diccionario[clase] = promedio
+                for clave, valor in diccionario.items(): # Recorremos los valores de nuestro diccionario
+                    if clave == clase: # Sí la clave es igual a la clase que esta en el primer for, entra
+                        arregloClase.append(valor) # Lo agregamos a nuestra lista de clases
+            promedio = self.promedioConTamanio(arregloClase) # Promediamos los valores que coinciden con clase
+            diccionario[clase] = promedio # Agregamos el valor final a nuestro diccionario
         return diccionario
     
     def combinarRecall_Precision(self, dicRecall, dicPrecision):

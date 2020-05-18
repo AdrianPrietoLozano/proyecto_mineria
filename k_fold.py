@@ -191,12 +191,3 @@ class KFoldCrossValidation:
 
         return tabla
 
-
-        
-"""
-data = pandas.read_csv("algoritmos/iris_columnas.csv", skipinitialspace=True)
-target = "sepal length"
-
-fold = KFoldCrossValidation(data, target, 10, "KNN")
-print(fold.validacion_regresion_knn())
-"""
