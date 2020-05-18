@@ -10,7 +10,7 @@ class VentanaKMeans(QWidget, Ui_Form):
         QtWidgets.QWidget.__init__(self, *args, **kwargs)
         self.setupUi(self)
 
-        self.data = data.copy()
+        self.data = data.copy(deep=True)
 
         if target is not None: # si el target esta definido, lo ignora
             self.kmeans = KMeans(self.data.drop(target, axis=1))
