@@ -12,7 +12,7 @@ class KNN:
     def set_k(self, k):
         self.k = k
 
-    def _distancia_entre_numericos(self, lista1, lista2):
+    def _distancia_entre_numericos(self, lista1, lista2): # Utilizamos la distancia Euclidiana
         """ Calcula la distancia entre dos listas numericas """
         distancia = 0.0
         for val1, val2 in zip(lista1, lista2):
@@ -20,7 +20,7 @@ class KNN:
 
         return math.sqrt(distancia)
 
-    def _distancia_entre_categoricos(self, lista1, lista2):
+    def _distancia_entre_categoricos(self, lista1, lista2): # Utilizamos la distancia de Hamming
         """ Calcula la distancia entre dos listas categoricas """
         distancia = 0
         for val1, val2 in zip(lista1, lista2):
@@ -39,7 +39,7 @@ class KNN:
         pos_target = self.data.columns.get_loc(self.target)
 
         distancias = self.data.copy() # hace una copia independiente del DataFrame
-        distancias["distancia"] = distancias.apply(lambda row: funcion_distancia(fila, np.delete(row.values, pos_target)), axis=1)
+        distancias["distancia"] = distancias.apply(lambda row: funcion_distancia(fila, np.delete(row.values, pos_target)), axis=1) # Itera sobre cada fila del dataframe
 
         return distancias
         
@@ -63,16 +63,3 @@ class KNN:
             resultado = distancias[:self.k][self.target].mode()[0] # retorna el valor mas frecuenta del target (CLASIFICACIÓN)
 
         return resultado, distancias[:self.k]
-
-
-"""
-data = pandas.read_csv("iris_columnas.csv", skipinitialspace=True)
-target = "class"
-
-instancia = [1,2,3,"asdf"]
-
-knn = KNN(data, target, 5)
-
-for i in range(10):
-    print(knn.get_prediccion(instancia)[0])
-"""

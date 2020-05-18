@@ -40,27 +40,17 @@ class HoldOut:
         return tamanio
 
     def tamaniosEntrenamientoPrueba(self, entrenamiento, prueba):
-        #print(self.tamanioEntrenamiento)
         self.tamanioEntrenamiento = self.porcentaje(entrenamiento, self.tamanioData)
         auxTamanio = self.tamanioEntrenamiento
         self.tamanioEntrenamiento = self.parteEntera(auxTamanio)
-        #print(self.tamanioEntrenamiento)
-        #print()
 
-        #print(self.tamanioPrueba)
         self.tamanioPrueba = self.porcentaje(prueba, self.tamanioData)
         auxTamanio = self.tamanioPrueba
         self.tamanioPrueba = self.parteEntera(auxTamanio)
-        #print(self.tamanioPrueba)
-        #print()
 
 
     def nuevoDataframe(self, nuevoDataframe):
-        #print(self.data)
-        #print()
         self.data = nuevoDataframe
-        #print(self.data)
-        #print()
     
     def inicializarArrayEntrenamientoPrueba(self):
         self.dataEntrenamiento = self.data.head(self.tamanioEntrenamiento)
@@ -293,7 +283,7 @@ class HoldOut:
 
         self.inicializarArrayEntrenamientoPrueba()
         realEntrenamiento, realPrueba = self.inicializarArrayEntrenamientoPruebaReal()
-
+    
         entrenamiento = self.data.head(self.tamanioEntrenamiento)
         prueba = self.data.tail(self.tamanioPrueba)
 

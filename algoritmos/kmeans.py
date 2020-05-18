@@ -10,7 +10,7 @@ class KMeans:
         self.iteraciones = iteraciones
 
         self.centroides = None
-        self.asignados = np.zeros(self.datos.shape[0])
+        self.asignados = np.zeros(self.datos.shape[0]) # Crea un arreglo que inicializa en 0's
         self.silhouettes = np.zeros(self.datos.shape[0])
         self.NUM_CLUSTERS_NO_CAMBIAN = 5 # condicion de paro para el algoritmo
 
@@ -48,11 +48,11 @@ class KMeans:
             for j in range(self.iteraciones):
 
                 for k in range(n_clusters):
-                    # calcula distancia de cada instancia con cada centroide
+                    # calcula distancia de cada instancia con cada centroide - (Distancia Euclidiana)
                     distancias[:, k] = np.sqrt( np.sum( (self.datos - self.centroides[k] )**2, axis=1 ) )
 
                 # obtiene el cluster con menor distancia
-                self.asignados = np.argmin(distancias, axis=1)
+                self.asignados = np.argmin(distancias, axis=1) # Te devuelve el indice del valor menor
 
                 # si asignados es igual a copia_asignados aumenta en
                 # uno el numero de veces iguales, si los clusters
@@ -83,6 +83,7 @@ class KMeans:
             
             # obtener promedio de la distancia entre la instancia y 
             # las demás instancias del mismo cluster
+            # (Distancia Euclidiana)
             a = np.mean( np.sqrt( np.sum( (self.datos[ self.asignados == cluster ] - instancia )**2, axis=1 ) ) )
 
 
@@ -108,51 +109,3 @@ class KMeans:
 
         # retorna el promedio de los promedios del silhouette de cada cluster
         return np.mean(promedio_silhouette)
-
-
-
-
-
-    """
-    def calcular_promedio_promedios(self):
-        promedios = []
-        for i in range(self.centroides.shape[0]):
-            arreglo = self.datos[self.asignados == i]
-            if arreglo.shape[0] == 0:
-                promedios.append(500)
-            else:
-                promedio_cluster = np.mean(np.apply_along_axis(self._distancia_entre, 
-                    axis=1, arr=arreglo, fila2=self.centroides[i]))
-                promedios.append(promedio_cluster)
-
-        return np.mean(promedios)
-
-    def _distancia_entre(self, fila1, fila2):
-        return np.sqrt(np.sum((fila1 - fila2)**2))
-
-    def _mejor_cluster(self, fila):
-        distancias = np.zeros(len(self.centroides))
-
-        for i in range(len(self.centroides)):
-            distancias[i] = self._distancia_entre(fila, self.centroides[i])
-
-        return np.argmin(distancias)
-
-
-
-    #self.centroides = np.zeros((n_centroides, self.datos.shape[1]))
-        #for i in range(n_centroides):
-            #self.centroides[i] = np.random.uniform(np.min(self.datos, axis=0),
-                #np.max(self.datos, axis=0))
-    """
-
-
-
-"""
-data = pandas.read_csv("iris_columnas.csv", skipinitialspace=True)
-data.drop("class", inplace=True, axis=1)
-
-print("inicio")
-k_means = KMeans(data, 10, 100)
-print(k_means.generar_clusters(2))
-"""
