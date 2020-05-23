@@ -36,14 +36,14 @@ class VentanaCoeficienteTschuprow(QWidget, Ui_Form):
 		tipo_atributo2 = self.conjunto.panda[atributo2].dtype
 
 		# comprueba que los dos atributos sean de tipo categoricos
-		if tipo_atributo1 == "O" or tipo_atributo1 == "O":
-			if tipo_atributo2 == "O" or tipo_atributo2 == "O":
-				self.labelResultado.setText(str(self.conjunto.coeficienteTschuprow(atributo1, atributo2)))
-			else:
-				QMessageBox.critical(self, "Error",
-				"El atributo " + atributo2 + " no es categorico");
-				self.labelResultado.setText("N/A")
-		else:
-			QMessageBox.critical(self, "Error",
-				"El atributo " + atributo1 + " no es categorico");
-			self.labelResultado.setText("N/A")
+		#if tipo_atributo1 == "O" or tipo_atributo1 == "O":
+			#if tipo_atributo2 == "O" or tipo_atributo2 == "O":
+		self.labelResultado.setText(str(self.conjunto.coeficienteTschuprow(atributo1, atributo2)))
+			#else:
+				#QMessageBox.critical(self, "Error",
+				#"El atributo " + atributo2 + " no es categorico");
+				#self.labelResultado.setText("N/A")
+		#else:
+			#QMessageBox.critical(self, "Error",
+				#"El atributo " + atributo1 + " no es categorico");
+			#self.labelResultado.setText("N/A")
