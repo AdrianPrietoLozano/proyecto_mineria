@@ -1,3 +1,14 @@
+import sys
+sys.path.append('ventanas/')
+sys.path.append('dialogos/')
+
+import pandas as pd
+import numpy as np
+from glob import glob
+import re
+import json
+import os
+
 from main_window_ui import *
 from dialogo_elegir_propiedades import *
 from ventana_descripcion import *
@@ -25,12 +36,7 @@ from ventana_reemplazo_faltantes import *
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox, QAction, QAbstractItemView, QMenu,QHeaderView, QMessageBox
 from PyQt5.QtCore import Qt, QDir, QItemSelectionModel, QSize, QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon, QCursor
-import pandas as pd
-import numpy as np
-from glob import glob
-import re
-import json
-import os
+
 from conjunto_datos import ConjuntoDatos
 from table_model_pandas import TableModelPandas
 from respaldos import Respaldos

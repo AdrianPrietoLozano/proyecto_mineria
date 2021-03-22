@@ -20,8 +20,6 @@ class VentanaOneR(QWidget, Ui_Form):
 
 
     def cargar_tablas_frecuencias(self):
-        data = pandas.read_csv("iris.csv", skipinitialspace=True)
-        
         frecuencias = one_r.generar_frecuencias(self.data, self.target)
         
         for i in frecuencias:

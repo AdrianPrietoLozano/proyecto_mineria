@@ -1,3 +1,7 @@
+import sys
+sys.path.append('dialogos/')
+sys.path.append('ventanas/')
+
 from dialogo_elegir_propiedades import *
 import pandas as pd
 
