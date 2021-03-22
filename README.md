@@ -12,4 +12,5 @@ Programa de escritorio desarrollado en Python y PyQt para el procesamiento de da
 - k-Fold Cross Validation
 - Hold-out
 
+## Screenshot
 ![Screenshot](screenshot.png)
